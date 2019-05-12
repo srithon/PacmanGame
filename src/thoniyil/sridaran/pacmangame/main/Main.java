@@ -7,7 +7,7 @@ public class Main
 {
 	public Main()
 	{
-		GameController.setBoard(new Board(MapParser.getMap()));
+		Board.setMap(MapParser.getMap());
 		GameController.start();
 	}
 	

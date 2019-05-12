@@ -1,10 +1,7 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
+import thoniyil.sridaran.pacmangame.game.ui.Board;
 
 public class PowerPellet extends PowerUp
 {
@@ -12,12 +9,7 @@ public class PowerPellet extends PowerUp
 	
 	static
 	{
-		try {
-			powerPelletIcon = ImageIO.read(new File("power_pellet.jpeg"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		powerPelletIcon = new Image("power_pellet.jpeg", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
 	}
 	
 	public PowerPellet(int x, int y)

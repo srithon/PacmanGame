@@ -1,6 +1,6 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
-import java.awt.Image;
+import javafx.scene.image.Image;
 
 public abstract class Entity
 {

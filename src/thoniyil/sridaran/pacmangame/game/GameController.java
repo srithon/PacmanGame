@@ -7,28 +7,23 @@ import thoniyil.sridaran.pacmangame.game.ui.InputController;
 
 public class GameController
 {
-	private static Board board;
+	//private static Board board;
 	private static InputController controller;
 	private static UpdateThreadHandler updater;
 	
-	public static void setBoard(Board board)
-	{
-		GameController.board = board;
-	}
-	
-	public static Board getBoard()
+	/*public static Board getBoard()
 	{
 		return board;
-	}
+	}*/
 	
 	public static void start()
 	{
-		board.init();
+		Board.beginInitialization();
 	}
 	
 	public static void moveCharacter(Direction dir)
 	{
-		board.getPacman().getPosition().move(dir);
+		Board.getPacman().getPosition().move(dir);
 	}
 	
 	public static void executeEffect(Modifier modifier)

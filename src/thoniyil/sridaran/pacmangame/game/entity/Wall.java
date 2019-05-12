@@ -1,10 +1,7 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
+import thoniyil.sridaran.pacmangame.game.ui.Board;
 
 @Deprecated
 public class Wall extends Entity
@@ -13,14 +10,7 @@ public class Wall extends Entity
 	
 	static
 	{
-		try
-		{
-			wallIcon = ImageIO.read(new File("wall.jpeg"));
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		wallIcon = new Image("file:wall.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
 	}
 	
 	public Wall(int x, int y)

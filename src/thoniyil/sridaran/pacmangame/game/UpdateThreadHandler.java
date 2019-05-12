@@ -2,7 +2,6 @@ package thoniyil.sridaran.pacmangame.game;
 
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
-import thoniyil.sridaran.pacmangame.game.entity.Entity;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 import thoniyil.sridaran.pacmangame.game.entity.Pacman;
 import thoniyil.sridaran.pacmangame.game.entity.PowerUp;
@@ -34,12 +33,10 @@ public class UpdateThreadHandler
 	
 	public void start()
 	{
-		Board board = GameController.getBoard();
-		
-		Coin[] coins = board.getCoins();
-		Pacman pacman = board.getPacman();
-		Ghost[] ghosts = board.getGhosts();
-		PowerUp[] powerUps = board.getPowerUps();
+		Coin[] coins = Board.getCoins();
+		Pacman pacman = Board.getPacman();
+		Ghost[] ghosts = Board.getGhosts();
+		PowerUp[] powerUps = Board.getPowerUps();
 		
 		while (!stopped)
 		{

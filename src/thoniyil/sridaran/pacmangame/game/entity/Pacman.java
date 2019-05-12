@@ -1,10 +1,6 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
 
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
@@ -15,22 +11,16 @@ public class Pacman extends Entity// implements Changable
 	
 	static
 	{
-		try {
-			pacmanClosed = ImageIO.read(new File("pacmanClosed.png")).getScaledInstance(Board.TILE_SIZE, Board.TILE_SIZE, Image.SCALE_SMOOTH);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try {
-			pacmanOpen = ImageIO.read(new File("pacman.png")).getScaledInstance(Board.TILE_SIZE, Board.TILE_SIZE, Image.SCALE_SMOOTH);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		pacmanClosed = new Image("pacmanClosed.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		pacmanOpen = new Image("pacman.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
 	}
 	
 	private boolean open;
+	
+	public Pacman(Position p)
+	{
+		this(p.getX(), p.getY());
+	}
 	
 	public Pacman(int x, int y)
 	{

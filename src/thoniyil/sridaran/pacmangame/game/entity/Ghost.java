@@ -1,11 +1,6 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
+import javafx.scene.image.Image;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
@@ -16,14 +11,12 @@ public class Ghost extends Entity implements Changable, Movable
 	
 	static
 	{
-		try
-		{
-			ghostIcon = ImageIO.read(new File("ghost.png")).getScaledInstance(Board.TILE_SIZE, Board.TILE_SIZE, Image.SCALE_SMOOTH);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		ghostIcon = new Image("ghost.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+	}
+	
+	public Ghost(Position p)
+	{
+		this(p.getX(), p.getY());
 	}
 	
 	public Ghost(int x, int y)
