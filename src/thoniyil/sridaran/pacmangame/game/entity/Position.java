@@ -29,7 +29,7 @@ public class Position
 	}
 	
 	//move
-	public boolean left()
+	/*public boolean left()
 	{
 		if (x == 0)
 			return false;
@@ -59,7 +59,7 @@ public class Position
 			return false;
 		y--;
 		return true;
-	}
+	}*/
 	
 	//move with wall detection
 	
@@ -72,27 +72,35 @@ public class Position
 	{
 		if (!Board.isEmpty(x - 1, y))
 			return false;
-		return left();
+		//return left();
+		x--;
+		return true;
 	}
 	
 	public boolean rightSafe()
 	{
 		if (!Board.isEmpty(x + 1, y))
 			return false;
-		return right();
+		//return right();
+		x++;
+		return true;
 	}
 	
 	public boolean upSafe()
 	{
 		if (!Board.isEmpty(x, y + 1))
 			return false;
-		return up();
+		//return up();
+		y++;
+		return false;
 	}
 	
 	public boolean downSafe()
 	{
 		if (!Board.isEmpty(x, y - 1))
 			return false;
-		return down();
+		//return down();
+		y--;
+		return true;
 	}
 }
