@@ -1,16 +1,22 @@
 package thoniyil.sridaran.pacmangame.game.ui;
 
-import java.awt.Image;
-
+import thoniyil.sridaran.pacmangame.game.entity.Coin;
+import thoniyil.sridaran.pacmangame.game.entity.Ghost;
+import thoniyil.sridaran.pacmangame.game.entity.Pacman;
 import thoniyil.sridaran.pacmangame.game.entity.Position;
-import thoniyil.sridaran.pacmangame.game.entity.Wall;
+import thoniyil.sridaran.pacmangame.game.entity.PowerUp;
 
 public class Board
 {
 	public static final int WIDTH;
 	public static final int HEIGHT;
 	
-	private static Image[][] squares;
+	private static boolean[][] map;
+	
+	private static Coin[] coins;
+	private static Ghost[] ghosts;
+	private static Pacman pacman;
+	private static PowerUp[] powerUps;
 	
 	static
 	{
@@ -27,7 +33,7 @@ public class Board
 	{
 		try
 		{
-			return squares[y][x] != Wall.getStaticImage();
+			return !(map[y][x]);
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{

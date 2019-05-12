@@ -6,16 +6,21 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Ghost extends Entity implements Changable
+import thoniyil.sridaran.pacmangame.game.active.Direction;
+
+public class Ghost extends Entity implements Changable, Movable
 {
 	private static Image ghostIcon;
+	private Direction dir;
 	
 	static
 	{
-		try {
+		try
+		{
 			ghostIcon = ImageIO.read(new File("ghost.jpeg"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -23,6 +28,7 @@ public class Ghost extends Entity implements Changable
 	public Ghost(int x, int y)
 	{
 		super(x, y);
+		dir = Direction.randomDirection();
 	}
 
 	public Image getImage()
@@ -37,6 +43,57 @@ public class Ghost extends Entity implements Changable
 	
 	public void update()
 	{
-		//TODO
+		move();
+	}
+	
+	public Direction getDirection()
+	{
+		return dir;
+	}
+	
+	public void move()
+	{
+		if (Math.random() < 0.25 || !move(dir))
+		{
+			turnRandom();
+		}
+	}
+	
+	public boolean move(Direction dir)
+	{
+		Position cPos = getPosition();
+		
+		switch (dir)
+		{
+			case UP:
+				if (!cPos.upSafe())
+					return false;
+				break;
+			case DOWN:
+				if (!cPos.downSafe())
+					return false;
+				break;
+			case LEFT:
+				if (!cPos.leftSafe())
+					return false;
+				break;
+			case RIGHT:
+				if (!cPos.rightSafe())
+					return false;
+				break;
+			default:
+				System.out.println("ERROR IN MOVE BOOLEAN IN GHOST: INVALID DIRETCION!");
+				return false;
+		}
+		
+		this.dir = dir;
+		return true;
+	}
+	
+	public void turnRandom()
+	{
+		Direction turnDirection = Direction.randomValidTurningDirection(dir);
+		if (!move(turnDirection))
+			move(Direction.getOppositeDirection(turnDirection));
 	}
 }

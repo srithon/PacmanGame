@@ -17,16 +17,21 @@ public class Pacman extends Entity implements Changable
 	
 	static
 	{
-		try {
+		try
+		{
 			pacmanClosed = ImageIO.read(new File("pacmanClosed.jpeg"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 		
-		try {
+		try
+		{
 			pacmanOpen = ImageIO.read(new File("pacmanOpen.jpeg"));
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -64,16 +69,16 @@ public class Pacman extends Entity implements Changable
 		Position currentPos = getPosition();
 		
 		if (controller.pressingDown())
-			if (currentPos.down())
+			if (currentPos.downSafe())
 				return;
 		if (controller.pressingUp())
-			if (currentPos.up())
+			if (currentPos.upSafe())
 				return;
 		if (controller.pressingLeft())
-			if (currentPos.left())
+			if (currentPos.leftSafe())
 				return;
 		if (controller.pressingRight())
-			if (currentPos.right())
+			if (currentPos.rightSafe())
 				return;
 	}
 }
