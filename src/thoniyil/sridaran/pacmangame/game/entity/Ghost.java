@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import thoniyil.sridaran.pacmangame.game.active.Direction;
+import thoniyil.sridaran.pacmangame.game.ui.Board;
 
 public class Ghost extends Entity implements Changable, Movable
 {
@@ -17,7 +18,7 @@ public class Ghost extends Entity implements Changable, Movable
 	{
 		try
 		{
-			ghostIcon = ImageIO.read(new File("ghost.jpeg"));
+			ghostIcon = ImageIO.read(new File("ghost.png")).getScaledInstance(Board.TILE_SIZE, Board.TILE_SIZE, Image.SCALE_SMOOTH);
 		}
 		catch (IOException e)
 		{

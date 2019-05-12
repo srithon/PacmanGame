@@ -6,28 +6,25 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import thoniyil.sridaran.pacmangame.game.ui.Board;
+
 public class Pacman extends Entity// implements Changable
-{
+{	
 	private static Image pacmanClosed;
 	private static Image pacmanOpen;
 	
 	static
 	{
-		try
-		{
-			pacmanClosed = ImageIO.read(new File("pacmanClosed.jpeg"));
-		}
-		catch (IOException e)
-		{
+		try {
+			pacmanClosed = ImageIO.read(new File("pacmanClosed.png")).getScaledInstance(Board.TILE_SIZE, Board.TILE_SIZE, Image.SCALE_SMOOTH);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		try
-		{
-			pacmanOpen = ImageIO.read(new File("pacmanOpen.jpeg"));
-		}
-		catch (IOException e)
-		{
+		try {
+			pacmanOpen = ImageIO.read(new File("pacman.png")).getScaledInstance(Board.TILE_SIZE, Board.TILE_SIZE, Image.SCALE_SMOOTH);
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

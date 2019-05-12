@@ -2,6 +2,7 @@ package thoniyil.sridaran.pacmangame.game.ui;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 import thoniyil.sridaran.pacmangame.game.entity.Pacman;
@@ -10,6 +11,8 @@ import thoniyil.sridaran.pacmangame.game.entity.PowerUp;
 
 public class Board extends Application
 {
+	public static final int TILE_SIZE = 50;
+	
 	public static final int WIDTH;
 	public static final int HEIGHT;
 	
@@ -77,6 +80,22 @@ public class Board extends Application
 	public Pacman getPacman()
 	{
 		return pacman;
+	}
+	
+	public void paintBoard()
+	{ //TODO
+		ghosts = new Ghost[4];
+		coins = new Coin[100];
+		
+		pacman = new Pacman(0, 0);
+		
+		for (int i = 0; i < map.length; i++)
+		{
+			for (int j = 0; j < map[i].length; j++)
+			{
+				if ()
+			}
+		}
 	}
 
 	@Override
