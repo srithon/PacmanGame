@@ -11,7 +11,7 @@ public class Ghost extends Entity implements Changable, Movable
 	
 	static
 	{
-		ghostIcon = new Image("ghost.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		ghostIcon = new Image("file:ghost.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
 	}
 	
 	public Ghost(Position p)

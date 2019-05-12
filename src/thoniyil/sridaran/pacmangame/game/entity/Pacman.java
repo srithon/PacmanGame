@@ -11,8 +11,8 @@ public class Pacman extends Entity// implements Changable
 	
 	static
 	{
-		pacmanClosed = new Image("pacmanClosed.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
-		pacmanOpen = new Image("pacman.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		pacmanClosed = new Image("file:pacmanClosed.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		pacmanOpen = new Image("file:pacman.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
 	}
 	
 	private boolean open;

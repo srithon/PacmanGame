@@ -1,6 +1,8 @@
 package thoniyil.sridaran.pacmangame.game.ui;
 
 import javafx.application.Application;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -8,6 +10,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
+import thoniyil.sridaran.pacmangame.game.entity.Entity;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 import thoniyil.sridaran.pacmangame.game.entity.Pacman;
 import thoniyil.sridaran.pacmangame.game.entity.Position;
@@ -32,12 +35,16 @@ public class Board extends Application
 	
 	private static Scene sc;
 	
+	private static GridPane pane;
+	
 	static
 	{
 		//WIDTH = 28; //52
 		//HEIGHT = 36; //13
 		
 		icons = new ImageView[19][17];
+		
+		pane = new GridPane();
 	}
 	
 	/*public Board(boolean[][] map)
@@ -69,12 +76,12 @@ public class Board extends Application
 	{
 		try
 		{
-			return !(map[y][x]);
+			return (map[y][x]);
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
 			e.printStackTrace();
-			return false;
+			return true;
 		}
 	}
 	
@@ -98,12 +105,24 @@ public class Board extends Application
 		return pacman;
 	}
 	
-	public void paintBoard()
+	public void placeEntity(Entity e)
+	{
+		Position p = e.getPosition();
+		System.out.println(p);
+		//System.out.println(Board.isEmpty(p));
+		icons[p.getY()][p.getX()] = new ImageView();
+		icons[p.getY()][p.getX()].setImage(e.getImage());
+	}
+	
+	public void putEntities()
 	{ //TODO
 		ghosts = new Ghost[2];
 		ghosts[0] = new Ghost(randomAvailablePosition());
 		ghosts[1] = new Ghost(randomAvailablePosition());
 		pacman = new Pacman(randomAvailablePosition());
+		placeEntity(pacman);
+		placeEntity(ghosts[0]);
+		placeEntity(ghosts[1]);
 		coins = new Coin[0];
 		powerUps = new PowerUp[0];
 	}
@@ -112,7 +131,8 @@ public class Board extends Application
 	{
 		Position p = null;
 		
-		while (!isEmpty((p = new Position((int) (Math.random() * map[0].length), (int) (Math.random() * map.length)))));
+		while (!isEmpty((p = new Position((int) (Math.random() * map[0].length), (int) (Math.random() * map.length)))))
+			System.out.println(p);
 		
 		return p;
 	}
@@ -123,7 +143,8 @@ public class Board extends Application
 		prim.setTitle("Pacman Board");
 		prim.setMinHeight(500);
 		prim.setMinWidth(300);
-		GridPane pane = new GridPane();
+		putEntities();
+		
 		for (int i = 0; i < icons.length; i++)
 		{
 			RowConstraints con = new RowConstraints();
@@ -137,12 +158,16 @@ public class Board extends Application
 				{
 					icons[i][j] = new ImageView();
 					icons[i][j].setImage(Wall.getStaticImage());
-					System.out.println("Wall");
 				}
-				else
+				else if (icons[i][j] == null)
 				{
 					icons[i][j] = new ImageView();
+					icons[i][j].setImage(Coin.getStaticImage());
+					
 				}
+				
+				GridPane.setHalignment(icons[i][j], HPos.CENTER);
+				GridPane.setValignment(icons[i][j], VPos.CENTER);
 				
 				pane.add(icons[i][j], j, i);
 			}

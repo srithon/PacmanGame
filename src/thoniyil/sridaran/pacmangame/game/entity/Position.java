@@ -132,4 +132,9 @@ public class Position
 		y--;
 		return true;
 	}
+	
+	public String toString()
+	{
+		return "(" + x + ", " + y + ")";
+	}
 }
