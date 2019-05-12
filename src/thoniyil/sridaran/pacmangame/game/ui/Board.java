@@ -1,12 +1,14 @@
 package thoniyil.sridaran.pacmangame.game.ui;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 import thoniyil.sridaran.pacmangame.game.entity.Pacman;
 import thoniyil.sridaran.pacmangame.game.entity.Position;
 import thoniyil.sridaran.pacmangame.game.entity.PowerUp;
 
-public class Board
+public class Board extends Application
 {
 	public static final int WIDTH;
 	public static final int HEIGHT;
@@ -29,6 +31,16 @@ public class Board
 		this.map = map;
 	}
 	
+	public void init()
+	{
+		try {
+			start(new Stage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static boolean isEmpty(Position pos)
 	{
 		return isEmpty(pos.getX(), pos.getY());
@@ -45,5 +57,19 @@ public class Board
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public Pacman getPacman()
+	{
+		return pacman;
+	}
+
+	@Override
+	public void start(Stage prim) throws Exception
+	{
+		prim.setTitle("Pacman Board");
+		prim.setMinHeight(500);
+		prim.setMinWidth(300);
+		prim.show();
 	}
 }

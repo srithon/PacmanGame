@@ -6,14 +6,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import thoniyil.sridaran.pacmangame.game.ui.InputController;
-
-public class Pacman extends Entity implements Changable
+public class Pacman extends Entity// implements Changable
 {
 	private static Image pacmanClosed;
 	private static Image pacmanOpen;
-	
-	private InputController controller;
 	
 	static
 	{
@@ -39,12 +35,11 @@ public class Pacman extends Entity implements Changable
 	
 	private boolean open;
 	
-	public Pacman(int x, int y, InputController controller)
+	public Pacman(int x, int y)
 	{
 		super(x, y);
 		
 		this.open = false;
-		this.controller = controller;
 	}
 	
 	public Image getImage()
@@ -64,7 +59,7 @@ public class Pacman extends Entity implements Changable
 		open = !open;
 	}
 	
-	public void update()
+	/*public void update()
 	{
 		Position currentPos = getPosition();
 		
@@ -80,5 +75,5 @@ public class Pacman extends Entity implements Changable
 		if (controller.pressingRight())
 			if (currentPos.rightSafe())
 				return;
-	}
+	}*/
 }

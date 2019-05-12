@@ -1,5 +1,6 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
+import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
 public class Position
@@ -67,6 +68,34 @@ public class Position
 	 * else if (!Board.isEmpty(x - 1, y))
 			return false;
 	 */
+	
+	public boolean move(Direction d)
+	{
+		switch (d)
+		{
+			case UP:
+				if (!upSafe())
+					return false;
+				break;
+			case DOWN:
+				if (!downSafe())
+					return false;
+				break;
+			case LEFT:
+				if (!leftSafe())
+					return false;
+				break;
+			case RIGHT:
+				if (!rightSafe())
+					return false;
+				break;
+			default:
+				System.out.println("ERROR IN MOVE BOOLEAN IN GHOST: INVALID DIRETCION!");
+				return false;
+		}
+		
+		return true;
+	}
 	
 	public boolean leftSafe()
 	{

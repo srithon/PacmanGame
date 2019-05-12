@@ -3,13 +3,12 @@ package thoniyil.sridaran.pacmangame.main;
 import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Main 
+public class Main
 {
-	private GameController game;
-	
 	public Main()
 	{
-		game = new GameController(new Board(MapParser.getMap()));
+		GameController.setBoard(new Board(MapParser.getMap()));
+		GameController.start();
 	}
 	
 	public static void main(String[] args)

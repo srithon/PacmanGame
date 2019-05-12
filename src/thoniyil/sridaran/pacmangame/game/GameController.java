@@ -1,5 +1,6 @@
 package thoniyil.sridaran.pacmangame.game;
 
+import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.active.Modifier;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 import thoniyil.sridaran.pacmangame.game.ui.InputController;
@@ -9,9 +10,19 @@ public class GameController
 	private static Board board;
 	private static InputController controller;
 	
-	public GameController(Board board)
+	public static void setBoard(Board board)
 	{
-		this.board = board;
+		GameController.board = board;
+	}
+	
+	public static void start()
+	{
+		board.init();
+	}
+	
+	public static void moveCharacter(Direction dir)
+	{
+		board.getPacman().getPosition().move(dir);
 	}
 	
 	public static void executeEffect(Modifier modifier)
