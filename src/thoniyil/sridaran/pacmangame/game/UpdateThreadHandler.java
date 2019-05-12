@@ -1,5 +1,7 @@
 package thoniyil.sridaran.pacmangame.game;
 
+import java.util.ArrayList;
+
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
@@ -22,7 +24,11 @@ public class UpdateThreadHandler
 		// 1000 millis/second
 		updateDelay = 1000 / updatesPerSecond;
 		
-		t = new Thread(this::start);
+		t = new Thread(this::run);
+	}
+	
+	public void begin()
+	{
 		t.start();
 	}
 	
@@ -31,12 +37,14 @@ public class UpdateThreadHandler
 		moveChar = d;
 	}
 	
-	public void start()
+	public void run()
 	{
-		Coin[] coins = Board.getCoins();
+		ArrayList<Coin> coins = Board.getCoins();
 		Pacman pacman = Board.getPacman();
-		Ghost[] ghosts = Board.getGhosts();
-		PowerUp[] powerUps = Board.getPowerUps();
+		ArrayList<Ghost> ghosts = Board.getGhosts();
+		ArrayList<PowerUp> powerUps = Board.getPowerUps();
+		
+		moveChar = Direction.UP;
 		
 		while (!stopped)
 		{
@@ -47,6 +55,8 @@ public class UpdateThreadHandler
 				g.update();
 			}
 			
+			Board.refresh();
+			
 			try
 			{
 				Thread.sleep(updateDelay);
@@ -55,6 +65,8 @@ public class UpdateThreadHandler
 			{
 				
 			}
+			
+			System.out.println("Update");
 		}
 	}
 	

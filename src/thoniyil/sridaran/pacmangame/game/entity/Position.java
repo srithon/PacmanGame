@@ -3,7 +3,7 @@ package thoniyil.sridaran.pacmangame.game.entity;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Position
+public class Position implements Comparable<Position>
 {
 	private int x, y;
 	
@@ -133,8 +133,25 @@ public class Position
 		return true;
 	}
 	
+	public boolean equals(Position o)
+	{
+		return x == o.x && y == o.y;
+	}
+	
+	public boolean equals(int x, int y)
+	{
+		return this.x == x && this.y == y;
+	}
+	
 	public String toString()
 	{
 		return "(" + x + ", " + y + ")";
+	}
+	
+	public int compareTo(Position o)
+	{
+		int a = y * Board.WIDTH + x;
+		int b = o.y * Board.WIDTH + o.x;
+		return a - b;
 	}
 }

@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Pacman extends Entity// implements Changable
+public class Pacman extends MovableEntity// implements Changable
 {	
 	private static Image pacmanClosed;
 	private static Image pacmanOpen;

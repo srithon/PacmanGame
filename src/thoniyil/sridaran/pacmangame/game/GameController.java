@@ -7,9 +7,9 @@ import thoniyil.sridaran.pacmangame.game.ui.InputController;
 
 public class GameController
 {
+	private static final int UPDATES_PER_SECOND = 3;
 	//private static Board board;
 	private static InputController controller;
-	private static UpdateThreadHandler updater;
 	
 	/*public static Board getBoard()
 	{
@@ -18,7 +18,9 @@ public class GameController
 	
 	public static void start()
 	{
-		Board.beginInitialization();
+		controller = new InputController();
+		Board.setController(controller);
+		Board.beginInitialization(UPDATES_PER_SECOND);
 	}
 	
 	public static void moveCharacter(Direction dir)
