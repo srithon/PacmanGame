@@ -59,6 +59,21 @@ public class Board extends Application
 		}
 	}
 	
+	public static Coin[] getCoins()
+	{
+		return coins;
+	}
+	
+	public static Ghost[] getGhosts()
+	{
+		return ghosts;
+	}
+	
+	public static PowerUp[] getPowerUps()
+	{
+		return powerUps;
+	}
+	
 	public Pacman getPacman()
 	{
 		return pacman;

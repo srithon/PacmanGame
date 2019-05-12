@@ -9,10 +9,16 @@ public class GameController
 {
 	private static Board board;
 	private static InputController controller;
+	private static UpdateThreadHandler updater;
 	
 	public static void setBoard(Board board)
 	{
 		GameController.board = board;
+	}
+	
+	public static Board getBoard()
+	{
+		return board;
 	}
 	
 	public static void start()
