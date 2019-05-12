@@ -1,7 +1,22 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
+import java.awt.Image;
+
+import thoniyil.sridaran.pacmangame.game.active.Effect;
+
 public abstract class PowerUp extends Entity
 {
-	public abstract void update();
-	public abstract Image getIcon(); 
+	protected PowerUp(int x, int y)
+	{
+		super(x, y);
+	}
+
+	private Effect effect;
+	
+	public abstract Image getIcon();
+	
+	public void update()
+	{
+		
+	}
 }
