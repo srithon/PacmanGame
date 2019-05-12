@@ -92,7 +92,7 @@ public class Position
 			return false;
 		//return up();
 		y++;
-		return false;
+		return true;
 	}
 	
 	public boolean downSafe()
