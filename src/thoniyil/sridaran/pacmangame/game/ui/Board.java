@@ -24,6 +24,11 @@ public class Board
 		HEIGHT = 36; //13
 	}
 	
+	public Board(boolean[][] map)
+	{
+		this.map = map;
+	}
+	
 	public static boolean isEmpty(Position pos)
 	{
 		return isEmpty(pos.getX(), pos.getY());

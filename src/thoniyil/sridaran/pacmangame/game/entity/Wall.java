@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+@Deprecated
 public class Wall extends Entity
 {
 	private static Image wallIcon;

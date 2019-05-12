@@ -1,17 +1,15 @@
 package thoniyil.sridaran.pacmangame.main;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import thoniyil.sridaran.pacmangame.game.GameController;
+import thoniyil.sridaran.pacmangame.game.ui.Board;
 
 public class Main 
 {
-	private JFrame frame;
+	private GameController game;
 	
-	public Main() {
-		frame = new JFrame();
-		frame.setSize(200, 200);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	public Main()
+	{
+		game = new GameController(new Board(MapParser.getMap()));
 	}
 	
 	public static void main(String[] args)

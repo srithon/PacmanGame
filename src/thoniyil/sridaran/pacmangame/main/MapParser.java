@@ -21,14 +21,14 @@ public class MapParser
 			
 			while ((currentLine = reader.readLine()) != null)
 			{
-				System.out.println(currentLine.length());
+				//System.out.println(currentLine.length());
 				for (int i = 0; i < currentLine.length(); i++)
 				{	//false means wall, true means not wall
 					mapBool[row][i] = (currentLine.charAt(i) != '\"');
-					System.out.print(mapBool[row][i] + " ");
+					//System.out.print(mapBool[row][i] + " ");
 				}
 				
-				System.out.println();
+				//System.out.println();
 				
 				row++;
 			}
@@ -43,10 +43,5 @@ public class MapParser
 		}
 		
 		return mapBool;
-	}
-	
-	public static void main(String[] args)
-	{
-		getMap();
 	}
 }

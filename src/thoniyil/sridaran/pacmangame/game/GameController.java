@@ -9,9 +9,9 @@ public class GameController
 	private static Board board;
 	private static InputController controller;
 	
-	public GameController()
+	public GameController(Board board)
 	{
-		
+		this.board = board;
 	}
 	
 	public static void executeEffect(Modifier modifier)
