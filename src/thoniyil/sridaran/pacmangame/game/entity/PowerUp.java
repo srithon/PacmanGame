@@ -13,7 +13,7 @@ public abstract class PowerUp extends Entity
 
 	private Effect effect;
 	
-	public abstract Image getIcon();
+	public abstract Image getImage();
 	
 	public void update()
 	{

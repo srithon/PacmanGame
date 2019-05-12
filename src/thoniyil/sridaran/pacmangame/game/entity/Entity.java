@@ -6,7 +6,7 @@ public abstract class Entity
 {
 	private Position pos;
 	
-	public abstract Image getIcon();
+	public abstract Image getImage();
 	
 	public Entity(int x, int y)
 	{

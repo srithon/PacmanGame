@@ -60,4 +60,39 @@ public class Position
 		y--;
 		return true;
 	}
+	
+	//move with wall detection
+	
+	/*
+	 * else if (!Board.isEmpty(x - 1, y))
+			return false;
+	 */
+	
+	public boolean leftSafe()
+	{
+		if (!Board.isEmpty(x - 1, y))
+			return false;
+		return left();
+	}
+	
+	public boolean rightSafe()
+	{
+		if (!Board.isEmpty(x + 1, y))
+			return false;
+		return right();
+	}
+	
+	public boolean upSafe()
+	{
+		if (!Board.isEmpty(x, y + 1))
+			return false;
+		return up();
+	}
+	
+	public boolean downSafe()
+	{
+		if (!Board.isEmpty(x, y - 1))
+			return false;
+		return down();
+	}
 }
