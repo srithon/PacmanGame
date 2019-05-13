@@ -54,6 +54,8 @@ public class UpdateThreadHandler
 			 * that has to be fixed here?
 			 */
 			
+			pacman.setLastPosition(pacman.getPosition());
+			
 			pacman.getPosition().move(moveChar);
 			
 			for (Ghost g : ghosts)
