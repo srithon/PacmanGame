@@ -1,6 +1,9 @@
 package thoniyil.sridaran.pacmangame.game.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
 
 import javafx.application.Application;
 import javafx.geometry.HPos;
@@ -33,6 +36,10 @@ public class Board extends Application
 	
 	private static boolean[][] map;
 	
+	private static HashMap<Integer, Entity> entities;
+	
+	private static LinkedList<Entity> entitiesToRefresh;
+	
 	private static ImageView[][] icons;
 	
 	private static ArrayList<Coin> coins;
@@ -58,6 +65,9 @@ public class Board extends Application
 		icons = new ImageView[HEIGHT][WIDTH];
 		
 		pane = new GridPane();
+		
+		entities = new HashMap<>();
+		entitiesToRefresh = new LinkedList<>();
 	}
 	
 	/*public Board(boolean[][] map)
@@ -68,6 +78,16 @@ public class Board extends Application
 	public static void setController(InputController controller)
 	{
 		Board.controller = controller;
+	}
+	
+	public static int getPositionHash(Position j)
+	{
+		return getPositionHash(j.getX(), j.getY());
+	}
+	
+	public static int getPositionHash(int x, int y)
+	{
+		return y * map[0].length + x;
 	}
 	
 	public static void beginInitialization(int updatesPerSecond)
@@ -129,9 +149,16 @@ public class Board extends Application
 	{
 		Position p = e.getPosition();
 		System.out.println(p);
-		//System.out.println(Board.isEmpty(p));
 		icons[p.getY()][p.getX()] = new ImageView();
 		icons[p.getY()][p.getX()].setImage(e.getImage());
+		entities.put(getPositionHash(p), e);
+	}
+	
+	public static Entity replaceEntity(Entity e)
+	{
+		Position p = e.getPosition();
+		icons[p.getY()][p.getX()].setImage(e.getImage());
+		return entities.put(getPositionHash(p), e); //get the entity underneath
 	}
 	
 	public void putEntities()
@@ -142,6 +169,10 @@ public class Board extends Application
 		pacman = new Pacman(randomAvailablePosition());
 		
 		coins = new ArrayList<>();
+		
+		placeEntity(pacman);
+		placeEntity(ghosts.get(0));
+		placeEntity(ghosts.get(1));
 		
 		for (int i = 0; i < map.length; i++)
 		{
@@ -156,9 +187,11 @@ public class Board extends Application
 				
 				if (map[i][j])
 				{
-					coins.add(new Coin(j, i));
-					icons[i][j].setImage(Coin.getStaticImage());
-					initialCoinCount++;
+					Coin c = new Coin(j, i);
+					coins.add(c);
+					placeEntity(c);
+					//icons[i][j].setImage(Coin.getStaticImage());
+					//initialCoinCount++;
 				}
 				else
 				{
@@ -171,10 +204,6 @@ public class Board extends Application
 				pane.add(icons[i][j], j, i);
 			}
 		}
-		
-		placeEntity(pacman);
-		placeEntity(ghosts.get(0));
-		placeEntity(ghosts.get(1));
 		
 		powerUps = new ArrayList<>();
 	}
@@ -211,11 +240,11 @@ public class Board extends Application
 		updater.begin();
 	}
 	
-	public static void paint(Entity e)
+	/*public static void paint(Entity e)
 	{
 		Position p = e.getPosition();
 		icons[p.getY()][p.getX()].setImage(e.getImage());
-	}
+	}*/
 	
 	public static void refresh()
 	{
@@ -224,9 +253,19 @@ public class Board extends Application
 			paint(i);
 		}*/
 		
+		for (Entity e : entitiesToRefresh)
+		{
+			replaceEntity(e);
+		}
+		
+		entitiesToRefresh.clear();
+		
 		for (Ghost i : ghosts)
 		{
-			paint(i);
+			Entity m = replaceEntity(i);
+			
+			if (m != null)
+				entitiesToRefresh.add(m);
 		}
 		
 		/*for (PowerUp i : powerUps)
@@ -235,10 +274,15 @@ public class Board extends Application
 		}*/
 		
 		pacman.animate();
-		paint(pacman);
+		
+		replaceEntity(entities.get(getPositionHash(pacman.getLastPosition())));
+		
+		Entity j = replaceEntity(pacman);
+		if (j != null)
+			entitiesToRefresh.add(j);
 	}
 	
-	public static int getCoinArrayListIndex(int x, int y)
+	/*public static int getCoinArrayListIndex(int x, int y)
 	{
 		Position r = new Position(x, y);
 		int ind = y * icons[0].length + x;
@@ -259,5 +303,5 @@ public class Board extends Application
 		}
 		
 		return ind;
-	}
+	}*/
 }
