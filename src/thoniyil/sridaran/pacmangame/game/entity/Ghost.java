@@ -88,6 +88,25 @@ public class Ghost extends MovableEntity implements Changable, Movable
 	{
 		Direction turnDirection = Direction.randomValidTurningDirection(dir);
 		if (!move(turnDirection))
-			move(Direction.getOppositeDirection(turnDirection));
+		{
+			turnDirection = Direction.getOppositeDirection(turnDirection);
+			if (!move(turnDirection))
+			{
+				if (!move(dir))
+				{
+					turnDirection = Direction.getOppositeDirection(dir);
+					move(turnDirection);
+					dir = turnDirection;
+				}
+			}
+			else
+			{
+				dir = turnDirection;
+			}
+		}
+		else
+		{
+			dir = turnDirection;
+		}
 	}
 }

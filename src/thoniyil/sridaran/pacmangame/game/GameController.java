@@ -7,7 +7,7 @@ import thoniyil.sridaran.pacmangame.game.ui.InputController;
 
 public class GameController
 {
-	private static final int UPDATES_PER_SECOND = 3;
+	private static final int UPDATES_PER_SECOND = 1;
 	//private static Board board;
 	private static InputController controller;
 	

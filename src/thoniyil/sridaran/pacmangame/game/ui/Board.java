@@ -120,7 +120,7 @@ public class Board extends Application
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 	}
@@ -148,7 +148,6 @@ public class Board extends Application
 	public void placeEntity(Entity e)
 	{
 		Position p = e.getPosition();
-		System.out.println(p);
 		icons[p.getY()][p.getX()] = new ImageView();
 		icons[p.getY()][p.getX()].setImage(e.getImage());
 		entities.put(getPositionHash(p), e);
@@ -264,7 +263,7 @@ public class Board extends Application
 		{
 			Entity m = replaceEntity(i);
 			
-			if (m != null)
+			if (m instanceof Coin || m instanceof PowerUp)
 				entitiesToRefresh.add(m);
 		}
 		
@@ -278,7 +277,7 @@ public class Board extends Application
 		replaceEntity(entities.get(getPositionHash(pacman.getLastPosition())));
 		
 		Entity j = replaceEntity(pacman);
-		if (j != null)
+		if (j instanceof Coin || j instanceof PowerUp)
 			entitiesToRefresh.add(j);
 	}
 	

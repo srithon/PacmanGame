@@ -73,8 +73,6 @@ public class UpdateThreadHandler
 			{
 				
 			}
-			
-			System.out.println("Update");
 		}
 	}
 	
