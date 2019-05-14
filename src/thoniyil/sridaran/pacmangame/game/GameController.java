@@ -7,7 +7,8 @@ import thoniyil.sridaran.pacmangame.game.ui.InputController;
 
 public class GameController
 {
-	private static final int UPDATES_PER_SECOND = 1;
+	public static final int GHOST_COUNT = 5;
+	private static final int UPDATES_PER_SECOND = 8;
 	//private static Board board;
 	private static InputController controller;
 	

@@ -2,6 +2,7 @@ package thoniyil.sridaran.pacmangame.game.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -15,7 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
+import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.UpdateThreadHandler;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.entity.Entity;
@@ -29,8 +30,8 @@ public class Board extends Application
 {
 	public static final int TILE_SIZE;
 	
-	public static final int WIDTH;
-	public static final int HEIGHT;
+	public static int WIDTH;
+	public static int HEIGHT;
 	
 	private static int initialCoinCount;
 	
@@ -38,7 +39,7 @@ public class Board extends Application
 	
 	private static HashMap<Integer, Entity> entities;
 	
-	private static LinkedList<Entity> entitiesToRefresh;
+	private static HashSet<Entity> entitiesToRefresh;
 	
 	private static ImageView[][] icons;
 	
@@ -57,6 +58,12 @@ public class Board extends Application
 	
 	static
 	{
+		/*
+		 * TODO
+		 * Have WIDTH and HEIGHT set by
+		 * the MapParser
+		 */
+		
 		WIDTH = 17;
 		HEIGHT = 19;
 		
@@ -67,7 +74,7 @@ public class Board extends Application
 		pane = new GridPane();
 		
 		entities = new HashMap<>();
-		entitiesToRefresh = new LinkedList<>();
+		entitiesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
 	}
 	
 	/*public Board(boolean[][] map)
@@ -163,21 +170,24 @@ public class Board extends Application
 	public void putEntities()
 	{ //TODO
 		ghosts = new ArrayList<>();
-		ghosts.add(new Ghost(randomAvailablePosition()));
-		ghosts.add(new Ghost(randomAvailablePosition()));
+		
+		for (int i = 0; i < GameController.GHOST_COUNT; i++)
+		{
+			Ghost g = new Ghost(randomAvailablePosition());
+			ghosts.add(g);
+			placeEntity(g);
+		}
+		
 		pacman = new Pacman(randomAvailablePosition());
+		placeEntity(pacman);
 		
 		coins = new ArrayList<>();
-		
-		placeEntity(pacman);
-		placeEntity(ghosts.get(0));
-		placeEntity(ghosts.get(1));
 		
 		for (int i = 0; i < map.length; i++)
 		{
 			RowConstraints con = new RowConstraints();
             // Here we set the pref height of the row, but you could also use .setPercentHeight(double) if you don't know much space you will need for each label.
-            con.setPrefHeight(TILE_SIZE);
+            con.setPrefHeight(TILE_SIZE + 0.25);
             pane.getRowConstraints().add(con);
 			
 			for (int j = 0; j < map[i].length; j++)
