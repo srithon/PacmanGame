@@ -1,7 +1,9 @@
 package thoniyil.sridaran.pacmangame.game;
 
 import thoniyil.sridaran.pacmangame.game.active.Direction;
+import thoniyil.sridaran.pacmangame.game.active.Effect;
 import thoniyil.sridaran.pacmangame.game.active.Modifier;
+import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 import thoniyil.sridaran.pacmangame.game.ui.InputController;
 
@@ -9,6 +11,16 @@ public class GameController
 {
 	public static final int GHOST_COUNT = 5;
 	private static final int UPDATES_PER_SECOND = 8;
+	
+	private static final int DEFAULT_POINTS_PER_COIN = 10;
+	private static int currentPointsPerCoin = DEFAULT_POINTS_PER_COIN;
+	
+	static final int TOTAL_ROUNDS = 1;
+	
+	private static int currentRound = 1;
+	
+	private static ScoreTracker score;
+	
 	//private static Board board;
 	private static InputController controller;
 	
@@ -20,6 +32,7 @@ public class GameController
 	public static void start()
 	{
 		controller = new InputController();
+		score = new ScoreTracker(TOTAL_ROUNDS);
 		Board.setController(controller);
 		Board.beginInitialization(UPDATES_PER_SECOND);
 	}
@@ -29,9 +42,9 @@ public class GameController
 		Board.getPacman().getPosition().move(dir);
 	}
 	
-	public static void executeEffect(Modifier modifier)
+	public static void executeEffect(Effect effect)
 	{
-		switch (modifier)
+		switch (effect.getModifier())
 		{
 			case CLOCK_SPEED:
 				/*
@@ -50,5 +63,16 @@ public class GameController
 				 */
 				break;
 		}
+	}
+	
+	public static void useCoin(Coin c)
+	{
+		score.increment(currentPointsPerCoin);
+		Board.deleteEntity(c);
+	}
+	
+	public static int getCurrentRound()
+	{
+		return currentRound;
 	}
 }

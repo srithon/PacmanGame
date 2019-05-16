@@ -19,6 +19,7 @@ import javafx.stage.WindowEvent;
 import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.UpdateThreadHandler;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
+import thoniyil.sridaran.pacmangame.game.entity.Consumable;
 import thoniyil.sridaran.pacmangame.game.entity.Entity;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 import thoniyil.sridaran.pacmangame.game.entity.Pacman;
@@ -43,7 +44,6 @@ public class Board extends Application
 	
 	private static ImageView[][] icons;
 	
-	private static ArrayList<Coin> coins;
 	private static ArrayList<Ghost> ghosts;
 	private static Pacman pacman;
 	private static ArrayList<PowerUp> powerUps;
@@ -97,6 +97,11 @@ public class Board extends Application
 		return y * map[0].length + x;
 	}
 	
+	public static void deleteEntity(Entity e)
+	{
+		entities.put(getPositionHash(e.getPosition()), new Blank());
+	}
+	
 	public static void beginInitialization(int updatesPerSecond)
 	{
 		updater = new UpdateThreadHandler(updatesPerSecond);
@@ -130,11 +135,6 @@ public class Board extends Application
 			//e.printStackTrace();
 			return false;
 		}
-	}
-	
-	public static ArrayList<Coin> getCoins()
-	{
-		return coins;
 	}
 	
 	public static ArrayList<Ghost> getGhosts()
@@ -181,8 +181,6 @@ public class Board extends Application
 		pacman = new Pacman(randomAvailablePosition());
 		placeEntity(pacman);
 		
-		coins = new ArrayList<>();
-		
 		for (int i = 0; i < map.length; i++)
 		{
 			RowConstraints con = new RowConstraints();
@@ -197,7 +195,6 @@ public class Board extends Application
 				if (map[i][j])
 				{
 					Coin c = new Coin(j, i);
-					coins.add(c);
 					placeEntity(c);
 					//icons[i][j].setImage(Coin.getStaticImage());
 					//initialCoinCount++;
@@ -287,8 +284,10 @@ public class Board extends Application
 		replaceEntity(entities.get(getPositionHash(pacman.getLastPosition())));
 		
 		Entity j = replaceEntity(pacman);
-		if (j instanceof Coin || j instanceof PowerUp)
-			entitiesToRefresh.add(j);
+		if (j instanceof Consumable)
+		{
+			((Consumable) j).consume();
+		}
 	}
 	
 	/*public static int getCoinArrayListIndex(int x, int y)

@@ -1,10 +1,10 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
 import javafx.scene.image.Image;
-
+import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Coin extends Entity
+public class Coin extends Entity implements Consumable
 {
 	private static Image coinIcon;
 	
@@ -31,5 +31,10 @@ public class Coin extends Entity
 	public Image getImage()
 	{
 		return coinIcon;
+	}
+	
+	public void consume()
+	{
+		GameController.useCoin(this);
 	}
 }

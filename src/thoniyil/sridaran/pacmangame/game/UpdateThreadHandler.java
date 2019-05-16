@@ -39,10 +39,8 @@ public class UpdateThreadHandler
 	
 	public void run()
 	{
-		ArrayList<Coin> coins = Board.getCoins();
 		Pacman pacman = Board.getPacman();
 		ArrayList<Ghost> ghosts = Board.getGhosts();
-		ArrayList<PowerUp> powerUps = Board.getPowerUps();
 		
 		moveChar = Direction.UP;
 		

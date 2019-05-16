@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Ghost extends MovableEntity implements Changable, Movable
+public class Ghost extends Entity implements Changable, Movable
 {
 	private static Image ghostIcon;
 	private Direction dir;
