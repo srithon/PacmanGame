@@ -1,0 +1,10 @@
+Implement Blank entity
+
+Create serializable Map class
+	private Boolean[][] map;
+	static Map readMap(File input)
+
+Create class MapCreator
+	/*
+	Toggle tiles and place powerups
+	*/
