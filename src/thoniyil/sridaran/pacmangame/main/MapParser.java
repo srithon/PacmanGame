@@ -14,7 +14,7 @@ public class MapParser
 {
 	public static boolean[][] getMap()
 	{
-		File map = new File("map1.txt");
+		File map = new File("maps/map1.txt");
 		
 		boolean[][] mapBool = new boolean[19][17];
 		
@@ -39,13 +39,6 @@ public class MapParser
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
-		}
-		
-		try {
-			ImageIO.write(new Map(mapBool).renderMap(20), "jpg", new File("map1.jpg"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

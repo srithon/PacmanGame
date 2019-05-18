@@ -28,6 +28,11 @@ public class Map
 		this.map = map;
 	}
 	
+	public void toggle(int x, int y)
+	{
+		map[y][x] = !map[y][x];
+	}
+	
 	public BufferedImage renderMap(int tileSize)
 	{
 		BufferedImage im = new BufferedImage(tileSize * map[0].length, tileSize * map.length, BufferedImage.TYPE_BYTE_GRAY);

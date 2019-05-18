@@ -186,7 +186,7 @@ public class Board extends Application
 	}
 	
 	public void putEntities()
-	{ //TODO
+	{
 		ghosts = new ArrayList<>();
 		
 		for (int i = 0; i < GameController.GHOST_COUNT; i++)
