@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
+import thoniyil.sridaran.pacmangame.mapcreator.Map;
+
 public class MapParser
 {
 	public static boolean[][] getMap()
@@ -21,14 +25,10 @@ public class MapParser
 			
 			while ((currentLine = reader.readLine()) != null)
 			{
-				//System.out.println(currentLine.length());
 				for (int i = 0; i < currentLine.length(); i++)
 				{	//false means wall, true means not wall
 					mapBool[row][i] = (currentLine.charAt(i) != '\"');
-					//System.out.print(mapBool[row][i] + " ");
 				}
-				
-				//System.out.println();
 				
 				row++;
 			}
@@ -39,6 +39,13 @@ public class MapParser
 		}
 		catch (IOException e)
 		{
+			e.printStackTrace();
+		}
+		
+		try {
+			ImageIO.write(new Map(mapBool).renderMap(20), "jpg", new File("map1.jpg"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

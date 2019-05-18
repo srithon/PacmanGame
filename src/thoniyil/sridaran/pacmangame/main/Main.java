@@ -8,7 +8,7 @@ public class Main
 	public Main()
 	{
 		Board.setMap(MapParser.getMap());
-		GameController.start();
+		//GameController.start();
 	}
 	
 	public static void main(String[] args)
