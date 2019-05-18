@@ -1,10 +1,7 @@
 Fix Ghost collision lastPos
 
-Create serializable Map class
-	private Boolean[][] map;
-	static Map readMap(File input)
-
-Create class MapCreator
+MapCreator
 	/*
 	Toggle tiles and place powerups
 	*/
+	Allow tiles to be retoggled
