@@ -1,7 +1,4 @@
-Fix issue where moving entities sometimes create static images
-Fix coin collision
-Fix isConsumable() function
-Fix collision in general
+Fix Ghost collision lastPos
 
 Create serializable Map class
 	private Boolean[][] map;

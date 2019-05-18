@@ -19,7 +19,7 @@ import thoniyil.sridaran.pacmangame.game.ui.InputController;
 public class GameController
 {
 	public static final int GHOST_COUNT = 5;
-	private static final int UPDATES_PER_SECOND = 3;
+	private static final int UPDATES_PER_SECOND = 2;
 	
 	private static final int DEFAULT_POINTS_PER_COIN = 10;
 	private static int currentPointsPerCoin = DEFAULT_POINTS_PER_COIN;
@@ -134,7 +134,10 @@ public class GameController
 		}
 		Entity currentPos = Board.getPacmanReplacedEntity();
 		if (isConsumable(currentPos))
+		{
+			System.out.println(currentPos.getClass().getSimpleName() + " is consumable");
 			((Consumable) currentPos).consume();
+		}
 		else if (currentPos instanceof Ghost)
 		{
 			System.out.println("Currentpos");

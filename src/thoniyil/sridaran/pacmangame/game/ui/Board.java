@@ -20,6 +20,7 @@ import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.UpdateThreadHandler;
 import thoniyil.sridaran.pacmangame.game.entity.Blank;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
+import thoniyil.sridaran.pacmangame.game.entity.Consumable;
 import thoniyil.sridaran.pacmangame.game.entity.Entity;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 import thoniyil.sridaran.pacmangame.game.entity.MovableEntity;
@@ -308,7 +309,10 @@ public class Board extends Application
 	
 	public static void handlePacmanMovement()
 	{
-		pacmanReplaced = handleMovement(pacman);
+		Entity currentPos = replaceEntity(pacman);
+		if (!(currentPos instanceof Consumable))
+			entitiesToRefresh.add(currentPos);
+		pacmanReplaced = currentPos;
 	}
 	
 	public static Entity handleMovement(MovableEntity entity)
