@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import thoniyil.sridaran.pacmangame.game.active.Effect;
 
-public abstract class PowerUp extends Entity implements Consumable, StaticEntity
+public abstract class PowerUp extends Entity implements Consumable, Static
 {
 	private Effect effect;
 	

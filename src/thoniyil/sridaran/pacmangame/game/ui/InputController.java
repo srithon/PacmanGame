@@ -41,10 +41,10 @@ public class InputController implements EventHandler<KeyEvent>
 		
 		switch (c)
 		{ //UP and DOWN are switched for some reason
-			case UP: UpdateThreadHandler.setNextMoveChar(Direction.DOWN); break;
-			case DOWN: UpdateThreadHandler.setNextMoveChar(Direction.UP); break;
-			case LEFT: UpdateThreadHandler.setNextMoveChar(Direction.LEFT); break;
-			case RIGHT: UpdateThreadHandler.setNextMoveChar(Direction.RIGHT); break;
+			case UP: GameController.setNextMoveChar(Direction.DOWN); break;
+			case DOWN: GameController.setNextMoveChar(Direction.UP); break;
+			case LEFT: GameController.setNextMoveChar(Direction.LEFT); break;
+			case RIGHT: GameController.setNextMoveChar(Direction.RIGHT); break;
 		}
 	}
 }

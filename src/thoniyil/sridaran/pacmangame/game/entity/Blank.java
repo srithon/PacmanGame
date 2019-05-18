@@ -2,7 +2,7 @@ package thoniyil.sridaran.pacmangame.game.entity;
 
 import javafx.scene.image.Image;
 
-public class Blank extends Entity implements StaticEntity
+public class Blank extends Entity implements Static
 {
 	/*private static final Image blankImage;
 	

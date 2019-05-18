@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class PowerPellet extends PowerUp
+public class PowerPellet extends PowerUp implements Static, Consumable
 {
 	private static Image powerPelletIcon;
 	

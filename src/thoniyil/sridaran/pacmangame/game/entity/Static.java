@@ -1,6 +1,6 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
-public interface StaticEntity
+public interface Static
 {
 
 }

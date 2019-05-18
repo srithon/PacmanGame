@@ -5,21 +5,21 @@ import java.util.ArrayList;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.active.Effect;
 import thoniyil.sridaran.pacmangame.game.active.Modifier;
+import thoniyil.sridaran.pacmangame.game.entity.Blank;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.entity.Consumable;
 import thoniyil.sridaran.pacmangame.game.entity.Entity;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 import thoniyil.sridaran.pacmangame.game.entity.Pacman;
 import thoniyil.sridaran.pacmangame.game.entity.Position;
-import thoniyil.sridaran.pacmangame.game.entity.PowerPellet;
-import thoniyil.sridaran.pacmangame.game.entity.StaticConsumable;
+import thoniyil.sridaran.pacmangame.game.entity.Static;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 import thoniyil.sridaran.pacmangame.game.ui.InputController;
 
 public class GameController
 {
 	public static final int GHOST_COUNT = 5;
-	private static final int UPDATES_PER_SECOND = 10;
+	private static final int UPDATES_PER_SECOND = 3;
 	
 	private static final int DEFAULT_POINTS_PER_COIN = 10;
 	private static int currentPointsPerCoin = DEFAULT_POINTS_PER_COIN;
@@ -34,6 +34,8 @@ public class GameController
 	private static InputController controller;
 	
 	private static Direction pacmanDirection;
+	
+	private static Direction activePacmanDirection;
 	
 	private static ArrayList<Effect> currentEffects;
 	
@@ -56,6 +58,16 @@ public class GameController
 		Position pacPos = Board.getPacman().getPosition();
 		pacmanDirection = dir;
 		pacPos.move(dir);
+	}
+	
+	public static void setNextMoveChar(Direction d)
+	{
+		activePacmanDirection = d;
+	}
+	
+	public static Direction getPacmanMoveDirection()
+	{
+		return activePacmanDirection;
 	}
 	
 	public static void executeEffect(Effect effect)
@@ -84,7 +96,7 @@ public class GameController
 	
 	public static boolean isConsumable(Entity j)
 	{
-		if (j instanceof StaticConsumable)
+		if (j instanceof Consumable && j instanceof Static)
 			return true;
 		
 		for (Effect e : currentEffects)
@@ -95,7 +107,7 @@ public class GameController
 			}
 		}
 		
-		return !(j instanceof Ghost);
+		return !(j instanceof Ghost || j instanceof Blank);
 	}
 	
 	public static void handleCollision()
@@ -117,13 +129,17 @@ public class GameController
 		Entity lastPos = Board.getEntity(Board.getPositionHash(pacman.getLastPosition()));
 		if (lastPos instanceof Ghost && ((Ghost) lastPos).getDirection() == Direction.getOppositeDirection(pacmanDirection))
 		{
+			System.out.println("Lastpos");
 			GameController.gameOver();
 		}
-		Entity currentPos = Board.getEntity(Board.getPositionHash(pacman.getPosition()));
+		Entity currentPos = Board.getPacmanReplacedEntity();
 		if (isConsumable(currentPos))
 			((Consumable) currentPos).consume();
 		else if (currentPos instanceof Ghost)
+		{
+			System.out.println("Currentpos");
 			GameController.gameOver();
+		}
 	}
 	
 	public static void gameOver()

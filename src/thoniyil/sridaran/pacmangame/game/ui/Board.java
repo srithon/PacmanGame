@@ -3,7 +3,6 @@ package thoniyil.sridaran.pacmangame.game.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -19,16 +18,15 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.UpdateThreadHandler;
-import thoniyil.sridaran.pacmangame.game.entity.Coin;
-import thoniyil.sridaran.pacmangame.game.entity.Consumable;
-import thoniyil.sridaran.pacmangame.game.entity.Entity;
 import thoniyil.sridaran.pacmangame.game.entity.Blank;
+import thoniyil.sridaran.pacmangame.game.entity.Coin;
+import thoniyil.sridaran.pacmangame.game.entity.Entity;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 import thoniyil.sridaran.pacmangame.game.entity.MovableEntity;
 import thoniyil.sridaran.pacmangame.game.entity.Pacman;
 import thoniyil.sridaran.pacmangame.game.entity.Position;
 import thoniyil.sridaran.pacmangame.game.entity.PowerUp;
-import thoniyil.sridaran.pacmangame.game.entity.StaticEntity;
+import thoniyil.sridaran.pacmangame.game.entity.Static;
 import thoniyil.sridaran.pacmangame.game.entity.Wall;
 
 public class Board extends Application
@@ -59,6 +57,8 @@ public class Board extends Application
 	private static InputController controller;
 	
 	private static UpdateThreadHandler updater;
+	
+	private static Entity pacmanReplaced;
 	
 	static
 	{
@@ -286,22 +286,14 @@ public class Board extends Application
 		
 		pacman.animate();
 		
-		if (!pacman.getPosition().equals(pacman.getLastPosition()))
-		{
-			GameController.handleCollision();
-		}
-		else
-		{
-			paint(pacman);
-		}
-		
 		for (Ghost i : ghosts)
 		{
-			Entity m = replaceEntity(i);
-			
-			if (m instanceof StaticEntity)
-				entitiesToRefresh.add(m);
+			handleMovement(i);
 		}
+		
+		handlePacmanMovement();
+		
+		GameController.handleCollision();
 		
 		/*for (PowerUp i : powerUps)
 		{
@@ -309,7 +301,25 @@ public class Board extends Application
 		}*/
 	}
 	
-	public static void deleteMoving(Entity e)
+	public static Entity getPacmanReplacedEntity()
+	{
+		return pacmanReplaced;
+	}
+	
+	public static void handlePacmanMovement()
+	{
+		pacmanReplaced = handleMovement(pacman);
+	}
+	
+	public static Entity handleMovement(MovableEntity entity)
+	{
+		Entity currentPos = replaceEntity(entity);
+		if (currentPos instanceof Static)
+			entitiesToRefresh.add(currentPos);
+		return currentPos;
+	}
+	
+	public static void deleteMoving(MovableEntity e)
 	{
 		deleteEntity(e);
 		

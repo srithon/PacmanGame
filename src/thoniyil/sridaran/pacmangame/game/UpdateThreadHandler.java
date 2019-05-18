@@ -32,25 +32,16 @@ public class UpdateThreadHandler
 		t.start();
 	}
 	
-	public static void setNextMoveChar(Direction d)
-	{
-		moveChar = d;
-	}
-	
 	public void run()
 	{
 		Pacman pacman = Board.getPacman();
 		ArrayList<Ghost> ghosts = Board.getGhosts();
 		
-		moveChar = Direction.UP;
+		GameController.setNextMoveChar(Direction.randomDirection());
 		
 		while (!stopped)
 		{
-			//System.out.println("Pacman Before: " + pacman.getPosition());
-			pacman.setLastPosition(pacman.getPosition());
-			GameController.moveCharacter(moveChar);
-			
-			//System.out.println("Pacman After: " + pacman.getPosition());
+			pacman.move();
 			
 			for (Ghost g : ghosts)
 			{

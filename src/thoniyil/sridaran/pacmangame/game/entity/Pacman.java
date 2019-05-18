@@ -1,7 +1,7 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
 import javafx.scene.image.Image;
-
+import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
 public class Pacman extends MovableEntity
@@ -44,6 +44,12 @@ public class Pacman extends MovableEntity
 	public void animate()
 	{
 		open = !open;
+	}
+	
+	public void move()
+	{
+		setLastPosition(getPosition());
+		GameController.moveCharacter(GameController.getPacmanMoveDirection());
 	}
 	
 	/*public void update()

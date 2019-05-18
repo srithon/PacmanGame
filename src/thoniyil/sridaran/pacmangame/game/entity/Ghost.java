@@ -5,7 +5,7 @@ import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Ghost extends Entity implements Changable, Movable, Consumable
+public class Ghost extends MovableEntity implements Changable, Consumable
 {
 	private static Image ghostIcon;
 	private Direction dir;
