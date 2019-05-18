@@ -1,4 +1,6 @@
 Fix issue where moving entities sometimes create static images
+Fix isConsumable() function
+Fix collision in general
 
 Create serializable Map class
 	private Boolean[][] map;

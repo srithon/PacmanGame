@@ -47,9 +47,8 @@ public class UpdateThreadHandler
 		while (!stopped)
 		{
 			//System.out.println("Pacman Before: " + pacman.getPosition());
-			
 			pacman.setLastPosition(pacman.getPosition());
-			pacman.getPosition().move(moveChar);
+			GameController.moveCharacter(moveChar);
 			
 			//System.out.println("Pacman After: " + pacman.getPosition());
 			

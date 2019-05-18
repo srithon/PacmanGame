@@ -158,6 +158,11 @@ public class Board extends Application
 		return pacman;
 	}
 	
+	public static Entity getEntity(int posHash)
+	{
+		return entities.get(posHash);
+	}
+	
 	public void placeEntity(Entity e)
 	{
 		Position p = e.getPosition();
@@ -279,6 +284,17 @@ public class Board extends Application
 		
 		entitiesToRefresh.clear();
 		
+		pacman.animate();
+		
+		if (!pacman.getPosition().equals(pacman.getLastPosition()))
+		{
+			GameController.handleCollision();
+		}
+		else
+		{
+			paint(pacman);
+		}
+		
 		for (Ghost i : ghosts)
 		{
 			Entity m = replaceEntity(i);
@@ -291,28 +307,6 @@ public class Board extends Application
 		{
 			paint(i);
 		}*/
-		
-		pacman.animate();
-		
-		if (!pacman.getPosition().equals(pacman.getLastPosition()))
-		{
-			Entity lastPosEnt = entities.get(getPositionHash(pacman.getLastPosition()));
-			if (!(lastPosEnt instanceof Pacman))
-				replaceEntity(lastPosEnt);
-			Entity j = replaceEntity(pacman);
-			if (j instanceof Consumable)
-			{
-				((Consumable) j).consume();
-			}
-			else
-			{
-				entitiesToRefresh.add(j);
-			}
-		}
-		else
-		{
-			paint(pacman);
-		}
 	}
 	
 	public static void deleteMoving(Entity e)
