@@ -16,6 +16,6 @@ public abstract class MovableEntity extends Entity
 	
 	public void setLastPosition(Position lastPosition)
 	{
-		this.lastPosition = lastPosition;
+		this.lastPosition = lastPosition.copy();
 	}
 }

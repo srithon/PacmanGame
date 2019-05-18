@@ -1,4 +1,4 @@
-Implement Blank entity
+Fix issue where moving entities sometimes create static images
 
 Create serializable Map class
 	private Boolean[][] map;

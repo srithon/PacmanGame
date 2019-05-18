@@ -46,15 +46,12 @@ public class UpdateThreadHandler
 		
 		while (!stopped)
 		{
-			/*
-			 * TODO
-			 * Did changing the refresh function do something
-			 * that has to be fixed here?
-			 */
+			//System.out.println("Pacman Before: " + pacman.getPosition());
 			
 			pacman.setLastPosition(pacman.getPosition());
-			
 			pacman.getPosition().move(moveChar);
+			
+			//System.out.println("Pacman After: " + pacman.getPosition());
 			
 			for (Ghost g : ghosts)
 			{

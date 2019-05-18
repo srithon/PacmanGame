@@ -4,20 +4,22 @@ import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.active.Effect;
 import thoniyil.sridaran.pacmangame.game.active.Modifier;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
+import thoniyil.sridaran.pacmangame.game.entity.Ghost;
+import thoniyil.sridaran.pacmangame.game.entity.Position;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 import thoniyil.sridaran.pacmangame.game.ui.InputController;
 
 public class GameController
 {
 	public static final int GHOST_COUNT = 5;
-	private static final int UPDATES_PER_SECOND = 8;
+	private static final int UPDATES_PER_SECOND = 10;
 	
 	private static final int DEFAULT_POINTS_PER_COIN = 10;
 	private static int currentPointsPerCoin = DEFAULT_POINTS_PER_COIN;
 	
 	static final int TOTAL_ROUNDS = 1;
 	
-	private static int currentRound = 1;
+	private static int currentRound = 0;
 	
 	private static ScoreTracker score;
 	
@@ -39,7 +41,8 @@ public class GameController
 	
 	public static void moveCharacter(Direction dir)
 	{
-		Board.getPacman().getPosition().move(dir);
+		Position pacPos = Board.getPacman().getPosition();
+		pacPos.move(dir);
 	}
 	
 	public static void executeEffect(Effect effect)
@@ -63,6 +66,13 @@ public class GameController
 				 */
 				break;
 		}
+	}
+	
+	public static void consumeGhost(Ghost g)
+	{
+		System.out.println("Consume");
+		score.increment(currentPointsPerCoin * 5);
+		Board.deleteMoving(g);
 	}
 	
 	public static void useCoin(Coin c)

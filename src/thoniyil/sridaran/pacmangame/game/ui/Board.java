@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.LinkedList;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
@@ -21,10 +22,13 @@ import thoniyil.sridaran.pacmangame.game.UpdateThreadHandler;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.entity.Consumable;
 import thoniyil.sridaran.pacmangame.game.entity.Entity;
+import thoniyil.sridaran.pacmangame.game.entity.Blank;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
+import thoniyil.sridaran.pacmangame.game.entity.MovableEntity;
 import thoniyil.sridaran.pacmangame.game.entity.Pacman;
 import thoniyil.sridaran.pacmangame.game.entity.Position;
 import thoniyil.sridaran.pacmangame.game.entity.PowerUp;
+import thoniyil.sridaran.pacmangame.game.entity.StaticEntity;
 import thoniyil.sridaran.pacmangame.game.entity.Wall;
 
 public class Board extends Application
@@ -99,7 +103,9 @@ public class Board extends Application
 	
 	public static void deleteEntity(Entity e)
 	{
-		entities.put(getPositionHash(e.getPosition()), new Blank());
+		Entity blank = new Blank(e.getPosition());
+		entities.put(getPositionHash(e.getPosition()), blank);
+		addToEntitiesToRefresh(blank);
 	}
 	
 	public static void beginInitialization(int updatesPerSecond)
@@ -163,8 +169,14 @@ public class Board extends Application
 	public static Entity replaceEntity(Entity e)
 	{
 		Position p = e.getPosition();
-		icons[p.getY()][p.getX()].setImage(e.getImage());
+		paint(e);
 		return entities.put(getPositionHash(p), e); //get the entity underneath
+	}
+	
+	public static void paint(Entity e)
+	{
+		Position p = e.getPosition();
+		icons[p.getY()][p.getX()].setImage(e.getImage());
 	}
 	
 	public void putEntities()
@@ -190,8 +202,6 @@ public class Board extends Application
 			
 			for (int j = 0; j < map[i].length; j++)
 			{
-				icons[i][j] = new ImageView();
-				
 				if (map[i][j])
 				{
 					Coin c = new Coin(j, i);
@@ -201,8 +211,11 @@ public class Board extends Application
 				}
 				else
 				{
+					icons[i][j] = new ImageView();
 					icons[i][j].setImage(Wall.getStaticImage());
 				}
+				
+				icons[i][j].setOnMouseClicked(new ImageViewClickHandler(i, j));
 				
 				GridPane.setHalignment(icons[i][j], HPos.CENTER);
 				GridPane.setValignment(icons[i][j], VPos.CENTER);
@@ -270,7 +283,7 @@ public class Board extends Application
 		{
 			Entity m = replaceEntity(i);
 			
-			if (m instanceof Coin || m instanceof PowerUp)
+			if (m instanceof StaticEntity)
 				entitiesToRefresh.add(m);
 		}
 		
@@ -281,13 +294,57 @@ public class Board extends Application
 		
 		pacman.animate();
 		
-		replaceEntity(entities.get(getPositionHash(pacman.getLastPosition())));
-		
-		Entity j = replaceEntity(pacman);
-		if (j instanceof Consumable)
+		if (!pacman.getPosition().equals(pacman.getLastPosition()))
 		{
-			((Consumable) j).consume();
+			Entity lastPosEnt = entities.get(getPositionHash(pacman.getLastPosition()));
+			if (!(lastPosEnt instanceof Pacman))
+				replaceEntity(lastPosEnt);
+			Entity j = replaceEntity(pacman);
+			if (j instanceof Consumable)
+			{
+				((Consumable) j).consume();
+			}
+			else
+			{
+				entitiesToRefresh.add(j);
+			}
 		}
+		else
+		{
+			paint(pacman);
+		}
+	}
+	
+	public static void deleteMoving(Entity e)
+	{
+		deleteEntity(e);
+		
+		if (e instanceof Ghost)
+		{
+			ghosts.remove(e);
+		}
+	}
+	
+	private class ImageViewClickHandler implements EventHandler<MouseEvent>
+	{
+		private final int x;
+		private final int y;
+		
+		public ImageViewClickHandler(final int x, final int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+		
+		public void handle(MouseEvent click)
+		{
+			System.out.println("(" + x + ", " + y + "}");
+		}
+	}
+	
+	public static void addToEntitiesToRefresh(Entity j)
+	{
+		entitiesToRefresh.add(j);
 	}
 	
 	/*public static int getCoinArrayListIndex(int x, int y)

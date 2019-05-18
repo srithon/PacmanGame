@@ -29,46 +29,6 @@ public class Position implements Comparable<Position>
 		return y;
 	}
 	
-	//move
-	/*public boolean left()
-	{
-		if (x == 0)
-			return false;
-		x--;
-		return true;
-	}
-	
-	public boolean right()
-	{
-		if (x == Board.WIDTH)
-			return false;
-		x++;
-		return true;
-	}
-	
-	public boolean up()
-	{
-		if (y == Board.HEIGHT)
-			return false;
-		y++;
-		return true;
-	}
-	
-	public boolean down()
-	{
-		if (y == 0)
-			return false;
-		y--;
-		return true;
-	}*/
-	
-	//move with wall detection
-	
-	/*
-	 * else if (!Board.isEmpty(x - 1, y))
-			return false;
-	 */
-	
 	public boolean move(Direction d)
 	{
 		switch (d)
@@ -135,6 +95,7 @@ public class Position implements Comparable<Position>
 	
 	public boolean equals(Position o)
 	{
+		//System.out.println(o + " " + this);
 		return x == o.x && y == o.y;
 	}
 	
@@ -153,5 +114,10 @@ public class Position implements Comparable<Position>
 		int a = y * Board.WIDTH + x;
 		int b = o.y * Board.WIDTH + o.x;
 		return a - b;
+	}
+	
+	public Position copy()
+	{
+		return new Position(x, y);
 	}
 }

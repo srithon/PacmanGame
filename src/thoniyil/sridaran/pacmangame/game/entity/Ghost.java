@@ -1,10 +1,11 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
 import javafx.scene.image.Image;
+import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Ghost extends Entity implements Changable, Movable
+public class Ghost extends Entity implements Changable, Movable, Consumable
 {
 	private static Image ghostIcon;
 	private Direction dir;
@@ -16,7 +17,8 @@ public class Ghost extends Entity implements Changable, Movable
 	
 	public Ghost(Position p)
 	{
-		this(p.getX(), p.getY());
+		super(p);
+		dir = Direction.randomDirection();
 	}
 	
 	public Ghost(int x, int y)
@@ -108,5 +110,10 @@ public class Ghost extends Entity implements Changable, Movable
 		{
 			dir = turnDirection;
 		}
+	}
+	
+	public void consume()
+	{
+		GameController.consumeGhost(this);
 	}
 }

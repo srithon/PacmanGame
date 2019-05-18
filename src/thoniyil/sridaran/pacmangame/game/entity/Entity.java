@@ -8,6 +8,11 @@ public abstract class Entity
 	
 	public abstract Image getImage();
 	
+	public Entity(Position p)
+	{
+		this(p.getX(), p.getY());
+	}
+	
 	public Entity(int x, int y)
 	{
 		pos = new Position(x, y);

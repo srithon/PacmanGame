@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Coin extends Entity implements Consumable
+public class Coin extends Entity implements Consumable, StaticEntity
 {
 	private static Image coinIcon;
 	
