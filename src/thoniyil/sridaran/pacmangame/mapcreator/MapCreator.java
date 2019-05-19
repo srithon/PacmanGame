@@ -1,5 +1,7 @@
 package thoniyil.sridaran.pacmangame.mapcreator;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 
@@ -28,13 +30,9 @@ import thoniyil.sridaran.pacmangame.game.entity.Wall;
 
 public class MapCreator extends Application
 {
-	private static Map currentMap;
 	private static int tileSize = 20;
 	private static TogglableImageView[][] icons;
 	private static Stage primaryStage;
-	
-	private static TextField widthField;
-	private static TextField heightField;
 	
 	private static int h = 20;
 	private static int w = 20;
@@ -64,7 +62,7 @@ public class MapCreator extends Application
 		master.getChildren().add(topBar);
 		master.getChildren().add(pane);
 		pane.setMaxSize(w * tileSize, h * tileSize);
-		pane.setPadding(new Insets(0, -(w * tileSize) / 4, -(h * tileSize) / 4, 0));
+		//pane.setPadding(new Insets(0, -(w * tileSize) / 4, -(h * tileSize) / 4, 0));
 		Scene sc = new Scene(master);
 		//pane.setOnMouseClicked((MouseEvent e) -> System.out.println("Scene clicked"));
 		return sc;
@@ -75,8 +73,8 @@ public class MapCreator extends Application
 		Label width = new Label("Width");
 		Label height = new Label("Height");
 		
-		widthField = new TextField();
-		heightField = new TextField();
+		TextField widthField = new TextField();
+		TextField heightField = new TextField();
 		
 		widthField.setMaxWidth(40.0);
 		heightField.setMaxWidth(40.0);
@@ -103,7 +101,10 @@ public class MapCreator extends Application
 			}
 		});
 		
-		topBar.getChildren().addAll(width, widthField, height, heightField, refreshButton);
+		Button saveButton = new Button("Save");
+		saveButton.setOnAction((ActionEvent e) -> writeMapToFile());
+		
+		topBar.getChildren().addAll(width, widthField, height, heightField, refreshButton, saveButton);
 	}
 	
 	private void initPane(GridPane pane)
@@ -132,15 +133,27 @@ public class MapCreator extends Application
 		}
 	}
 	
-	public static void toggleTile(int x, int y)
+	/*public static void toggleTile(int x, int y)
 	{
 		currentMap.toggle(x, y);
+	}*/
+	
+	public static void writeMapToFile()
+	{
+		int count = 1;
+		
+		File file;
+		
+		while ((file = new File("maps/map-" + count + ".jpg")).exists())
+			count++;
+		
+		writeMapToFile(file);
 	}
 
-	public static void writeMapToFile(String fileName)
+	public static void writeMapToFile(File file)
 	{
 		try {
-			ImageIO.write(currentMap.renderMap(tileSize), "jpg", new File(fileName + ".jpg"));
+			ImageIO.write(renderMap(icons, 10), "jpg", file);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -150,5 +163,30 @@ public class MapCreator extends Application
 	public static int getTileSize()
 	{
 		return tileSize;
+	}
+	
+	public static BufferedImage renderMap(TogglableImageView[][] map, int renderTileSize)
+	{
+		BufferedImage im = new BufferedImage(renderTileSize * map[0].length, renderTileSize * map.length, BufferedImage.TYPE_BYTE_GRAY);
+		byte[] pixels = ((DataBufferByte) (im.getRaster().getDataBuffer())).getData();
+		
+		int pixelIndex = 0;
+		
+		for (int r = 0; r < map.length; r++)
+		{
+			for (int i = 0; i < renderTileSize; i++)
+				for (int c = 0; c < map[0].length; c++)
+				{
+					byte pixelValue = (map[r][c].getState()) ? (byte) 255 : 0;
+					int finalPixel = pixelIndex + renderTileSize;
+					while (pixelIndex < finalPixel)
+					{
+						pixels[pixelIndex] = pixelValue;
+						pixelIndex++;
+					}
+				}
+		}
+		
+		return im;
 	}
 }

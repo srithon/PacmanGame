@@ -8,8 +8,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import thoniyil.sridaran.pacmangame.mapcreator.Map;
-
 public class MapParser
 {
 	public static boolean[][] getMap()

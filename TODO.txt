@@ -4,4 +4,3 @@ MapCreator
 	/*
 	Toggle tiles and place powerups
 	*/
-	Allow tiles to be retoggled
