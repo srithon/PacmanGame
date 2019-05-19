@@ -10,7 +10,8 @@ public class Main
 	{
 		//Board.setMap(MapParser.getMap());
 		//GameController.start();
-		MapCreator.main(null);
+		//MapCreator.main(null);
+		MapParser.getRandomMap();
 	}
 	
 	public static void main(String[] args)

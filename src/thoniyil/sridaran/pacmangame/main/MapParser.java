@@ -1,15 +1,63 @@
 package thoniyil.sridaran.pacmangame.main;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.paint.Color;
+
 public class MapParser
 {
+	public static boolean[][] getRandomMap()
+	{
+		String[] files = new File("maps/").list(new FilenameFilter() {
+			public boolean accept(File directory, String nameOfFile)
+			{
+				return nameOfFile.endsWith("jpg");
+			}
+		});
+		
+		System.out.println(Arrays.toString(files));
+		
+		String mapFileName = "maps/" + files[(int) (Math.random() * files.length)];
+		
+		Image mapImage = null;
+		
+		mapImage = new Image("file:" + mapFileName); //ERROR
+		
+		PixelReader reader = mapImage.getPixelReader();
+		
+		int height = (int) mapImage.getHeight() / 10;
+		int width = (int) mapImage.getWidth() / 10;
+		
+		boolean[][] map = new boolean[height][width];
+		
+		for (int r = 0; r < height; r++)
+		{
+			for (int c = 0; c < width; c++)
+			{
+				map[r][c] = reader.getColor(c * 10 + 5, r * 10 + 5).equals(Color.WHITE);
+				if (map[r][c])
+					System.out.print("T");
+				else
+					System.out.print("F");
+			}
+			System.out.println();
+		}
+		
+		return map;
+	}
+	
 	public static boolean[][] getMap()
 	{
 		File map = new File("maps/map1.txt");

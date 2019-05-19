@@ -1,4 +1,8 @@
 Fix Ghost collision lastPos
+Fix MapParser
+	Refactor javafx Image to diff image
+	JavaFX Image needs screen to not be null
+	Thus needs a running application
 
 MapCreator
 	/*
