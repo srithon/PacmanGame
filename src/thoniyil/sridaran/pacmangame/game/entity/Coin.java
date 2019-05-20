@@ -10,7 +10,7 @@ public class Coin extends Entity implements Consumable, Static
 	
 	static
 	{
-		coinIcon = new Image("file:coin.png", Board.TILE_SIZE / 1.5, Board.TILE_SIZE / 1.5, false, true);
+		coinIcon = new Image("file:icons/coin.png", Board.TILE_SIZE / 1.5, Board.TILE_SIZE / 1.5, false, true);
 	}
 	
 	public Coin(int x, int y)

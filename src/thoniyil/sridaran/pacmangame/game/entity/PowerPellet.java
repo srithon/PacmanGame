@@ -10,7 +10,7 @@ public class PowerPellet extends PowerUp implements Static, Consumable
 	
 	static
 	{
-		powerPelletIcon = new Image("power_pellet.jpeg", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		powerPelletIcon = new Image("icons/powerPellet.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
 	}
 	
 	public PowerPellet(int x, int y)
