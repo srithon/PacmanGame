@@ -1,4 +1,6 @@
 Fix Ghost collision lastPos
+Fix LandingPage FXML load error
+
 Fix MapParser
 	Refactor javafx Image to diff image
 	JavaFX Image needs screen to not be null
