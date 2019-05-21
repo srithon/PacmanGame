@@ -10,7 +10,7 @@ public class Wall extends Entity
 	
 	static
 	{
-		wallIcon = new Image("file:wall.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		wallIcon = new Image("file:icons/wall.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
 	}
 	
 	public Wall(int x, int y)
