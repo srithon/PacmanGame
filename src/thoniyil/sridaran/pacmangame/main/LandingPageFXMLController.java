@@ -92,12 +92,14 @@ public class LandingPageFXMLController
 
     @FXML
     private void handlePlayButtonPress(ActionEvent event) {
-        LandingPage.openGame(getSelectedMap());
+    	System.out.println("Play Button Pressed");
+        //TODO LandingPage.openGame(getSelectedMap());
     }
     
     @FXML
     private void handleMapCreatorButtonPress(ActionEvent event)
     {
+    	System.out.println("Map Creator Pressed");
     	LandingPage.openMapCreator();
     }
 }

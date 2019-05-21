@@ -15,48 +15,93 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import thoniyil.sridaran.pacmangame.main.LandingPage;
+import thoniyil.sridaran.pacmangame.main.MapParser;
 
-public class MapCreator extends Scene
+public class MapCreator
 {
 	private static int tileSize = 20;
-	private static TogglableImageView[][] icons;
+	private TogglableImageView[][] icons;
 	
 	private static int h = 20;
 	private static int w = 20;
 	
-	private static VBox master;
+	private VBox master;
+	private HBox topBar;
+	private GridPane pane;
 	
-	static
+	private Scene currentScene;
+	
+	public MapCreator(Image initialMap)
 	{
-		master = new VBox();
+		currentScene = getMapCreatorScene(initialMap);
+		mirrorMap(MapParser.parseImage(initialMap));
 	}
 	
 	public MapCreator()
 	{
-		super(master);
-		init();
+		currentScene = getMapCreatorScene();
 	}
 	
-	private void init()
+	public Scene getCurrentScene()
 	{
-		master.getChildren().clear();
-		HBox topBar = new HBox(10);
-		GridPane pane = new GridPane();
-		initTopBar(topBar);
-		initPane(pane);
+		return currentScene;
+	}
+	
+	private Scene getMapCreatorScene()
+	{
+		return getMapCreatorScene(null);
+	}
+
+	private Scene getMapCreatorScene(Image initialImage)
+	{
+		if (master != null)
+			master.getChildren().clear();
+		if (topBar != null)
+			topBar.getChildren().clear();
+		if (pane != null)
+			pane.getChildren().clear();
+		
+		master = new VBox();
+		topBar = new HBox(10);
+		pane = new GridPane();
+		
+		initTopBar();
+		initPane();
+		
 		master.getChildren().add(topBar);
 		master.getChildren().add(pane);
+		
 		pane.setMaxSize(w * tileSize, h * tileSize);
+		
+		if (initialImage != null)
+			mirrorMap(MapParser.parseImage(initialImage));
+		
+		return new Scene(master);
 	}
 	
-	private void initTopBar(HBox topBar)
+	private void mirrorMap(boolean[][] map)
 	{
+		for (int r = 0; r < map.length; r++)
+		{
+			for (int c = 0; c < map[r].length; c++)
+			{
+				icons[r][c].setState(map[r][c]);
+			}
+		}
+	}
+	
+	private void initTopBar()
+	{
+		topBar.getChildren().clear();
+		
 		Label width = new Label("Width");
 		Label height = new Label("Height");
 		
@@ -79,8 +124,7 @@ public class MapCreator extends Scene
 					tileSize = 30;
 				
 				TogglableImageView.resizeImages();
-				
-				init();
+				LandingPage.openMapCreator();
 			}
 			catch (Exception ex)
 			{
@@ -94,8 +138,10 @@ public class MapCreator extends Scene
 		topBar.getChildren().addAll(width, widthField, height, heightField, refreshButton, saveButton);
 	}
 	
-	private void initPane(GridPane pane)
+	private void initPane()
 	{
+		pane.getChildren().clear();
+		pane = new GridPane();
 		icons = new TogglableImageView[h][w];
 		for (int r = 0; r < h; r++)
 		{
@@ -125,7 +171,7 @@ public class MapCreator extends Scene
 		currentMap.toggle(x, y);
 	}*/
 	
-	public static void writeMapToFile()
+	public void writeMapToFile()
 	{
 		int count = 1;
 		
@@ -137,7 +183,7 @@ public class MapCreator extends Scene
 		writeMapToFile(file);
 	}
 
-	public static void writeMapToFile(File file)
+	public void writeMapToFile(File file)
 	{
 		try {
 			ImageIO.write(renderMap(icons, 10), "jpg", file);

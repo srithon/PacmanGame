@@ -17,8 +17,8 @@ public class TogglableImageView extends ImageView
 	
 	static
 	{
-		emptyImage = new Image("file:blank.png", 20, 20, false, true);
-		wallImage = new Image("file:wall.png", 20, 20, false, true);
+		emptyImage = new Image("file:icons/blank.png", 20, 20, false, true);
+		wallImage = new Image("file:icons/wall.png", 20, 20, false, true);
 		
 		dragCount = 0;
 	}
@@ -50,6 +50,12 @@ public class TogglableImageView extends ImageView
 		this.setImage(wallImage);
 	}
 	
+	public void setState(boolean state)
+	{
+		this.state = state;
+		refreshImage();
+	}
+	
 	public boolean getState()
 	{
 		return state;
@@ -63,8 +69,12 @@ public class TogglableImageView extends ImageView
 	public void toggle()
 	{
 		toggleState();
-		System.out.println("Toggled");
-		
+		//System.out.println("Toggled");
+		refreshImage();
+	}
+	
+	private void refreshImage()
+	{
 		if (state)
 			setImage(emptyImage);
 		else

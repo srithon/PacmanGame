@@ -35,6 +35,11 @@ public class MapParser
 		
 		mapImage = new Image("file:" + mapFileName); //ERROR
 		
+		return parseImage(mapImage);
+	}
+	
+	public static boolean[][] parseImage(Image mapImage)
+	{
 		PixelReader reader = mapImage.getPixelReader();
 		
 		int height = (int) mapImage.getHeight() / 10;
