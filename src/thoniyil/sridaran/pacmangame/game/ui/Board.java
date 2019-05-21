@@ -30,7 +30,7 @@ import thoniyil.sridaran.pacmangame.game.entity.PowerUp;
 import thoniyil.sridaran.pacmangame.game.entity.Static;
 import thoniyil.sridaran.pacmangame.game.entity.Wall;
 
-public class Board extends Application
+public class Board extends Scene
 {
 	public static final int TILE_SIZE;
 	
@@ -51,8 +51,6 @@ public class Board extends Application
 	private static Pacman pacman;
 	private static ArrayList<PowerUp> powerUps;
 	
-	private static Scene sc;
-	
 	private static GridPane pane;
 	
 	private static InputController controller;
@@ -61,20 +59,18 @@ public class Board extends Application
 	
 	private static Entity pacmanReplaced;
 	
+	public Board(int updatesPerSecond)
+	{
+		super(pane);
+		updater = new UpdateThreadHandler(updatesPerSecond);
+		init();
+	}
+	
 	static
 	{
-		/*
-		 * TODO
-		 * Have WIDTH and HEIGHT set by
-		 * the MapParser
-		 */
-		
-		WIDTH = 17;
-		HEIGHT = 19;
-		
 		TILE_SIZE = 25;
 		
-		icons = new ImageView[HEIGHT][WIDTH];
+		//icons = new ImageView[HEIGHT][WIDTH];
 		
 		pane = new GridPane();
 		
@@ -109,21 +105,12 @@ public class Board extends Application
 		addToEntitiesToRefresh(blank);
 	}
 	
-	public static void beginInitialization(int updatesPerSecond)
-	{
-		updater = new UpdateThreadHandler(updatesPerSecond);
-		
-		try {
-			launch(new String[0]);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	public static void setMap(boolean[][] map)
 	{
 		Board.map = map;
+		Board.WIDTH = map[0].length;
+		Board.HEIGHT = map.length;
+		icons = new ImageView[HEIGHT][WIDTH];
 	}
 	
 	public static boolean isEmpty(Position pos)
@@ -242,25 +229,19 @@ public class Board extends Application
 		
 		return p;
 	}
-
-	@Override
-	public void start(Stage prim) throws Exception
+	
+	public void init()
 	{
-		prim.setTitle("Pacman Board");
-		prim.setMinHeight(500);
-		prim.setMinWidth(300);
-		
 		putEntities();
 		
-		sc = new Scene(pane);
-		sc.addEventHandler(KeyEvent.KEY_PRESSED, controller);
-		prim.setOnCloseRequest((WindowEvent e) ->
+		this.addEventHandler(KeyEvent.KEY_PRESSED, controller);
+		
+		/*
+		this.setOnCloseRequest((WindowEvent e) ->
 		{
 			updater.stop();
-			prim.close();
 		});
-		prim.setScene(sc);
-		prim.show();
+		*/
 		
 		updater.begin();
 	}

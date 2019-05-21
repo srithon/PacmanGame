@@ -2,6 +2,8 @@ package thoniyil.sridaran.pacmangame.game;
 
 import java.util.ArrayList;
 
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.active.Effect;
 import thoniyil.sridaran.pacmangame.game.active.Modifier;
@@ -15,6 +17,7 @@ import thoniyil.sridaran.pacmangame.game.entity.Position;
 import thoniyil.sridaran.pacmangame.game.entity.Static;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 import thoniyil.sridaran.pacmangame.game.ui.InputController;
+import thoniyil.sridaran.pacmangame.main.MapParser;
 
 public class GameController
 {
@@ -39,18 +42,36 @@ public class GameController
 	
 	private static ArrayList<Effect> currentEffects;
 	
+	private static Scene board;
+	
 	/*public static Board getBoard()
 	{
 		return board;
 	}*/
 	
-	public static void start()
+	public static Scene createBoard(Image boardImage)
 	{
+		Board.setMap(MapParser.parseImage(boardImage));
 		controller = new InputController();
 		currentEffects = new ArrayList<>();
 		score = new ScoreTracker(TOTAL_ROUNDS);
 		Board.setController(controller);
-		Board.beginInitialization(UPDATES_PER_SECOND);
+		board = new Board(UPDATES_PER_SECOND);
+		return board;
+	}
+	
+	public static Scene getBoard()
+	{
+		if (board == null)
+		{
+			controller = new InputController();
+			currentEffects = new ArrayList<>();
+			score = new ScoreTracker(TOTAL_ROUNDS);
+			Board.setController(controller);
+			board = new Board(UPDATES_PER_SECOND);
+		}
+		
+		return board;
 	}
 	
 	public static void moveCharacter(Direction dir)

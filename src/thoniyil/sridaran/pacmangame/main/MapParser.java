@@ -45,6 +45,9 @@ public class MapParser
 		int height = (int) mapImage.getHeight() / 10;
 		int width = (int) mapImage.getWidth() / 10;
 		
+		System.out.println("Height: " + height);
+		System.out.println("Width: " + width);
+		
 		boolean[][] map = new boolean[height][width];
 		
 		for (int r = 0; r < height; r++)
