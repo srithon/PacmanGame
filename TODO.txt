@@ -1,16 +1,6 @@
 Fix Ghost collision lastPos
 Finish LandingPage openMapCreator and openGame
-	Refactor application to use only one scene
 	Press ESC from any screen to return to landing page
-Fix MapCreator Scene
-	Weird as hell
-	Does not have imageviews
-
-Fix MapParser
-	Refactor javafx Image to diff image
-	JavaFX Image needs screen to not be null
-	Thus needs a running application
-
 MapCreator
 	/*
 	Toggle tiles and place powerups

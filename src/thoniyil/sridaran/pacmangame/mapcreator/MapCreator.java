@@ -61,8 +61,15 @@ public class MapCreator
 		refreshButton.setOnAction((ActionEvent e) -> {
 			try
 			{
-				w = Integer.parseInt(widthField.getText());
-				h = Integer.parseInt(heightField.getText());
+				try
+				{
+					w = Integer.parseInt(widthField.getText());
+					h = Integer.parseInt(heightField.getText());
+				}
+				catch (NumberFormatException b)
+				{
+					
+				}
 				
 				if (h > 40 || w > 40)
 					tileSize = 15;
