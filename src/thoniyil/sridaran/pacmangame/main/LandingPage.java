@@ -47,10 +47,8 @@ public class LandingPage extends Application
 		//TODO implement <edit map>
 		if (mc == null)
 			mc = new MapCreator();
-		else
-			mc.refreshScene();
 		System.out.println("set the scene");
-		stage.setScene(mc.getCurrentScene());
+		stage.setScene(mc.getMapCreatorScene());
 		stage.sizeToScene();
 	}
 	
