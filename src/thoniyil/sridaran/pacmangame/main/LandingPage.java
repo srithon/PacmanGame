@@ -13,6 +13,8 @@ public class LandingPage extends Application
 {
 	private static Stage stage;
 	
+	private static MapCreator mc;
+	
 	public static void main(String[] args)
 	{
 		launch(args);
@@ -43,8 +45,12 @@ public class LandingPage extends Application
 	public static void openMapCreator(Image mapTemplate)
 	{
 		//TODO implement <edit map>
-		MapCreator c = new MapCreator();
-		stage.setScene(c.getCurrentScene());
+		if (mc == null)
+			mc = new MapCreator();
+		else
+			mc.refreshScene();
+		System.out.println("set the scene");
+		stage.setScene(mc.getCurrentScene());
 		stage.sizeToScene();
 	}
 	

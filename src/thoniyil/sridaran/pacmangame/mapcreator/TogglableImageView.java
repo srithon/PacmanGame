@@ -81,9 +81,9 @@ public class TogglableImageView extends ImageView
 			setImage(wallImage);
 	}
 	
-	public static void resizeImages()
+	public static void resizeImages(int tileSize)
 	{
-		emptyImage = new Image("file:blank.png", MapCreator.getTileSize(), MapCreator.getTileSize(), false, true);
-		wallImage = new Image("file:wall.png", MapCreator.getTileSize(), MapCreator.getTileSize(), false, true);
+		emptyImage = new Image("file:icons/blank.png", tileSize, tileSize, false, true);
+		wallImage = new Image("file:icons/wall.png", tileSize, tileSize, false, true);
 	}
 }

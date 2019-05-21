@@ -28,20 +28,16 @@ import thoniyil.sridaran.pacmangame.main.MapParser;
 public class MapCreator
 {
 	private static int tileSize = 20;
-	private TogglableImageView[][] icons;
 	
 	private static int h = 20;
 	private static int w = 20;
 	
-	private VBox master;
-	private HBox topBar;
-	private GridPane pane;
-	
 	private Scene currentScene;
+	private MapCreatorLayout layout;
 	
 	public MapCreator(Image initialMap)
 	{
-		currentScene = getMapCreatorScene(initialMap);
+		currentScene = new Scene((layout = new MapCreatorLayout(w, h, initialMap)));
 		mirrorMap(MapParser.parseImage(initialMap));
 	}
 	
@@ -58,6 +54,11 @@ public class MapCreator
 	private Scene getMapCreatorScene()
 	{
 		return getMapCreatorScene(null);
+	}
+	
+	public void refreshScene()
+	{
+		currentScene = getMapCreatorScene();
 	}
 
 	private Scene getMapCreatorScene(Image initialImage)
@@ -79,89 +80,17 @@ public class MapCreator
 		master.getChildren().add(topBar);
 		master.getChildren().add(pane);
 		
-		pane.setMaxSize(w * tileSize, h * tileSize);
-		
-		if (initialImage != null)
-			mirrorMap(MapParser.parseImage(initialImage));
-		
 		return new Scene(master);
 	}
 	
-	private void mirrorMap(boolean[][] map)
+	static void mirrorMap(boolean[][] map)
 	{
+		TogglableImageView[][] icons = layout.getIcons();
 		for (int r = 0; r < map.length; r++)
 		{
 			for (int c = 0; c < map[r].length; c++)
 			{
 				icons[r][c].setState(map[r][c]);
-			}
-		}
-	}
-	
-	private void initTopBar()
-	{
-		topBar.getChildren().clear();
-		
-		Label width = new Label("Width");
-		Label height = new Label("Height");
-		
-		TextField widthField = new TextField();
-		TextField heightField = new TextField();
-		
-		widthField.setMaxWidth(40.0);
-		heightField.setMaxWidth(40.0);
-		
-		Button refreshButton = new Button("Refresh");
-		refreshButton.setOnAction((ActionEvent e) -> {
-			try
-			{
-				w = Integer.parseInt(widthField.getText());
-				h = Integer.parseInt(heightField.getText());
-				
-				if (h > 40 || w > 40)
-					tileSize = 15;
-				else if (h < 15 || w < 15)
-					tileSize = 30;
-				
-				TogglableImageView.resizeImages();
-				LandingPage.openMapCreator();
-			}
-			catch (Exception ex)
-			{
-				ex.printStackTrace();
-			}
-		});
-		
-		Button saveButton = new Button("Save");
-		saveButton.setOnAction((ActionEvent e) -> writeMapToFile());
-		
-		topBar.getChildren().addAll(width, widthField, height, heightField, refreshButton, saveButton);
-	}
-	
-	private void initPane()
-	{
-		pane.getChildren().clear();
-		pane = new GridPane();
-		icons = new TogglableImageView[h][w];
-		for (int r = 0; r < h; r++)
-		{
-			RowConstraints con = new RowConstraints();
-	        // Here we set the pref height of the row, but you could also use .setPercentHeight(double) if you don't know much space you will need for each label.
-	        con.setPrefHeight(tileSize);
-	        pane.getRowConstraints().add(con);
-	        
-	        ColumnConstraints col = new ColumnConstraints();
-	        col.setPrefWidth(tileSize);
-	        pane.getColumnConstraints().add(col);
-	        
-			for (int c = 0; c < w; c++)
-			{
-				icons[r][c] = new TogglableImageView();
-				
-				GridPane.setHalignment(icons[r][c], HPos.CENTER);
-				GridPane.setValignment(icons[r][c], VPos.CENTER);
-				
-				pane.add(icons[r][c], c, r);
 			}
 		}
 	}
