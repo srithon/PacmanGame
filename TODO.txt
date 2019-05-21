@@ -1,5 +1,7 @@
 Fix Ghost collision lastPos
-Fix LandingPage FXML load error
+Finish LandingPage openMapCreator and openGame
+	Refactor application to use only one scene
+	Press ESC from any screen to return to landing page
 
 Fix MapParser
 	Refactor javafx Image to diff image

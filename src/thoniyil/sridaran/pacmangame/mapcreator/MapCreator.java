@@ -22,33 +22,30 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MapCreator extends Application
+public class MapCreator extends Scene
 {
 	private static int tileSize = 20;
 	private static TogglableImageView[][] icons;
-	private static Stage primaryStage;
 	
 	private static int h = 20;
 	private static int w = 20;
 	
-	public static void main(String[] args)
+	private static VBox master;
+	
+	static
 	{
-		launch(args);
-	}
-
-	public void start(Stage stage) throws Exception
-	{
-		primaryStage = stage;
-		Scene mapCreatorScene = getMapCreatorScene();
-		stage.setScene(mapCreatorScene);
-		stage.show();
-		stage.sizeToScene();
-		//System.out.println("(" + pane.getHeight() + ", " + pane.getHeight() + ")");
+		master = new VBox();
 	}
 	
-	private Scene getMapCreatorScene()
+	public MapCreator()
 	{
-		VBox master = new VBox();
+		super(master);
+		init();
+	}
+	
+	private void init()
+	{
+		master.getChildren().clear();
 		HBox topBar = new HBox(10);
 		GridPane pane = new GridPane();
 		initTopBar(topBar);
@@ -56,10 +53,6 @@ public class MapCreator extends Application
 		master.getChildren().add(topBar);
 		master.getChildren().add(pane);
 		pane.setMaxSize(w * tileSize, h * tileSize);
-		//pane.setPadding(new Insets(0, -(w * tileSize) / 4, -(h * tileSize) / 4, 0));
-		Scene sc = new Scene(master);
-		//pane.setOnMouseClicked((MouseEvent e) -> System.out.println("Scene clicked"));
-		return sc;
 	}
 	
 	private void initTopBar(HBox topBar)
@@ -87,7 +80,7 @@ public class MapCreator extends Application
 				
 				TogglableImageView.resizeImages();
 				
-				primaryStage.setScene(getMapCreatorScene());
+				init();
 			}
 			catch (Exception ex)
 			{
