@@ -56,9 +56,9 @@ public class MapParser
 			{
 				map[r][c] = reader.getColor(c * 10 + 5, r * 10 + 5).equals(Color.WHITE);
 				if (map[r][c])
-					System.out.print("T");
+					System.out.print("T ");
 				else
-					System.out.print("F");
+					System.out.print("F ");
 			}
 			System.out.println();
 		}
