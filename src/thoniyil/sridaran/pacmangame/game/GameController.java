@@ -42,14 +42,14 @@ public class GameController
 	
 	private static ArrayList<Effect> currentEffects;
 	
-	private static Scene board;
+	private static Board board;
 	
 	/*public static Board getBoard()
 	{
 		return board;
 	}*/
 	
-	public static Scene createBoard(Image boardImage)
+	public static Board createBoard(Image boardImage)
 	{
 		Board.setMap(MapParser.parseImage(boardImage));
 		controller = new InputController();
@@ -60,7 +60,7 @@ public class GameController
 		return board;
 	}
 	
-	public static Scene getBoard()
+	public static Board getBoard()
 	{
 		if (board == null)
 		{

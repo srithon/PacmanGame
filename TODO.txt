@@ -5,3 +5,7 @@ MapCreator
 	/*
 	Toggle tiles and place powerups
 	*/
+Make Pacman an actual game with an objective
+	Holes on the side of the map
+	Enter into the hole and come out through other side
+	When all coins are consumed, exit game after entering hole

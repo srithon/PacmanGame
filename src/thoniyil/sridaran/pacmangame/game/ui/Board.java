@@ -230,6 +230,11 @@ public class Board extends Scene
 		return p;
 	}
 	
+	public void stop()
+	{
+		updater.stop();
+	}
+	
 	public void init()
 	{
 		putEntities();

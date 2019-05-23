@@ -6,7 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import thoniyil.sridaran.pacmangame.game.GameController;
+import thoniyil.sridaran.pacmangame.game.ui.Board;
 import thoniyil.sridaran.pacmangame.mapcreator.MapCreator;
 
 public class LandingPage extends Application
@@ -28,12 +30,17 @@ public class LandingPage extends Application
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest((WindowEvent e) -> {
+        	if (stage.getScene() instanceof Board)
+        		((Board) stage.getScene()).stop();
+        	stage.close();
+        });
 	}
 	
 	public static void openGame(Image selectedImage)
 	{
 		GameController.createBoard(selectedImage);
-		Scene pacmanScene = GameController.getBoard();
+		Board pacmanScene = GameController.getBoard();
 		stage.setScene(pacmanScene);
 	}
 	
