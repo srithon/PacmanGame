@@ -54,11 +54,9 @@ public class MapParser
 		{
 			for (int c = 0; c < width; c++)
 			{
-				map[r][c] = reader.getColor(c * 10 + 5, r * 10 + 5).equals(Color.WHITE);
-				if (map[r][c])
-					System.out.print("T ");
-				else
-					System.out.print("F ");
+				int color = reader.getArgb(c * 10 + 5, r * 10 + 5);
+				map[r][c] = color > -16777216 / 2;
+				// This sees if it is closer to min value: (-2)^24 or max value: -1
 			}
 			System.out.println();
 		}

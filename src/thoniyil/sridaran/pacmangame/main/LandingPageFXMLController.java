@@ -85,8 +85,7 @@ public class LandingPageFXMLController
     	}
     	catch (ArrayIndexOutOfBoundsException e)
     	{
-    		e.printStackTrace(); //TODO remove
-    		return null;
+    		return mapImages[(int) Math.random() * mapImages.length];
     	}
     }
 
