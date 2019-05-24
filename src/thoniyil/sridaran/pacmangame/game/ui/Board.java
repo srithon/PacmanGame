@@ -248,7 +248,7 @@ public class Board extends Scene
 		});
 		*/
 		
-		updater.begin();
+		updater.start();
 	}
 	
 	/*public static void paint(Entity e)

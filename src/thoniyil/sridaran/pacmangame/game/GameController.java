@@ -156,7 +156,7 @@ public class GameController
 		Entity currentPos = Board.getPacmanReplacedEntity();
 		if (isConsumable(currentPos))
 		{
-			System.out.println(currentPos.getClass().getSimpleName() + " is consumable");
+			//System.out.println(currentPos.getClass().getSimpleName() + " is consumable");
 			((Consumable) currentPos).consume();
 		}
 		else if (currentPos instanceof Ghost)
