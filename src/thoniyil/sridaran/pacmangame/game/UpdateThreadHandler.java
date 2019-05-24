@@ -2,7 +2,6 @@ package thoniyil.sridaran.pacmangame.game;
 
 import java.util.ArrayList;
 
-import javafx.animation.AnimationTimer;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.entity.Ghost;
@@ -10,31 +9,60 @@ import thoniyil.sridaran.pacmangame.game.entity.Pacman;
 import thoniyil.sridaran.pacmangame.game.entity.PowerUp;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class UpdateThreadHandler extends AnimationTimer
+public class UpdateThreadHandler
 {
-	private final long updateDelay;
-	private long lastUpdate;
+	private int updateDelay;
 	
-	public UpdateThreadHandler(final int updateHertz)
+	private boolean stopped;
+	
+	private static Direction moveChar;
+	
+	private Thread t;
+	
+	public UpdateThreadHandler(int updatesPerSecond)
 	{
-		this.updateDelay = (int) ((1.0 / updateHertz) * 1e9);
-		GameController.setNextMoveChar(Direction.randomDirection());
+		// 1000 millis/second
+		updateDelay = 1000 / updatesPerSecond;
+		
+		t = new Thread(this::run);
 	}
 	
-	public void handle(long now)
+	public void begin()
 	{
-		if (now - lastUpdate > updateDelay)
+		t.start();
+	}
+	
+	public void run()
+	{
+		Pacman pacman = Board.getPacman();
+		ArrayList<Ghost> ghosts = Board.getGhosts();
+		
+		GameController.setNextMoveChar(Direction.randomDirection());
+		
+		while (!stopped)
 		{
-			Board.getPacman().move();
+			pacman.move();
 			
-			for (Ghost g : Board.getGhosts())
+			for (Ghost g : ghosts)
 			{
 				g.update();
 			}
 			
 			Board.refresh();
 			
-			this.lastUpdate = now;
+			try
+			{
+				Thread.sleep(updateDelay);
+			}
+			catch (InterruptedException e)
+			{
+				
+			}
 		}
+	}
+	
+	public void stop()
+	{
+		stopped = true;
 	}
 }
