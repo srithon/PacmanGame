@@ -58,7 +58,6 @@ public class MapParser
 				map[r][c] = color > -16777216 / 2;
 				// This sees if it is closer to min value: (-2)^24 or max value: -1
 			}
-			System.out.println();
 		}
 		
 		return map;

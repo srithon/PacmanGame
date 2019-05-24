@@ -22,6 +22,14 @@ public class LandingPageFXMLController
 	
 	@FXML
     private ListView<String> mapListView;
+	
+	public void handleMouseClick(MouseEvent e)
+	{
+    	if (e.getButton().equals(MouseButton.PRIMARY) && e.getClickCount() == 2)
+    	{
+    		LandingPage.openMapCreator(getSelectedMap());
+    	}
+	}
 
 	//called by FXML loader after done loading objects
     public void initialize()
@@ -55,12 +63,6 @@ public class LandingPageFXMLController
 			            imageView.setFitHeight(180);
 			            imageView.setPreserveRatio(true);
 			            //https://stackoverflow.com/questions/10949461/javafx-2-click-and-double-click
-			            imageView.setOnMousePressed((MouseEvent e) -> {
-			            	if (e.getButton().equals(MouseButton.PRIMARY) && e.getClickCount() > 1)
-			            	{
-			            		LandingPage.openMapCreator(getSelectedMap());
-			            	}
-			            });
 			            setText(fileName);
 			            setGraphic(imageView);
 			        }

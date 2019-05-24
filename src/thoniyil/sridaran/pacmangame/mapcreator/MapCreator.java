@@ -15,12 +15,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import thoniyil.sridaran.pacmangame.main.LandingPage;
+import thoniyil.sridaran.pacmangame.main.MapParser;
 
 public class MapCreator
 {
@@ -37,6 +39,28 @@ public class MapCreator
 		GridPane pane = new GridPane();
 		initTopBar(topBar);
 		initPane(pane);
+		master.getChildren().add(topBar);
+		master.getChildren().add(pane);
+		pane.setMaxSize(w * tileSize, h * tileSize);
+		//pane.setPadding(new Insets(0, -(w * tileSize) / 4, -(h * tileSize) / 4, 0));
+		Scene sc = new Scene(master);
+		//pane.setOnMouseClicked((MouseEvent e) -> System.out.println("Scene clicked"));
+		return sc;
+	}
+	
+	public Scene getMapCreatorScene(Image startMap)
+	{
+		if (startMap == null)
+			return getMapCreatorScene();
+		
+		h = (int) startMap.getHeight() / 10;
+		w = (int) startMap.getWidth() / 10;
+		
+		VBox master = new VBox();
+		HBox topBar = new HBox(10);
+		GridPane pane = new GridPane();
+		initTopBar(topBar);
+		initPane(pane, MapParser.parseImage(startMap));
 		master.getChildren().add(topBar);
 		master.getChildren().add(pane);
 		pane.setMaxSize(w * tileSize, h * tileSize);
@@ -108,6 +132,32 @@ public class MapCreator
 			for (int c = 0; c < w; c++)
 			{
 				icons[r][c] = new TogglableImageView();
+				
+				GridPane.setHalignment(icons[r][c], HPos.CENTER);
+				GridPane.setValignment(icons[r][c], VPos.CENTER);
+				
+				pane.add(icons[r][c], c, r);
+			}
+		}
+	}
+	
+	private void initPane(GridPane pane, boolean[][] map)
+	{
+		icons = new TogglableImageView[h][w];
+		for (int r = 0; r < h; r++)
+		{
+			RowConstraints con = new RowConstraints();
+	        // Here we set the pref height of the row, but you could also use .setPercentHeight(double) if you don't know much space you will need for each label.
+	        con.setPrefHeight(tileSize);
+	        pane.getRowConstraints().add(con);
+	        
+	        ColumnConstraints col = new ColumnConstraints();
+	        col.setPrefWidth(tileSize);
+	        pane.getColumnConstraints().add(col);
+	        
+			for (int c = 0; c < w; c++)
+			{
+				icons[r][c] = new TogglableImageView(map[r][c]);
 				
 				GridPane.setHalignment(icons[r][c], HPos.CENTER);
 				GridPane.setValignment(icons[r][c], VPos.CENTER);

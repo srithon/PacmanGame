@@ -33,7 +33,7 @@ public class TogglableImageView extends ImageView
 	public TogglableImageView(boolean state)
 	{
 		super();
-		this.state = state;
+		this.setState(state);
 		lastDrag = -1;
 		this.setOnDragDetected((MouseEvent e) -> {
 			this.startFullDrag();
@@ -47,7 +47,6 @@ public class TogglableImageView extends ImageView
 				lastDrag = dragCount;
 			}
 		});
-		this.setImage(wallImage);
 	}
 	
 	public void setState(boolean state)
