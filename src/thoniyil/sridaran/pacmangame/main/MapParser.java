@@ -49,17 +49,32 @@ public class MapParser
 		for (int r = 0; r < height; r++)
 		{
 			for (int c = 0; c < width; c++)
-			{
-				map[r][c] = reader.getColor(c * 10 + 5, r * 10 + 5).equals(Color.WHITE);
-				if (map[r][c])
-					System.out.print("T ");
-				else
-					System.out.print("F ");
-			}
+				map[r][c].setState(closestColor(getRGB(reader.getColor(c * 10 + 5, r * 10 + 5))));
+			
 			System.out.println();
 		}
 		
 		return map;
+	}
+	
+	public static int getRGB(Color c)
+	{
+		int r = (int) (c.getRed() * 255);
+		int g = (int) (c.getGreen() * 255);
+		int b = (int) (c.getBlue() * 255);
+		
+		String rgb = Integer.toHexString(r) + Integer.toHexString(g) + Integer.toHexString(b);
+		
+		int rgbVal = Integer.parseInt(rgb, 16);
+		
+		return rgbVal;
+	}
+	
+	public static int closestColor(int rgb)
+	{
+		
+		
+		return 0;
 	}
 	
 	@Deprecated
