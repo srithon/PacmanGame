@@ -1,7 +1,5 @@
 package thoniyil.sridaran.pacmangame.main;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,8 +7,6 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
-
-import javax.imageio.ImageIO;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
@@ -54,12 +50,49 @@ public class MapParser
 		{
 			for (int c = 0; c < width; c++)
 			{
-				int color = reader.getArgb(c * 10 + 5, r * 10 + 5);
-				map[r][c] = color > -16777216 / 2;
-				// This sees if it is closer to min value: (-2)^24 or max value: -1
+				map[r][c] = reader.getColor(c * 10 + 5, r * 10 + 5).equals(Color.WHITE);
+				if (map[r][c])
+					System.out.print("T ");
+				else
+					System.out.print("F ");
 			}
+			System.out.println();
 		}
 		
 		return map;
+	}
+	
+	@Deprecated
+	public static boolean[][] getMap()
+	{
+		File map = new File("maps/map1.txt");
+		
+		boolean[][] mapBool = new boolean[19][17];
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(map)))
+		{
+			String currentLine = "";
+			int row = 0;
+			
+			while ((currentLine = reader.readLine()) != null)
+			{
+				for (int i = 0; i < currentLine.length(); i++)
+				{	//false means wall, true means not wall
+					mapBool[row][i] = (currentLine.charAt(i) != '\"');
+				}
+				
+				row++;
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return mapBool;
 	}
 }

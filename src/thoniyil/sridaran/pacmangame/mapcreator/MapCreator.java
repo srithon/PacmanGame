@@ -2,6 +2,7 @@ package thoniyil.sridaran.pacmangame.mapcreator;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
 
@@ -201,8 +202,8 @@ public class MapCreator
 	
 	public static BufferedImage renderMap(TogglableImageView[][] map, int renderTileSize)
 	{
-		BufferedImage im = new BufferedImage(renderTileSize * map[0].length, renderTileSize * map.length, BufferedImage.TYPE_BYTE_GRAY);
-		byte[] pixels = ((DataBufferByte) (im.getRaster().getDataBuffer())).getData();
+		BufferedImage im = new BufferedImage(renderTileSize * map[0].length, renderTileSize * map.length, BufferedImage.TYPE_INT_RGB);
+		int[] pixels = ((DataBufferInt) (im.getRaster().getDataBuffer())).getData();
 		
 		int pixelIndex = 0;
 		
@@ -211,7 +212,7 @@ public class MapCreator
 			for (int i = 0; i < renderTileSize; i++)
 				for (int c = 0; c < map[0].length; c++)
 				{
-					byte pixelValue = (map[r][c].getState()) ? (byte) 255 : 0;
+					int pixelValue = (map[r][c].getState()) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 					int finalPixel = pixelIndex + renderTileSize;
 					while (pixelIndex < finalPixel)
 					{
