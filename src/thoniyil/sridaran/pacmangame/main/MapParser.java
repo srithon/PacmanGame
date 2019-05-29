@@ -62,37 +62,4 @@ public class MapParser
 		
 		return map;
 	}
-	
-	public static boolean[][] getMap()
-	{
-		File map = new File("maps/map1.txt");
-		
-		boolean[][] mapBool = new boolean[19][17];
-		
-		try (BufferedReader reader = new BufferedReader(new FileReader(map)))
-		{
-			String currentLine = "";
-			int row = 0;
-			
-			while ((currentLine = reader.readLine()) != null)
-			{
-				for (int i = 0; i < currentLine.length(); i++)
-				{	//false means wall, true means not wall
-					mapBool[row][i] = (currentLine.charAt(i) != '\"');
-				}
-				
-				row++;
-			}
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return mapBool;
-	}
 }
