@@ -11,10 +11,11 @@ import java.util.Arrays;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
+import thoniyil.sridaran.pacmangame.mapcreator.TileState;
 
 public class MapParser
 {
-	public static boolean[][] getRandomMap()
+	public static TileState[][] getRandomMap()
 	{
 		String[] files = new File("maps/").list(new FilenameFilter() {
 			public boolean accept(File directory, String nameOfFile)
@@ -34,7 +35,7 @@ public class MapParser
 		return parseImage(mapImage);
 	}
 	
-	public static boolean[][] parseImage(Image mapImage)
+	public static TileState[][] parseImage(Image mapImage)
 	{
 		PixelReader reader = mapImage.getPixelReader();
 		
@@ -44,37 +45,17 @@ public class MapParser
 		System.out.println("Height: " + height);
 		System.out.println("Width: " + width);
 		
-		boolean[][] map = new boolean[height][width];
+		TileState[][] map = new TileState[height][width];
 		
 		for (int r = 0; r < height; r++)
 		{
 			for (int c = 0; c < width; c++)
-				map[r][c].setState(closestColor(getRGB(reader.getColor(c * 10 + 5, r * 10 + 5))));
+				map[r][c] = TileState.colorToState(reader.getColor(c * 10 + 5, r * 10 + 5));
 			
 			System.out.println();
 		}
 		
 		return map;
-	}
-	
-	public static int getRGB(Color c)
-	{
-		int r = (int) (c.getRed() * 255);
-		int g = (int) (c.getGreen() * 255);
-		int b = (int) (c.getBlue() * 255);
-		
-		String rgb = Integer.toHexString(r) + Integer.toHexString(g) + Integer.toHexString(b);
-		
-		int rgbVal = Integer.parseInt(rgb, 16);
-		
-		return rgbVal;
-	}
-	
-	public static int closestColor(int rgb)
-	{
-		
-		
-		return 0;
 	}
 	
 	@Deprecated

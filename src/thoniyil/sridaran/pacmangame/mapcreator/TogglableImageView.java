@@ -23,7 +23,7 @@ public class TogglableImageView extends ImageView
 		dragCount = 0;
 	}
 	
-	private boolean state;
+	private TileState state;
 	
 	public TogglableImageView()
 	{
@@ -51,18 +51,19 @@ public class TogglableImageView extends ImageView
 	
 	public void setState(boolean state)
 	{
-		this.state = state;
+		this.state = (state) ? TileState.EMPTY : TileState.WALL;
 		refreshImage();
 	}
 	
-	public boolean getState()
+	public TileState getState()
 	{
 		return state;
 	}
 	
 	public void toggleState()
 	{
-		state = !state;
+		if (state == TileState.EMPTY)
+			state = TileState.WALL;
 	}
 	
 	public void toggle()
@@ -74,10 +75,12 @@ public class TogglableImageView extends ImageView
 	
 	private void refreshImage()
 	{
-		if (state)
-			setImage(emptyImage);
-		else
-			setImage(wallImage);
+		switch (MapCreator.getCurrentToggleState())
+		{
+		case WALL_EMPTY:
+			if (!state.equals(TileState.EMPTY))
+				setImage(emptyImage);
+		}
 	}
 	
 	public static void resizeImages(int tileSize)

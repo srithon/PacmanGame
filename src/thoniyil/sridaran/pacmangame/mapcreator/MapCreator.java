@@ -27,13 +27,20 @@ import thoniyil.sridaran.pacmangame.main.MapParser;
 
 public class MapCreator
 {
+	enum PlaceState
+	{
+		WALL_EMPTY, PACMAN_EMPTY, GHOST_EMPTY, DEADEND_EMPTY;
+	}
+	
 	private static int tileSize = 20;
 	private static TogglableImageView[][] icons;
+	
+	private static PlaceState placeState;
 	
 	private static int h = 20;
 	private static int w = 20;
 	
-	public Scene getMapCreatorScene()
+	Scene getMapCreatorScene()
 	{
 		VBox master = new VBox();
 		HBox topBar = new HBox(10);
@@ -46,10 +53,11 @@ public class MapCreator
 		//pane.setPadding(new Insets(0, -(w * tileSize) / 4, -(h * tileSize) / 4, 0));
 		Scene sc = new Scene(master);
 		//pane.setOnMouseClicked((MouseEvent e) -> System.out.println("Scene clicked"));
+		placeState = PlaceState.WALL_EMPTY;
 		return sc;
 	}
 	
-	public Scene getMapCreatorScene(Image startMap)
+	Scene getMapCreatorScene(Image startMap)
 	{
 		if (startMap == null)
 			return getMapCreatorScene();
@@ -142,7 +150,7 @@ public class MapCreator
 		}
 	}
 	
-	private void initPane(GridPane pane, boolean[][] map)
+	private void initPane(GridPane pane, TileState[][] map)
 	{
 		icons = new TogglableImageView[h][w];
 		for (int r = 0; r < h; r++)
@@ -173,7 +181,12 @@ public class MapCreator
 		currentMap.toggle(x, y);
 	}*/
 	
-	public static void writeMapToFile()
+	static PlaceState getCurrentToggleState()
+	{
+		return placeState;
+	}
+	
+	static void writeMapToFile()
 	{
 		int count = 1;
 		
@@ -185,7 +198,7 @@ public class MapCreator
 		writeMapToFile(file);
 	}
 
-	public static void writeMapToFile(File file)
+	static void writeMapToFile(File file)
 	{
 		try {
 			ImageIO.write(renderMap(icons, 10), "jpg", file);
@@ -195,12 +208,12 @@ public class MapCreator
 		}
 	}
 	
-	public static int getTileSize()
+	static int getTileSize()
 	{
 		return tileSize;
 	}
 	
-	public static BufferedImage renderMap(TogglableImageView[][] map, int renderTileSize)
+	static BufferedImage renderMap(TogglableImageView[][] map, int renderTileSize)
 	{
 		BufferedImage im = new BufferedImage(renderTileSize * map[0].length, renderTileSize * map.length, BufferedImage.TYPE_INT_RGB);
 		int[] pixels = ((DataBufferInt) (im.getRaster().getDataBuffer())).getData();
@@ -212,7 +225,7 @@ public class MapCreator
 			for (int i = 0; i < renderTileSize; i++)
 				for (int c = 0; c < map[0].length; c++)
 				{
-					int pixelValue = (map[r][c].getState()) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+					int pixelValue = map[r][c].getState().stateToRGB();
 					int finalPixel = pixelIndex + renderTileSize;
 					while (pixelIndex < finalPixel)
 					{

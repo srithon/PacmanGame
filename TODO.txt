@@ -3,6 +3,9 @@ Finish Board create
 	Refactor Board so map is 2-d array of TileStates 
 	Finish MapCreator and MapParser
 	Allow for multiple Tile States
+Very annoying
+	Made a bunch of changes and broke everything
+	Rethink how to approach the problem!
 Finish LandingPage openMapCreator and openGame
 	Press ESC from any screen to return to landing page
 MapCreator
