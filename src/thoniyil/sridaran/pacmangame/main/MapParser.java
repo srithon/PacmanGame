@@ -1,5 +1,7 @@
 package thoniyil.sridaran.pacmangame.main;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,14 +10,15 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.imageio.ImageIO;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
-import thoniyil.sridaran.pacmangame.mapcreator.TileState;
 
 public class MapParser
 {
-	public static TileState[][] getRandomMap()
+	public static boolean[][] getRandomMap()
 	{
 		String[] files = new File("maps/").list(new FilenameFilter() {
 			public boolean accept(File directory, String nameOfFile)
@@ -35,7 +38,7 @@ public class MapParser
 		return parseImage(mapImage);
 	}
 	
-	public static TileState[][] parseImage(Image mapImage)
+	public static boolean[][] parseImage(Image mapImage)
 	{
 		PixelReader reader = mapImage.getPixelReader();
 		
@@ -45,20 +48,21 @@ public class MapParser
 		System.out.println("Height: " + height);
 		System.out.println("Width: " + width);
 		
-		TileState[][] map = new TileState[height][width];
+		boolean[][] map = new boolean[height][width];
 		
 		for (int r = 0; r < height; r++)
 		{
 			for (int c = 0; c < width; c++)
-				map[r][c] = TileState.colorToState(reader.getColor(c * 10 + 5, r * 10 + 5));
-			
-			System.out.println();
+			{
+				int color = reader.getArgb(c * 10 + 5, r * 10 + 5);
+				map[r][c] = color > -16777216 / 2;
+				// This sees if it is closer to min value: (-2)^24 or max value: -1
+			}
 		}
 		
 		return map;
 	}
 	
-	@Deprecated
 	public static boolean[][] getMap()
 	{
 		File map = new File("maps/map1.txt");

@@ -2,7 +2,6 @@ package thoniyil.sridaran.pacmangame.mapcreator;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
 
@@ -27,20 +26,13 @@ import thoniyil.sridaran.pacmangame.main.MapParser;
 
 public class MapCreator
 {
-	enum PlaceState
-	{
-		WALL_EMPTY, PACMAN_EMPTY, GHOST_EMPTY, DEADEND_EMPTY;
-	}
-	
 	private static int tileSize = 20;
 	private static TogglableImageView[][] icons;
-	
-	private static PlaceState placeState;
 	
 	private static int h = 20;
 	private static int w = 20;
 	
-	Scene getMapCreatorScene()
+	public Scene getMapCreatorScene()
 	{
 		VBox master = new VBox();
 		HBox topBar = new HBox(10);
@@ -53,11 +45,10 @@ public class MapCreator
 		//pane.setPadding(new Insets(0, -(w * tileSize) / 4, -(h * tileSize) / 4, 0));
 		Scene sc = new Scene(master);
 		//pane.setOnMouseClicked((MouseEvent e) -> System.out.println("Scene clicked"));
-		placeState = PlaceState.WALL_EMPTY;
 		return sc;
 	}
 	
-	Scene getMapCreatorScene(Image startMap)
+	public Scene getMapCreatorScene(Image startMap)
 	{
 		if (startMap == null)
 			return getMapCreatorScene();
@@ -150,7 +141,7 @@ public class MapCreator
 		}
 	}
 	
-	private void initPane(GridPane pane, TileState[][] map)
+	private void initPane(GridPane pane, boolean[][] map)
 	{
 		icons = new TogglableImageView[h][w];
 		for (int r = 0; r < h; r++)
@@ -181,12 +172,7 @@ public class MapCreator
 		currentMap.toggle(x, y);
 	}*/
 	
-	static PlaceState getCurrentToggleState()
-	{
-		return placeState;
-	}
-	
-	static void writeMapToFile()
+	public static void writeMapToFile()
 	{
 		int count = 1;
 		
@@ -198,7 +184,7 @@ public class MapCreator
 		writeMapToFile(file);
 	}
 
-	static void writeMapToFile(File file)
+	public static void writeMapToFile(File file)
 	{
 		try {
 			ImageIO.write(renderMap(icons, 10), "jpg", file);
@@ -208,15 +194,15 @@ public class MapCreator
 		}
 	}
 	
-	static int getTileSize()
+	public static int getTileSize()
 	{
 		return tileSize;
 	}
 	
-	static BufferedImage renderMap(TogglableImageView[][] map, int renderTileSize)
+	public static BufferedImage renderMap(TogglableImageView[][] map, int renderTileSize)
 	{
-		BufferedImage im = new BufferedImage(renderTileSize * map[0].length, renderTileSize * map.length, BufferedImage.TYPE_INT_RGB);
-		int[] pixels = ((DataBufferInt) (im.getRaster().getDataBuffer())).getData();
+		BufferedImage im = new BufferedImage(renderTileSize * map[0].length, renderTileSize * map.length, BufferedImage.TYPE_BYTE_GRAY);
+		byte[] pixels = ((DataBufferByte) (im.getRaster().getDataBuffer())).getData();
 		
 		int pixelIndex = 0;
 		
@@ -225,7 +211,7 @@ public class MapCreator
 			for (int i = 0; i < renderTileSize; i++)
 				for (int c = 0; c < map[0].length; c++)
 				{
-					int pixelValue = map[r][c].getState().stateToRGB();
+					byte pixelValue = (map[r][c].getState()) ? (byte) 255 : 0;
 					int finalPixel = pixelIndex + renderTileSize;
 					while (pixelIndex < finalPixel)
 					{

@@ -41,6 +41,8 @@ public class UpdateThreadHandler
 		
 		while (!stopped)
 		{
+			long startTime = System.currentTimeMillis();
+			
 			pacman.move();
 			
 			for (Ghost g : ghosts)
@@ -52,11 +54,15 @@ public class UpdateThreadHandler
 			
 			try
 			{
-				Thread.sleep(updateDelay);
+				Thread.sleep((updateDelay - (System.currentTimeMillis() - startTime)));
 			}
 			catch (InterruptedException e)
 			{
-				
+				e.printStackTrace();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
 			}
 		}
 	}

@@ -195,10 +195,6 @@ public class Board extends Scene
 			
 			for (int j = 0; j < map[i].length; j++)
 			{
-				switch (map[i][j])
-				{
-				case COIN:
-				}
 				if (map[i][j])
 				{
 					Coin c = new Coin(j, i);
