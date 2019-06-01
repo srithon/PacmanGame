@@ -312,12 +312,13 @@ public class Board extends Scene
 			paint(i);
 		}*/
 		
-		for (Entity e : entitiesToRefresh)
+		for (Tile t : tilesToRefresh)
 		{
-			replaceEntity(e);
+			for (Entity e : t.getEntities())
+				paint(e);
 		}
 		
-		entitiesToRefresh.clear();
+		tilesToRefresh.clear();
 		
 		pacman.animate();
 		
