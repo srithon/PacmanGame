@@ -17,6 +17,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import thoniyil.sridaran.pacmangame.game.GameController;
+import thoniyil.sridaran.pacmangame.game.Tile;
 import thoniyil.sridaran.pacmangame.game.UpdateThreadHandler;
 import thoniyil.sridaran.pacmangame.game.entity.Blank;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
@@ -41,9 +42,9 @@ public class Board extends Scene
 	
 	private static boolean[][] map;
 	
-	private static HashMap<Integer, Entity> entities;
+	private static HashMap<Integer, Tile> tiles;
 	
-	private static HashSet<Entity> entitiesToRefresh;
+	private static HashSet<Tile> tilesToRefresh;
 	
 	private static ImageView[][] icons;
 	
@@ -74,8 +75,8 @@ public class Board extends Scene
 		
 		pane = new GridPane();
 		
-		entities = new HashMap<>();
-		entitiesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
+		tiles = new HashMap<>();
+		tilesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
 	}
 	
 	/*public Board(boolean[][] map)
@@ -93,16 +94,22 @@ public class Board extends Scene
 		return getPositionHash(j.getX(), j.getY());
 	}
 	
-	public static int getPositionHash(int x, int y)
+	public static int getPositionHash(float x, float y)
 	{
-		return y * map[0].length + x;
+		return (int) (y * map[0].length) + (int) x;
 	}
 	
 	public static void deleteEntity(Entity e)
 	{
-		Entity blank = new Blank(e.getPosition());
-		entities.put(getPositionHash(e.getPosition()), blank);
-		addToEntitiesToRefresh(blank);
+		//Entity blank = new Blank(e.getPosition());
+		//entities.put(getPositionHash(e.getPosition()), blank);
+		Tile[] t = getTiles(e.getPosition());
+		
+		for (Tile c : t)
+		{
+			c.removeEntity(e);
+			addToTilesToRefresh(c);
+		}
 	}
 	
 	public static void setMap(boolean[][] map)
@@ -113,10 +120,51 @@ public class Board extends Scene
 		icons = new ImageView[HEIGHT][WIDTH];
 	}
 	
+	private static Tile[] getTiles(Position p)
+	{
+		float x = p.getX();
+		float y = p.getY();
+		
+		HashSet<Tile> positionTiles = new HashSet<>(3, 0.66f);
+		
+		positionTiles.add(tiles.get(getPositionHash(x, y)));
+		
+		if ((int) x + 1 != (int) x)
+		{
+			positionTiles.add(tiles.get(getPositionHash(x + 1, y)));
+			
+			if ((int) y + 1 != (int) y)
+			{
+				positionTiles.add(tiles.get(getPositionHash(x + 1, y + 1)));
+			}
+		}
+		if ((int) y + 1 != (int) y)
+		{
+			positionTiles.add(tiles.get(getPositionHash(x, y + 1)));
+		}
+		
+		return positionTiles.toArray(new Tile[0]);
+	}
+	
+	/*
 	public static boolean isEmpty(Position pos)
 	{
 		return isEmpty(pos.getX(), pos.getY());
 	}
+	*/
+	
+	/*
+	public static boolean isEmpty(float x, float y)
+	{
+		if (!isEmpty((int) x, (int) y))
+			return false;
+		
+		if (!isEmpty((int) (x + GameController.TILE_PADDING), (int) (y + GameController.TILE_PADDING)))
+			return false;
+		
+		return isEmpty((int) (x - GameController.TILE_PADDING), (int) (y - GameController.TILE_PADDING));
+	}
+	*/
 	
 	public static boolean isEmpty(int x, int y)
 	{
@@ -146,9 +194,9 @@ public class Board extends Scene
 		return pacman;
 	}
 	
-	public static Entity getEntity(int posHash)
+	public static Entity[] getEntities(int posHash)
 	{
-		return entities.get(posHash);
+		return tiles.get(posHash).getEntities();
 	}
 	
 	public void placeEntity(Entity e)
@@ -336,7 +384,7 @@ public class Board extends Scene
 		}
 	}
 	
-	public static void addToEntitiesToRefresh(Entity j)
+	public static void addToTilesToRefresh(Tile j)
 	{
 		entitiesToRefresh.add(j);
 	}

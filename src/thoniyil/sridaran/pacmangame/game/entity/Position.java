@@ -1,30 +1,32 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
+import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-public class Position implements Comparable<Position>
+// describes upper-left corner of the image
+public class Position// implements Comparable<Position>
 {
-	private int x, y;
+	private float x, y;
 	
 	public Position()
 	{
 		this(0, 0);
 	}
 	
-	public Position(int x, int y)
+	public Position(float x, float y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 	
 	//getters
-	public int getX()
+	public float getX()
 	{
 		return x;
 	}
 	
-	public int getY()
+	public float getY()
 	{
 		return y;
 	}
@@ -59,40 +61,42 @@ public class Position implements Comparable<Position>
 	
 	public boolean leftSafe()
 	{
-		if (!Board.isEmpty(x - 1, y))
+		// int cast y or no?
+		if (!Board.isEmpty((int) (x - GameController.MOVE_FACTOR), (int) y))
 			return false;
 		//return left();
-		x--;
+		x -= GameController.MOVE_FACTOR;
 		return true;
 	}
 	
 	public boolean rightSafe()
 	{
-		if (!Board.isEmpty(x + 1, y))
+		if (!Board.isEmpty((int) (x + GameController.MOVE_FACTOR), (int) y))
 			return false;
 		//return right();
-		x++;
+		x += GameController.MOVE_FACTOR;
 		return true;
 	}
 	
 	public boolean upSafe()
 	{
-		if (!Board.isEmpty(x, y + 1))
+		if (!Board.isEmpty((int) x, (int) (y + GameController.MOVE_FACTOR)))
 			return false;
 		//return up();
-		y++;
+		y += GameController.MOVE_FACTOR;
 		return true;
 	}
 	
 	public boolean downSafe()
 	{
-		if (!Board.isEmpty(x, y - 1))
+		if (!Board.isEmpty((int) x, (int) (y - GameController.MOVE_FACTOR)))
 			return false;
 		//return down();
-		y--;
+		y -= GameController.MOVE_FACTOR;
 		return true;
 	}
 	
+	/*
 	public boolean equals(Position o)
 	{
 		//System.out.println(o + " " + this);
@@ -103,18 +107,21 @@ public class Position implements Comparable<Position>
 	{
 		return this.x == x && this.y == y;
 	}
+	*/
 	
 	public String toString()
 	{
 		return "(" + x + ", " + y + ")";
 	}
 	
+	/*
 	public int compareTo(Position o)
 	{
 		int a = y * Board.WIDTH + x;
 		int b = o.y * Board.WIDTH + o.x;
 		return a - b;
 	}
+	*/
 	
 	public Position copy()
 	{

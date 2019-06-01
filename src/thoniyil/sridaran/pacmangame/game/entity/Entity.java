@@ -13,7 +13,7 @@ public abstract class Entity
 		this(p.getX(), p.getY());
 	}
 	
-	public Entity(int x, int y)
+	public Entity(float x, float y)
 	{
 		pos = new Position(x, y);
 	}

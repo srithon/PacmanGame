@@ -1,3 +1,5 @@
+Complete refactoring of Board to be a canvas
+
 Fix Ghost collision lastPos
 Finish LandingPage openMapCreator and openGame
 	Press ESC from any screen to return to landing page

@@ -22,7 +22,7 @@ public class Pacman extends MovableEntity
 		this(p.getX(), p.getY());
 	}
 	
-	public Pacman(int x, int y)
+	public Pacman(float x, float y)
 	{
 		super(x, y);
 		
