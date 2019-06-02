@@ -8,7 +8,9 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -52,7 +54,8 @@ public class Board extends Scene
 	private static Pacman pacman;
 	private static ArrayList<PowerUp> powerUps;
 	
-	private static GridPane pane;
+	private static Group mainLayoutGroup;
+	private static Canvas canvas;
 	
 	private static InputController controller;
 	
@@ -62,7 +65,8 @@ public class Board extends Scene
 	
 	public Board(int updatesPerSecond)
 	{
-		super(pane);
+		super(mainLayoutGroup);
+		mainLayoutGroup.getChildren().add(canvas = new Canvas(map[0].length * TILE_SIZE, map.length * TILE_SIZE));
 		updater = new UpdateThreadHandler(updatesPerSecond);
 		init();
 	}
@@ -73,16 +77,11 @@ public class Board extends Scene
 		
 		//icons = new ImageView[HEIGHT][WIDTH];
 		
-		pane = new GridPane();
+		mainLayoutGroup = new Group();
 		
 		tiles = new HashMap<>();
 		tilesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
 	}
-	
-	/*public Board(boolean[][] map)
-	{
-		this.map = map;
-	}*/
 	
 	public static void setController(InputController controller)
 	{
@@ -219,6 +218,7 @@ public class Board extends Scene
 	{
 		int[] xy = getPositionCoordinates(e.getPosition());
 		// TODO draw on screen using graphics context
+		canvas.getGraphicsContext2D().drawImage(e.getImage(), xy[0], xy[1]);
 	}
 	
 	public static int[] getPositionCoordinates(Position p)
@@ -317,11 +317,6 @@ public class Board extends Scene
 	
 	public static void refresh()
 	{
-		/*for (Coin i : coins)
-		{
-			paint(i);
-		}*/
-		
 		for (Tile t : tilesToRefresh)
 		{
 			for (Entity e : t.getEntities())
