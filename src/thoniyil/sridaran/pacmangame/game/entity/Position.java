@@ -83,7 +83,7 @@ public class Position// implements Comparable<Position>
 		if (!Board.isEmpty((int) x, (int) (y - GameController.MOVE_FACTOR)))
 			return false;
 		//return up();
-		y += GameController.MOVE_FACTOR;
+		y -= GameController.MOVE_FACTOR;
 		return true;
 	}
 	
@@ -92,7 +92,7 @@ public class Position// implements Comparable<Position>
 		if (!Board.isEmpty((int) x, (int) (y + Board.TILE_SIZE + GameController.MOVE_FACTOR)))
 			return false;
 		//return down();
-		y -= GameController.MOVE_FACTOR;
+		y += GameController.MOVE_FACTOR;
 		return true;
 	}
 	
