@@ -22,4 +22,6 @@ public abstract class Entity
 	{
 		return pos;
 	}
+	
+	public abstract int paintPrecedence(); //0 is first, 1 is second...
 }

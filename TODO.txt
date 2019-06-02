@@ -1,5 +1,7 @@
 Complete refactoring of Board to be a canvas
 
+Getting rid of all GridPane references and replacing with Canvas
+
 Fix Ghost collision lastPos
 Finish LandingPage openMapCreator and openGame
 	Press ESC from any screen to return to landing page

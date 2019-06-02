@@ -69,4 +69,12 @@ public class Pacman extends MovableEntity
 			if (currentPos.rightSafe())
 				return;
 	}*/
+	
+	public int paintPrecedence()
+	{
+		if (GameController.isPowerPelletActive())
+			return Integer.MAX_VALUE;
+		else
+			return 1;
+	}
 }

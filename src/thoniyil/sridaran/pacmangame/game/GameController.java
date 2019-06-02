@@ -124,15 +124,21 @@ public class GameController
 		if (j instanceof Consumable && j instanceof Static)
 			return true;
 		
+		if (isPowerPelletActive())
+			return true;
+		
+		return !(j instanceof Ghost || j instanceof Blank);
+	}
+	
+	public static boolean isPowerPelletActive()
+	{
 		for (Effect e : currentEffects)
 		{
 			if (e.getModifier() == Modifier.POWER_PELLET)
-			{
 				return true;
-			}
 		}
 		
-		return !(j instanceof Ghost || j instanceof Blank);
+		return false;
 	}
 	
 	public static void handleCollision()
@@ -151,12 +157,17 @@ public class GameController
 		
 		Pacman pacman = Board.getPacman();
 		
+		
+		// TODO is lastPos still necessary? I wonder
+		
+		/*
 		Entity lastPos = Board.getEntity(Board.getPositionHash(pacman.getLastPosition()));
 		if (lastPos instanceof Ghost && ((Ghost) lastPos).getDirection() == Direction.getOppositeDirection(pacmanDirection))
 		{
 			System.out.println("Lastpos");
 			GameController.gameOver();
 		}
+		*/
 		Entity currentPos = Board.getPacmanReplacedEntity();
 		if (isConsumable(currentPos))
 		{

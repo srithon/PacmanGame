@@ -202,22 +202,33 @@ public class Board extends Scene
 	public void placeEntity(Entity e)
 	{
 		Position p = e.getPosition();
-		icons[p.getY()][p.getX()] = new ImageView();
-		icons[p.getY()][p.getX()].setImage(e.getImage());
-		entities.put(getPositionHash(p), e);
+		paint(e);
+		tiles.get(getPositionHash(p)).addEntity(e);
 	}
 	
+	/*
 	public static Entity replaceEntity(Entity e)
 	{
 		Position p = e.getPosition();
 		paint(e);
 		return entities.put(getPositionHash(p), e); //get the entity underneath
 	}
+	*/
 	
 	public static void paint(Entity e)
 	{
-		Position p = e.getPosition();
-		icons[p.getY()][p.getX()].setImage(e.getImage());
+		int[] xy = getPositionCoordinates(e.getPosition());
+		// TODO draw on screen using graphics context
+	}
+	
+	public static int[] getPositionCoordinates(Position p)
+	{
+		return getPositionCoordinates(p.getX(), p.getY());
+	}
+	
+	public static int[] getPositionCoordinates(float x, float y)
+	{
+		return new int[] { (int) x * Board.TILE_SIZE, (int) y * Board.TILE_SIZE };
 	}
 	
 	public void putEntities()
@@ -270,12 +281,11 @@ public class Board extends Scene
 	
 	public Position randomAvailablePosition()
 	{
-		Position p = null;
+		int x, y;
+		while (!isEmpty(x = (int) (Math.random() * map[0].length), y = (int) (Math.random() * map.length)))
+			System.out.println(x + " " + y);
 		
-		while (!isEmpty((p = new Position((int) (Math.random() * map[0].length), (int) (Math.random() * map.length)))))
-			System.out.println(p);
-		
-		return p;
+		return new Position(x, y);
 	}
 	
 	public void stop()
@@ -344,18 +354,45 @@ public class Board extends Scene
 	
 	public static void handlePacmanMovement()
 	{
+		/*
 		Entity currentPos = replaceEntity(pacman);
 		if (!(currentPos instanceof Consumable))
 			entitiesToRefresh.add(currentPos);
 		pacmanReplaced = currentPos;
+		*/
+		
+		Tile[] pacmanCurrentTiles = getTiles(pacman.getPosition());
+		
+		for (Tile t : pacmanCurrentTiles)
+		{
+			if (t.numEntities() > 1)
+			{
+				Entity[] entities = t.getEntities();
+				for (Entity e : entities)
+				{
+					if (e instanceof Pacman)
+						continue;
+					
+					if (e instanceof Consumable)
+						((Consumable) e).consume();
+					else if (e instanceof Ghost)
+						if (GameController.isConsumable(e))
+							GameController.consumeGhost((Ghost) e);
+						else
+							GameController.gameOver();
+				}
+			}
+		}
 	}
 	
-	public static Entity handleMovement(MovableEntity entity)
+	public static void handleMovement(MovableEntity entity)
 	{
-		Entity currentPos = replaceEntity(entity);
-		if (currentPos instanceof Static)
-			entitiesToRefresh.add(currentPos);
-		return currentPos;
+		Tile[] currentTiles = getTiles(entity.getPosition());
+		
+		for (Tile t : currentTiles)
+		{
+			addToTilesToRefresh(t);
+		}
 	}
 	
 	public static void deleteMoving(MovableEntity e)
@@ -387,29 +424,6 @@ public class Board extends Scene
 	
 	public static void addToTilesToRefresh(Tile j)
 	{
-		entitiesToRefresh.add(j);
+		tilesToRefresh.add(j);
 	}
-	
-	/*public static int getCoinArrayListIndex(int x, int y)
-	{
-		Position r = new Position(x, y);
-		int ind = y * icons[0].length + x;
-		Position c = null;
-		
-		while ((c = coins.get(ind).getPosition()).compareTo(r) > WIDTH) //c is after r
-		{
-			y--;
-			
-			ind = y * icons[0].length + x;
-		}
-		
-		while ((c = coins.get(ind).getPosition()).compareTo(r) > 1)
-		{
-			x--;
-			
-			ind = y * icons[0].length + x;
-		}
-		
-		return ind;
-	}*/
 }

@@ -116,4 +116,9 @@ public class Ghost extends MovableEntity implements Changable, Consumable
 	{
 		GameController.consumeGhost(this);
 	}
+	
+	public int paintPrecedence()
+	{
+		return 2;
+	}
 }

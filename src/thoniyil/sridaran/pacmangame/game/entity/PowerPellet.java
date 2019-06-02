@@ -27,4 +27,9 @@ public class PowerPellet extends PowerUp implements Static, Consumable
 	{
 		GameController.executeEffect(getEffect());
 	}
+	
+	public int paintPrecedence()
+	{
+		return -1;
+	}
 }

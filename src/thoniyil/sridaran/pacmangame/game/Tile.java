@@ -1,11 +1,8 @@
 package thoniyil.sridaran.pacmangame.game;
 
 import java.util.HashSet;
-import java.util.function.Consumer;
 
-import thoniyil.sridaran.pacmangame.game.entity.Coin;
 import thoniyil.sridaran.pacmangame.game.entity.Entity;
-import thoniyil.sridaran.pacmangame.game.entity.Ghost;
 
 public class Tile
 {
@@ -51,19 +48,24 @@ public class Tile
 		return entities.toArray(new Entity[0]);
 	}
 	
-	/*
-	public void handleCollision()
+	public Entity[] getEntitiesSorted()
 	{
-		if (entities.size() < 2)
-			return;
+		// paint first in the beginning, paint last at the end
+		// lower the paint precedence, the earlier get painted
+		// paint precedence ascending
+		Entity[] entities = getEntities();
 		
-		for (Entity e : entities)
+		for (int i = 1; i < entities.length; i++)
 		{
-			if (e instanceof Coin)
-				GameController.useCoin((Coin) e); 
-			else if (e instanceof Ghost)
-				GameController.handleGhostCollision();
+			if (i != 0 && entities[i - 1].paintPrecedence() > entities[i].paintPrecedence())
+			{
+				Entity temp = entities[i - 1];
+				entities[i - 1] = entities[i];
+				entities[i] = temp;
+				i--;
+			}
 		}
+		
+		return entities;
 	}
-	*/
 }
