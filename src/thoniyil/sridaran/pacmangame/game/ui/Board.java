@@ -202,7 +202,10 @@ public class Board extends Scene
 	{
 		Position p = e.getPosition();
 		paint(e);
-		tiles.get(getPositionHash(p)).addEntity(e);
+		Tile t = tiles.get(getPositionHash(p));
+		if (t == null)
+			t = new Tile();
+		t.addEntity(e);
 	}
 	
 	/*
@@ -233,25 +236,8 @@ public class Board extends Scene
 	
 	public void putEntities()
 	{
-		ghosts = new ArrayList<>();
-		
-		for (int i = 0; i < GameController.GHOST_COUNT; i++)
-		{
-			Ghost g = new Ghost(randomAvailablePosition());
-			ghosts.add(g);
-			placeEntity(g);
-		}
-		
-		pacman = new Pacman(randomAvailablePosition());
-		placeEntity(pacman);
-		
 		for (int i = 0; i < map.length; i++)
-		{
-			RowConstraints con = new RowConstraints();
-            // Here we set the pref height of the row, but you could also use .setPercentHeight(double) if you don't know much space you will need for each label.
-            con.setPrefHeight(TILE_SIZE + 0.25);
-            pane.getRowConstraints().add(con);
-			
+		{	
 			for (int j = 0; j < map[i].length; j++)
 			{
 				if (map[i][j])
@@ -263,18 +249,24 @@ public class Board extends Scene
 				}
 				else
 				{
-					icons[i][j] = new ImageView();
-					icons[i][j].setImage(Wall.getStaticImage());
+					// is this legal?
+					Wall w = new Wall(j, i);
+					placeEntity(w);
 				}
-				
-				icons[i][j].setOnMouseClicked(new ImageViewClickHandler(i, j));
-				
-				GridPane.setHalignment(icons[i][j], HPos.CENTER);
-				GridPane.setValignment(icons[i][j], VPos.CENTER);
-				
-				pane.add(icons[i][j], j, i);
 			}
 		}
+		
+		ghosts = new ArrayList<>();
+		
+		for (int i = 0; i < GameController.GHOST_COUNT; i++)
+		{
+			Ghost g = new Ghost(randomAvailablePosition());
+			ghosts.add(g);
+			placeEntity(g);
+		}
+		
+		pacman = new Pacman(randomAvailablePosition());
+		placeEntity(pacman);
 		
 		powerUps = new ArrayList<>();
 	}

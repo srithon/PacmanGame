@@ -1,5 +1,8 @@
 Complete refactoring of Board to be a canvas
 
+Change image icon to have space around it
+Fix NullPointerException
+
 Getting rid of all GridPane references and replacing with Canvas
 
 Refactor putEntities()
