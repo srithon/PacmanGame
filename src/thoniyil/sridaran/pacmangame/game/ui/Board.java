@@ -124,9 +124,13 @@ public class Board extends Scene
 		float x = p.getX();
 		float y = p.getY();
 		
+		//System.out.println("Get Tiles: " + x + " " + y);
+		
 		HashSet<Tile> positionTiles = new HashSet<>(3, 0.66f);
 		
 		positionTiles.add(tiles.get(getPositionHash(x, y)));
+		
+		//System.out.println(positionTiles);
 		
 		if ((int) x + 1 != (int) x)
 		{
@@ -141,6 +145,10 @@ public class Board extends Scene
 		{
 			positionTiles.add(tiles.get(getPositionHash(x, y + 1)));
 		}
+		
+		positionTiles.remove(null);
+		
+		//System.out.println(positionTiles);
 		
 		return positionTiles.toArray(new Tile[0]);
 	}
@@ -200,11 +208,10 @@ public class Board extends Scene
 	
 	public void placeEntity(Entity e)
 	{
-		Position p = e.getPosition();
 		paint(e);
-		Tile t = tiles.get(getPositionHash(p));
-		if (t == null)
-			t = new Tile();
+		int hash = getPositionHash(e.getPosition());
+		tiles.putIfAbsent(hash, new Tile(e.getPosition()));
+		Tile t = tiles.get(hash);
 		t.addEntity(e);
 	}
 	
@@ -219,19 +226,19 @@ public class Board extends Scene
 	
 	public static void paint(Entity e)
 	{
-		int[] xy = getPositionCoordinates(e.getPosition());
+		float[] xy = getPositionCoordinates(e.getPosition());
 		// TODO draw on screen using graphics context
 		canvas.getGraphicsContext2D().drawImage(e.getImage(), xy[0], xy[1]);
 	}
 	
-	public static int[] getPositionCoordinates(Position p)
+	public static float[] getPositionCoordinates(Position p)
 	{
 		return getPositionCoordinates(p.getX(), p.getY());
 	}
 	
-	public static int[] getPositionCoordinates(float x, float y)
+	public static float[] getPositionCoordinates(float x, float y)
 	{
-		return new int[] { (int) x * Board.TILE_SIZE, (int) y * Board.TILE_SIZE };
+		return new float[] { x * Board.TILE_SIZE, y * Board.TILE_SIZE };
 	}
 	
 	public void putEntities()
@@ -301,6 +308,20 @@ public class Board extends Scene
 		updater.begin();
 	}
 	
+	private static void clearTile(Tile t)
+	{
+		Position p = t.getTopLeftCorner();
+		float[] xy = getPositionCoordinates(p);
+		canvas.getGraphicsContext2D().clearRect(xy[0], xy[1], Board.TILE_SIZE, Board.TILE_SIZE);
+	}
+	
+	private static void paintTile(Tile t)
+	{
+		clearTile(t);
+		for (Entity e : t.getEntitiesSorted())
+			paint(e);
+	}
+	
 	/*public static void paint(Entity e)
 	{
 		Position p = e.getPosition();
@@ -311,8 +332,10 @@ public class Board extends Scene
 	{
 		for (Tile t : tilesToRefresh)
 		{
-			for (Entity e : t.getEntities())
-				paint(e);
+			//clear tile
+			//clearTile(t);
+			t.removeNonStatic();
+			paintTile(t);
 		}
 		
 		tilesToRefresh.clear();
@@ -326,7 +349,7 @@ public class Board extends Scene
 		
 		handlePacmanMovement();
 		
-		GameController.handleCollision();
+		//GameController.handleCollision();
 		
 		/*for (PowerUp i : powerUps)
 		{
@@ -352,6 +375,8 @@ public class Board extends Scene
 		
 		for (Tile t : pacmanCurrentTiles)
 		{
+			t.addEntity(pacman);
+			addToTilesToRefresh(t);
 			if (t.numEntities() > 1)
 			{
 				Entity[] entities = t.getEntities();
@@ -360,7 +385,7 @@ public class Board extends Scene
 					if (e instanceof Pacman)
 						continue;
 					
-					if (e instanceof Consumable)
+					if (e instanceof Consumable && e instanceof Static)
 						((Consumable) e).consume();
 					else if (e instanceof Ghost)
 						if (GameController.isConsumable(e))
@@ -369,6 +394,7 @@ public class Board extends Scene
 							GameController.gameOver();
 				}
 			}
+			paintTile(t);
 		}
 	}
 	
@@ -378,7 +404,9 @@ public class Board extends Scene
 		
 		for (Tile t : currentTiles)
 		{
+			t.addEntity(entity);
 			addToTilesToRefresh(t);
+			paintTile(t);
 		}
 	}
 	
@@ -389,23 +417,6 @@ public class Board extends Scene
 		if (e instanceof Ghost)
 		{
 			ghosts.remove(e);
-		}
-	}
-	
-	private class ImageViewClickHandler implements EventHandler<MouseEvent>
-	{
-		private final int x;
-		private final int y;
-		
-		public ImageViewClickHandler(final int x, final int y)
-		{
-			this.x = x;
-			this.y = y;
-		}
-		
-		public void handle(MouseEvent click)
-		{
-			System.out.println("(" + x + ", " + y + "}");
 		}
 	}
 	

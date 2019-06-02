@@ -22,11 +22,11 @@ import thoniyil.sridaran.pacmangame.main.MapParser;
 public class GameController
 {
 	public static final int GHOST_COUNT = 5;
-	public static final float MOVE_FACTOR = 0.5f;
+	public static final float MOVE_FACTOR = 0.10f;
 	// adjust?
 	public static final float TILE_PADDING = Board.TILE_SIZE / 2.0f;
 	
-	private static final int UPDATES_PER_SECOND = 2;
+	private static final int UPDATES_PER_SECOND = 20;
 	
 	private static final int DEFAULT_POINTS_PER_COIN = 10;
 	private static int currentPointsPerCoin = DEFAULT_POINTS_PER_COIN;
@@ -141,6 +141,7 @@ public class GameController
 		return false;
 	}
 	
+	/*
 	public static void handleCollision()
 	{
 		/*
@@ -155,7 +156,7 @@ public class GameController
 		 * 
 		 */
 		
-		Pacman pacman = Board.getPacman();
+		//Pacman pacman = Board.getPacman();
 		
 		
 		// TODO is lastPos still necessary? I wonder
@@ -168,6 +169,8 @@ public class GameController
 			GameController.gameOver();
 		}
 		*/
+	
+	/*
 		Entity currentPos = Board.getPacmanReplacedEntity();
 		if (isConsumable(currentPos))
 		{
@@ -179,6 +182,7 @@ public class GameController
 			GameController.gameOver();
 		}
 	}
+	*/
 	
 	public static void gameOver()
 	{
@@ -196,6 +200,7 @@ public class GameController
 	{
 		score.increment(currentPointsPerCoin);
 		Board.deleteEntity(c);
+		System.out.println("Used coin");
 	}
 	
 	public static int getCurrentRound()

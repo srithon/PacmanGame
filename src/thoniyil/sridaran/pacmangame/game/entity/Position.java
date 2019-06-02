@@ -71,7 +71,7 @@ public class Position// implements Comparable<Position>
 	
 	public boolean rightSafe()
 	{
-		if (!Board.isEmpty((int) (x + GameController.MOVE_FACTOR), (int) y))
+		if (!Board.isEmpty((int) (x + Board.TILE_SIZE + GameController.MOVE_FACTOR), (int) y))
 			return false;
 		//return right();
 		x += GameController.MOVE_FACTOR;
@@ -89,7 +89,7 @@ public class Position// implements Comparable<Position>
 	
 	public boolean downSafe()
 	{
-		if (!Board.isEmpty((int) x, (int) (y - GameController.MOVE_FACTOR)))
+		if (!Board.isEmpty((int) x, (int) (y - Board.TILE_SIZE - GameController.MOVE_FACTOR)))
 			return false;
 		//return down();
 		y -= GameController.MOVE_FACTOR;

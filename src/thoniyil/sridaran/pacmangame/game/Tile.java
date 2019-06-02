@@ -3,22 +3,31 @@ package thoniyil.sridaran.pacmangame.game;
 import java.util.HashSet;
 
 import thoniyil.sridaran.pacmangame.game.entity.Entity;
+import thoniyil.sridaran.pacmangame.game.entity.MovableEntity;
+import thoniyil.sridaran.pacmangame.game.entity.Position;
 
 public class Tile
 {
-	// does this need Position as an attribute?
+	// top left corner of tile (not pixel coord. grid coord)
+	private Position position;
 	private HashSet<Entity> entities;
 	
-	public Tile()
+	public Tile(Position position)
 	{
-		this(null);
+		this(position, null);
 	}
 	
-	public Tile(Entity initialEntity)
+	public Tile(Position position, Entity initialEntity)
 	{
 		entities = new HashSet<>(3, 1.0f);
+		this.position = position;
 		if (initialEntity != null)
 			entities.add(initialEntity);
+	}
+	
+	public Position getTopLeftCorner()
+	{
+		return position;
 	}
 	
 	public int numEntities()
@@ -40,6 +49,11 @@ public class Tile
 	{
 		if (!entities.remove(e))
 			System.out.println("Removed entity that was not in HashSet - Tile.java");
+	}
+	
+	public void removeNonStatic()
+	{
+		entities.removeIf(e -> e instanceof MovableEntity);
 	}
 	
 	//https://stackoverflow.com/questions/5690351/java-stringlist-toarray-gives-classcastexception
