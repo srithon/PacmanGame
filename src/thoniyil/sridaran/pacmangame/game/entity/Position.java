@@ -86,6 +86,8 @@ public class Position// implements Comparable<Position>
 	{
 		if (!Board.isEmpty((int) (x + 1 + GameController.MOVE_FACTOR), (int) y))
 			return false;
+		if (!Board.isEmpty((int) (x + 1 + GameController.MOVE_FACTOR), (int) (y + 1)))
+			return false;
 		x += GameController.MOVE_FACTOR;
 		return true;
 	}

@@ -1,4 +1,5 @@
 Complete refactoring of Board to be a canvas
+Somehow get directionSafe() methods working (all corners)
 
 Change image icon to have space around it
 Fix NullPointerException
