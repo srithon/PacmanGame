@@ -22,7 +22,7 @@ public class Pacman extends MovableEntity
 		this(p.getX(), p.getY());
 	}
 	
-	public Pacman(int x, int y)
+	public Pacman(float x, float y)
 	{
 		super(x, y);
 		
@@ -69,4 +69,12 @@ public class Pacman extends MovableEntity
 			if (currentPos.rightSafe())
 				return;
 	}*/
+	
+	public int paintPrecedence()
+	{
+		if (GameController.isPowerPelletActive())
+			return Integer.MAX_VALUE;
+		else
+			return 1;
+	}
 }

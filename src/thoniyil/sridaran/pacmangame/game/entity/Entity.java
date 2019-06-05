@@ -13,7 +13,7 @@ public abstract class Entity
 		this(p.getX(), p.getY());
 	}
 	
-	public Entity(int x, int y)
+	public Entity(float x, float y)
 	{
 		pos = new Position(x, y);
 	}
@@ -22,4 +22,6 @@ public abstract class Entity
 	{
 		return pos;
 	}
+	
+	public abstract int paintPrecedence(); //0 is first, 1 is second...
 }

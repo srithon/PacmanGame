@@ -42,7 +42,11 @@ public class UpdateThreadHandler
 		while (!stopped)
 		{
 			long startTime = System.currentTimeMillis();
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> da72d29cf3868dd45c91ecfce659d6d2bf7797e8
 			pacman.move();
 
 			for (Ghost g : ghosts)

@@ -26,4 +26,9 @@ public class Blank extends Entity implements Static
 		//return blankImage;
 		return null;
 	}
+	
+	public int paintPrecedence()
+	{
+		return Integer.MIN_VALUE + 1; // always painted first unless somehow there is a wall
+	}
 }

@@ -14,6 +14,11 @@ public abstract class MovableEntity extends Entity
 		super(x, y);
 	}
 	
+	protected MovableEntity(float x, float y)
+	{
+		super(x, y);
+	}
+	
 	public abstract void move();
 	
 	public Position getLastPosition()

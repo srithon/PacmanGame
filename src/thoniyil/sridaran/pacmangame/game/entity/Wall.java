@@ -32,4 +32,9 @@ public class Wall extends Entity
 	{
 		return wallIcon;
 	}
+	
+	public int paintPrecedence()
+	{
+		return Integer.MIN_VALUE; // loses to everything, even blanks
+	}
 }
