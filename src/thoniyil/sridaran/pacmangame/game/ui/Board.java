@@ -175,6 +175,7 @@ public class Board extends Scene
 	
 	public static boolean isEmpty(int x, int y)
 	{
+		System.out.println("Checking (" + x + ", " + y + ")");
 		try
 		{
 			return (map[y][x]);
@@ -332,8 +333,7 @@ public class Board extends Scene
 	{
 		for (Tile t : tilesToRefresh)
 		{
-			//clear tile
-			//clearTile(t);
+			clearTile(t);
 			t.removeNonStatic();
 			paintTile(t);
 		}

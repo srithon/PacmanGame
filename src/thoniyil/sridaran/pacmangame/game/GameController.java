@@ -21,12 +21,12 @@ import thoniyil.sridaran.pacmangame.main.MapParser;
 
 public class GameController
 {
-	public static final int GHOST_COUNT = 5;
+	public static final int GHOST_COUNT = 0;
 	public static final float MOVE_FACTOR = 0.10f;
 	// adjust?
 	public static final float TILE_PADDING = Board.TILE_SIZE / 2.0f;
 	
-	private static final int UPDATES_PER_SECOND = 20;
+	private static final int UPDATES_PER_SECOND = 1;
 	
 	private static final int DEFAULT_POINTS_PER_COIN = 10;
 	private static int currentPointsPerCoin = DEFAULT_POINTS_PER_COIN;

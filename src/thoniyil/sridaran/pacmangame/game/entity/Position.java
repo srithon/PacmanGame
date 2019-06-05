@@ -37,19 +37,31 @@ public class Position// implements Comparable<Position>
 		{
 			case UP:
 				if (!upSafe())
+				{
+					System.out.println("Up blocked");
 					return false;
+				}
 				break;
 			case DOWN:
 				if (!downSafe())
+				{
+					System.out.println("Down blocked");
 					return false;
+				}
 				break;
 			case LEFT:
 				if (!leftSafe())
+				{
+					System.out.println("Left blocked");
 					return false;
+				}
 				break;
 			case RIGHT:
 				if (!rightSafe())
+				{
+					System.out.println("Right blocked");
 					return false;
+				}
 				break;
 			default:
 				System.out.println("ERROR IN MOVE BOOLEAN IN GHOST: INVALID DIRETCION!");
@@ -62,18 +74,18 @@ public class Position// implements Comparable<Position>
 	public boolean leftSafe()
 	{
 		// int cast y or no?
+		System.out.println("Current Tile: (" + ((int) (x - GameController.MOVE_FACTOR)) + " " + (int) y + ")");
 		if (!Board.isEmpty((int) (x - GameController.MOVE_FACTOR), (int) y))
 			return false;
-		//return left();
+		if (!Board.isEmpty((int) (x - GameController.MOVE_FACTOR), (int) (y + 1)) )
 		x -= GameController.MOVE_FACTOR;
 		return true;
 	}
 	
 	public boolean rightSafe()
 	{
-		if (!Board.isEmpty((int) (x + Board.TILE_SIZE + GameController.MOVE_FACTOR), (int) y))
+		if (!Board.isEmpty((int) (x + 1 + GameController.MOVE_FACTOR), (int) y))
 			return false;
-		//return right();
 		x += GameController.MOVE_FACTOR;
 		return true;
 	}
@@ -82,16 +94,18 @@ public class Position// implements Comparable<Position>
 	{
 		if (!Board.isEmpty((int) x, (int) (y - GameController.MOVE_FACTOR)))
 			return false;
-		//return up();
+		if (!Board.isEmpty((int) (x + 1), (int) (y - GameController.MOVE_FACTOR)))
+			return false;
 		y -= GameController.MOVE_FACTOR;
 		return true;
 	}
 	
 	public boolean downSafe()
 	{
-		if (!Board.isEmpty((int) x, (int) (y + Board.TILE_SIZE + GameController.MOVE_FACTOR)))
+		if (!Board.isEmpty((int) x, (int) (y + 1 + GameController.MOVE_FACTOR)))
 			return false;
-		//return down();
+		if (!Board.isEmpty((int) (x + 1), (int) (y + 1 + GameController.MOVE_FACTOR)))
+			return false;
 		y += GameController.MOVE_FACTOR;
 		return true;
 	}
