@@ -77,19 +77,19 @@ public class Position implements Comparable<Position>
 	
 	public boolean upSafe()
 	{
-		if (!Board.isEmpty(x, y + 1))
+		if (!Board.isEmpty(x, y - 1))
 			return false;
 		//return up();
-		y++;
+		y--;
 		return true;
 	}
 	
 	public boolean downSafe()
 	{
-		if (!Board.isEmpty(x, y - 1))
+		if (!Board.isEmpty(x, y + 1))
 			return false;
 		//return down();
-		y--;
+		y++;
 		return true;
 	}
 	

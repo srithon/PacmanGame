@@ -40,9 +40,9 @@ public class InputController implements EventHandler<KeyEvent>
 		pacman.setLastPosition(pacman.getPosition());
 		
 		switch (c)
-		{ //UP and DOWN are switched for some reason
-			case UP: GameController.setNextMoveChar(Direction.DOWN); break;
-			case DOWN: GameController.setNextMoveChar(Direction.UP); break;
+		{
+			case UP: GameController.setNextMoveChar(Direction.UP); break;
+			case DOWN: GameController.setNextMoveChar(Direction.DOWN); break;
 			case LEFT: GameController.setNextMoveChar(Direction.LEFT); break;
 			case RIGHT: GameController.setNextMoveChar(Direction.RIGHT); break;
 		}
