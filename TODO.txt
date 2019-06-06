@@ -1,18 +1,3 @@
-Finish refactoring everything
-Fix getTiles
-
-Refactor Board's tiles to be 2d array instead of hashmap
-
-Complete refactoring of Board to be a canvas
-Somehow get directionSafe() methods working (all corners)
-
-Change image icon to have space around it
-Fix NullPointerException
-
-Getting rid of all GridPane references and replacing with Canvas
-
-Refactor putEntities()
-
 Fix Ghost collision lastPos
 Finish LandingPage openMapCreator and openGame
 	Press ESC from any screen to return to landing page

@@ -37,9 +37,4 @@ public class Coin extends Entity implements Consumable, Static
 	{
 		GameController.useCoin(this);
 	}
-	
-	public int paintPrecedence()
-	{
-		return 0;
-	}
 }

@@ -11,8 +11,8 @@ public class Pacman extends MovableEntity
 	
 	static
 	{
-		pacmanClosed = new Image("file:icons/pacmanClosed.jpg", Board.ICON_SIZE, Board.ICON_SIZE, false, true);
-		pacmanOpen = new Image("file:icons/pacmanOpen_grayBackground.png", Board.ICON_SIZE, Board.ICON_SIZE, false, true);
+		pacmanClosed = new Image("file:icons/pacmanClosed.jpg", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		pacmanOpen = new Image("file:icons/pacmanOpen_grayBackground.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
 	}
 	
 	private boolean open;
@@ -22,7 +22,7 @@ public class Pacman extends MovableEntity
 		this(p.getX(), p.getY());
 	}
 	
-	public Pacman(float x, float y)
+	public Pacman(int x, int y)
 	{
 		super(x, y);
 		
@@ -69,12 +69,4 @@ public class Pacman extends MovableEntity
 			if (currentPos.rightSafe())
 				return;
 	}*/
-	
-	public int paintPrecedence()
-	{
-		if (GameController.isPowerPelletActive())
-			return Integer.MAX_VALUE;
-		else
-			return 1;
-	}
 }

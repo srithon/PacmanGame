@@ -8,9 +8,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +17,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import thoniyil.sridaran.pacmangame.game.GameController;
-import thoniyil.sridaran.pacmangame.game.Tile;
 import thoniyil.sridaran.pacmangame.game.UpdateThreadHandler;
 import thoniyil.sridaran.pacmangame.game.entity.Blank;
 import thoniyil.sridaran.pacmangame.game.entity.Coin;
@@ -36,23 +33,25 @@ import thoniyil.sridaran.pacmangame.game.entity.Wall;
 public class Board extends Scene
 {
 	public static final int TILE_SIZE;
-	public static final int ICON_SIZE;
 	
 	public static int WIDTH;
 	public static int HEIGHT;
 	
+	private static int initialCoinCount;
+	
 	private static boolean[][] map;
 	
-	private static Tile[][] tiles;
+	private static HashMap<Integer, Entity> entities;
 	
-	private static HashSet<Tile> tilesToRefresh;
+	private static HashSet<Entity> entitiesToRefresh;
+	
+	private static ImageView[][] icons;
 	
 	private static ArrayList<Ghost> ghosts;
 	private static Pacman pacman;
 	private static ArrayList<PowerUp> powerUps;
 	
-	private static Group mainLayoutGroup;
-	private static Canvas canvas;
+	private static GridPane pane;
 	
 	private static InputController controller;
 	
@@ -62,8 +61,7 @@ public class Board extends Scene
 	
 	public Board(int updatesPerSecond)
 	{
-		super(mainLayoutGroup);
-		mainLayoutGroup.getChildren().add(canvas = new Canvas(map[0].length * TILE_SIZE, map.length * TILE_SIZE));
+		super(pane);
 		updater = new UpdateThreadHandler(updatesPerSecond);
 		init();
 	}
@@ -71,14 +69,19 @@ public class Board extends Scene
 	static
 	{
 		TILE_SIZE = 25;
-		ICON_SIZE = 20;
 		
 		//icons = new ImageView[HEIGHT][WIDTH];
 		
-		mainLayoutGroup = new Group();
+		pane = new GridPane();
 		
-		tilesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
+		entities = new HashMap<>();
+		entitiesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
 	}
+	
+	/*public Board(boolean[][] map)
+	{
+		this.map = map;
+	}*/
 	
 	public static void setController(InputController controller)
 	{
@@ -90,95 +93,33 @@ public class Board extends Scene
 		return getPositionHash(j.getX(), j.getY());
 	}
 	
-	public static int getPositionHash(float x, float y)
+	public static int getPositionHash(int x, int y)
 	{
-		return (int) (y * map[0].length) + (int) x;
+		return y * map[0].length + x;
 	}
 	
 	public static void deleteEntity(Entity e)
 	{
-		//Entity blank = new Blank(e.getPosition());
-		//entities.put(getPositionHash(e.getPosition()), blank);
-		Tile[] t = getTiles(e.getPosition());
-		
-		for (Tile c : t)
-		{
-			c.removeEntity(e);
-			addToTilesToRefresh(c);
-		}
+		Entity blank = new Blank(e.getPosition());
+		entities.put(getPositionHash(e.getPosition()), blank);
+		addToEntitiesToRefresh(blank);
 	}
 	
 	public static void setMap(boolean[][] map)
 	{
 		Board.map = map;
-		tiles = new Tile[map.length][map[0].length];
 		Board.WIDTH = map[0].length;
 		Board.HEIGHT = map.length;
+		icons = new ImageView[HEIGHT][WIDTH];
 	}
 	
-	private static Tile getTile(double x, double y)
-	{
-		return tiles[(int) y][(int) x];
-	}
-	
-	private static Tile[] getTiles(Position p)
-	{
-		float x = p.getX();
-		float y = p.getY();
-		
-		//System.out.println("Get Tiles: " + x + " " + y);
-		
-		HashSet<Tile> positionTiles = new HashSet<>(3, 0.66f);
-		
-		positionTiles.add(getTile(x, y));
-		
-		//System.out.println(positionTiles);
-		
-		//reasoning: add fraction of tile that icon takes up
-		if ((int) (x + Board.ICON_SIZE / Board.TILE_SIZE) != (int) x)
-		{
-			positionTiles.add(getTile(x + 1, y)); // change to above?
-			
-			if ((int) (y + Board.ICON_SIZE / Board.TILE_SIZE) != (int) y)
-			{
-				positionTiles.add(getTile(x + 1, y + 1));
-			}
-		}
-		if ((int) (y + Board.ICON_SIZE / Board.TILE_SIZE) != (int) y)
-		{
-			positionTiles.add(getTile(x, y + 1));
-		}
-		
-		positionTiles.remove(null);
-		
-		//System.out.println(positionTiles);
-		
-		return positionTiles.toArray(new Tile[0]);
-	}
-	
-	/*
 	public static boolean isEmpty(Position pos)
 	{
 		return isEmpty(pos.getX(), pos.getY());
 	}
-	*/
-	
-	/*
-	public static boolean isEmpty(float x, float y)
-	{
-		if (!isEmpty((int) x, (int) y))
-			return false;
-		
-		if (!isEmpty((int) (x + GameController.TILE_PADDING), (int) (y + GameController.TILE_PADDING)))
-			return false;
-		
-		return isEmpty((int) (x - GameController.TILE_PADDING), (int) (y - GameController.TILE_PADDING));
-	}
-	*/
 	
 	public static boolean isEmpty(int x, int y)
 	{
-		System.out.println("Checking (" + x + ", " + y + ")");
 		try
 		{
 			return (map[y][x]);
@@ -205,67 +146,34 @@ public class Board extends Scene
 		return pacman;
 	}
 	
-	/*public static Entity[] getEntities(int posHash)
+	public static Entity getEntity(int posHash)
 	{
-		return tiles.get(posHash).getEntities();
-	}*/
+		return entities.get(posHash);
+	}
 	
 	public void placeEntity(Entity e)
 	{
-		paint(e);
 		Position p = e.getPosition();
-		Tile t = tiles[(int) p.getY()][(int) p.getX()] = new Tile(new Position((int) p.getY(), (int) p.getX()));
-		t.addEntity(e);
+		icons[p.getY()][p.getX()] = new ImageView();
+		icons[p.getY()][p.getX()].setImage(e.getImage());
+		entities.put(getPositionHash(p), e);
 	}
 	
-	/*
 	public static Entity replaceEntity(Entity e)
 	{
 		Position p = e.getPosition();
 		paint(e);
 		return entities.put(getPositionHash(p), e); //get the entity underneath
 	}
-	*/
 	
 	public static void paint(Entity e)
 	{
-		float[] xy = getPositionCoordinates(e.getPosition());
-		// TODO draw on screen using graphics context
-		canvas.getGraphicsContext2D().drawImage(e.getImage(), xy[0], xy[1]);
-	}
-	
-	public static float[] getPositionCoordinates(Position p)
-	{
-		return getPositionCoordinates(p.getX(), p.getY());
-	}
-	
-	public static float[] getPositionCoordinates(float x, float y)
-	{
-		return new float[] { x * Board.TILE_SIZE + (Board.TILE_SIZE - Board.ICON_SIZE) / 2.0f, y * Board.TILE_SIZE + (Board.TILE_SIZE - Board.ICON_SIZE) / 2.0f};
+		Position p = e.getPosition();
+		icons[p.getY()][p.getX()].setImage(e.getImage());
 	}
 	
 	public void putEntities()
 	{
-		for (int i = 0; i < map.length; i++)
-		{	
-			for (int j = 0; j < map[i].length; j++)
-			{
-				if (map[i][j])
-				{
-					Coin c = new Coin(j, i);
-					placeEntity(c);
-					//icons[i][j].setImage(Coin.getStaticImage());
-					//initialCoinCount++;
-				}
-				else
-				{
-					// is this legal?
-					Wall w = new Wall(j, i);
-					placeEntity(w);
-				}
-			}
-		}
-		
 		ghosts = new ArrayList<>();
 		
 		for (int i = 0; i < GameController.GHOST_COUNT; i++)
@@ -278,16 +186,48 @@ public class Board extends Scene
 		pacman = new Pacman(randomAvailablePosition());
 		placeEntity(pacman);
 		
+		for (int i = 0; i < map.length; i++)
+		{
+			RowConstraints con = new RowConstraints();
+            // Here we set the pref height of the row, but you could also use .setPercentHeight(double) if you don't know much space you will need for each label.
+            con.setPrefHeight(TILE_SIZE + 0.25);
+            pane.getRowConstraints().add(con);
+			
+			for (int j = 0; j < map[i].length; j++)
+			{
+				if (map[i][j])
+				{
+					Coin c = new Coin(j, i);
+					placeEntity(c);
+					//icons[i][j].setImage(Coin.getStaticImage());
+					//initialCoinCount++;
+				}
+				else
+				{
+					icons[i][j] = new ImageView();
+					icons[i][j].setImage(Wall.getStaticImage());
+				}
+				
+				icons[i][j].setOnMouseClicked(new ImageViewClickHandler(i, j));
+				
+				GridPane.setHalignment(icons[i][j], HPos.CENTER);
+				GridPane.setValignment(icons[i][j], VPos.CENTER);
+				
+				pane.add(icons[i][j], j, i);
+			}
+		}
+		
 		powerUps = new ArrayList<>();
 	}
 	
 	public Position randomAvailablePosition()
 	{
-		int x, y;
-		while (!isEmpty(x = (int) (Math.random() * map[0].length), y = (int) (Math.random() * map.length)))
-			System.out.println(x + " " + y);
+		Position p = null;
 		
-		return new Position(x, y);
+		while (!isEmpty((p = new Position((int) (Math.random() * map[0].length), (int) (Math.random() * map.length)))))
+			System.out.println(p);
+		
+		return p;
 	}
 	
 	public void stop()
@@ -311,20 +251,6 @@ public class Board extends Scene
 		updater.begin();
 	}
 	
-	private static void clearTile(Tile t)
-	{
-		Position p = t.getTopLeftCorner();
-		float[] xy = getPositionCoordinates(p);
-		canvas.getGraphicsContext2D().clearRect(xy[0], xy[1], Board.TILE_SIZE, Board.TILE_SIZE);
-	}
-	
-	private static void paintTile(Tile t)
-	{
-		clearTile(t);
-		for (Entity e : t.getEntitiesSorted())
-			paint(e);
-	}
-	
 	/*public static void paint(Entity e)
 	{
 		Position p = e.getPosition();
@@ -333,14 +259,17 @@ public class Board extends Scene
 	
 	public static void refresh()
 	{
-		for (Tile t : tilesToRefresh)
+		/*for (Coin i : coins)
 		{
-			clearTile(t);
-			t.removeNonStatic();
-			paintTile(t);
+			paint(i);
+		}*/
+		
+		for (Entity e : entitiesToRefresh)
+		{
+			replaceEntity(e);
 		}
 		
-		tilesToRefresh.clear();
+		entitiesToRefresh.clear();
 		
 		pacman.animate();
 		
@@ -351,7 +280,7 @@ public class Board extends Scene
 		
 		handlePacmanMovement();
 		
-		//GameController.handleCollision();
+		GameController.handleCollision();
 		
 		/*for (PowerUp i : powerUps)
 		{
@@ -366,50 +295,18 @@ public class Board extends Scene
 	
 	public static void handlePacmanMovement()
 	{
-		/*
 		Entity currentPos = replaceEntity(pacman);
 		if (!(currentPos instanceof Consumable))
 			entitiesToRefresh.add(currentPos);
 		pacmanReplaced = currentPos;
-		*/
-		
-		Tile[] pacmanCurrentTiles = getTiles(pacman.getPosition());
-		
-		for (Tile t : pacmanCurrentTiles)
-		{
-			t.addEntity(pacman);
-			addToTilesToRefresh(t);
-			if (t.numEntities() > 1)
-			{
-				Entity[] entities = t.getEntities();
-				for (Entity e : entities)
-				{
-					if (e instanceof Pacman)
-						continue;
-					
-					if (e instanceof Consumable && e instanceof Static)
-						((Consumable) e).consume();
-					else if (e instanceof Ghost)
-						if (GameController.isConsumable(e))
-							GameController.consumeGhost((Ghost) e);
-						else
-							GameController.gameOver();
-				}
-			}
-			paintTile(t);
-		}
 	}
 	
-	public static void handleMovement(MovableEntity entity)
+	public static Entity handleMovement(MovableEntity entity)
 	{
-		Tile[] currentTiles = getTiles(entity.getPosition());
-		
-		for (Tile t : currentTiles)
-		{
-			t.addEntity(entity);
-			addToTilesToRefresh(t);
-			paintTile(t);
-		}
+		Entity currentPos = replaceEntity(entity);
+		if (currentPos instanceof Static)
+			entitiesToRefresh.add(currentPos);
+		return currentPos;
 	}
 	
 	public static void deleteMoving(MovableEntity e)
@@ -422,8 +319,48 @@ public class Board extends Scene
 		}
 	}
 	
-	public static void addToTilesToRefresh(Tile j)
+	private class ImageViewClickHandler implements EventHandler<MouseEvent>
 	{
-		tilesToRefresh.add(j);
+		private final int x;
+		private final int y;
+		
+		public ImageViewClickHandler(final int x, final int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+		
+		public void handle(MouseEvent click)
+		{
+			System.out.println("(" + x + ", " + y + "}");
+		}
 	}
+	
+	public static void addToEntitiesToRefresh(Entity j)
+	{
+		entitiesToRefresh.add(j);
+	}
+	
+	/*public static int getCoinArrayListIndex(int x, int y)
+	{
+		Position r = new Position(x, y);
+		int ind = y * icons[0].length + x;
+		Position c = null;
+		
+		while ((c = coins.get(ind).getPosition()).compareTo(r) > WIDTH) //c is after r
+		{
+			y--;
+			
+			ind = y * icons[0].length + x;
+		}
+		
+		while ((c = coins.get(ind).getPosition()).compareTo(r) > 1)
+		{
+			x--;
+			
+			ind = y * icons[0].length + x;
+		}
+		
+		return ind;
+	}*/
 }

@@ -1,32 +1,30 @@
 package thoniyil.sridaran.pacmangame.game.entity;
 
-import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
-// describes upper-left corner of the image
-public class Position// implements Comparable<Position>
+public class Position implements Comparable<Position>
 {
-	private float x, y;
+	private int x, y;
 	
 	public Position()
 	{
 		this(0, 0);
 	}
 	
-	public Position(float x, float y)
+	public Position(int x, int y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 	
 	//getters
-	public float getX()
+	public int getX()
 	{
 		return x;
 	}
 	
-	public float getY()
+	public int getY()
 	{
 		return y;
 	}
@@ -37,31 +35,19 @@ public class Position// implements Comparable<Position>
 		{
 			case UP:
 				if (!upSafe())
-				{
-					System.out.println("Up blocked");
 					return false;
-				}
 				break;
 			case DOWN:
 				if (!downSafe())
-				{
-					System.out.println("Down blocked");
 					return false;
-				}
 				break;
 			case LEFT:
 				if (!leftSafe())
-				{
-					System.out.println("Left blocked");
 					return false;
-				}
 				break;
 			case RIGHT:
 				if (!rightSafe())
-				{
-					System.out.println("Right blocked");
 					return false;
-				}
 				break;
 			default:
 				System.out.println("ERROR IN MOVE BOOLEAN IN GHOST: INVALID DIRETCION!");
@@ -73,46 +59,40 @@ public class Position// implements Comparable<Position>
 	
 	public boolean leftSafe()
 	{
-		// int cast y or no?
-		System.out.println("Current Tile: (" + ((int) (x - GameController.MOVE_FACTOR)) + " " + (int) y + ")");
-		if (!Board.isEmpty((int) (x - GameController.MOVE_FACTOR), (int) y))
+		if (!Board.isEmpty(x - 1, y))
 			return false;
-		if (!Board.isEmpty((int) (x - GameController.MOVE_FACTOR), (int) (y + 1)) )
-		x -= GameController.MOVE_FACTOR;
+		//return left();
+		x--;
 		return true;
 	}
 	
 	public boolean rightSafe()
 	{
-		if (!Board.isEmpty((int) (x + 1 + GameController.MOVE_FACTOR), (int) y))
+		if (!Board.isEmpty(x + 1, y))
 			return false;
-		if (!Board.isEmpty((int) (x + 1 + GameController.MOVE_FACTOR), (int) (y + 1)))
-			return false;
-		x += GameController.MOVE_FACTOR;
+		//return right();
+		x++;
 		return true;
 	}
 	
 	public boolean upSafe()
 	{
-		if (!Board.isEmpty((int) x, (int) (y - GameController.MOVE_FACTOR)))
+		if (!Board.isEmpty(x, y + 1))
 			return false;
-		if (!Board.isEmpty((int) (x + 1), (int) (y - GameController.MOVE_FACTOR)))
-			return false;
-		y -= GameController.MOVE_FACTOR;
+		//return up();
+		y++;
 		return true;
 	}
 	
 	public boolean downSafe()
 	{
-		if (!Board.isEmpty((int) x, (int) (y + 1 + GameController.MOVE_FACTOR)))
+		if (!Board.isEmpty(x, y - 1))
 			return false;
-		if (!Board.isEmpty((int) (x + 1), (int) (y + 1 + GameController.MOVE_FACTOR)))
-			return false;
-		y += GameController.MOVE_FACTOR;
+		//return down();
+		y--;
 		return true;
 	}
 	
-	/*
 	public boolean equals(Position o)
 	{
 		//System.out.println(o + " " + this);
@@ -123,21 +103,18 @@ public class Position// implements Comparable<Position>
 	{
 		return this.x == x && this.y == y;
 	}
-	*/
 	
 	public String toString()
 	{
 		return "(" + x + ", " + y + ")";
 	}
 	
-	/*
 	public int compareTo(Position o)
 	{
 		int a = y * Board.WIDTH + x;
 		int b = o.y * Board.WIDTH + o.x;
 		return a - b;
 	}
-	*/
 	
 	public Position copy()
 	{
