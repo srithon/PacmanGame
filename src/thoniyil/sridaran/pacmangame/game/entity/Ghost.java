@@ -12,7 +12,7 @@ public class Ghost extends MovableEntity implements Changable, Consumable
 	
 	static
 	{
-		ghostIcon = new Image("file:icons/ghost.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		ghostIcon = new Image("file:icons/ghost.png", Board.ICON_SIZE, Board.ICON_SIZE, false, true);
 	}
 	
 	public Ghost(Position p)

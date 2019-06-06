@@ -1,3 +1,6 @@
+Finish refactoring everything
+Fix getTiles
+
 Refactor Board's tiles to be 2d array instead of hashmap
 
 Complete refactoring of Board to be a canvas

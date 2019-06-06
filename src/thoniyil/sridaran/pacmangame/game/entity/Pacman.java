@@ -11,8 +11,8 @@ public class Pacman extends MovableEntity
 	
 	static
 	{
-		pacmanClosed = new Image("file:icons/pacmanClosed.jpg", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
-		pacmanOpen = new Image("file:icons/pacmanOpen_grayBackground.png", Board.TILE_SIZE, Board.TILE_SIZE, false, true);
+		pacmanClosed = new Image("file:icons/pacmanClosed.jpg", Board.ICON_SIZE, Board.ICON_SIZE, false, true);
+		pacmanOpen = new Image("file:icons/pacmanOpen_grayBackground.png", Board.ICON_SIZE, Board.ICON_SIZE, false, true);
 	}
 	
 	private boolean open;

@@ -36,19 +36,16 @@ import thoniyil.sridaran.pacmangame.game.entity.Wall;
 public class Board extends Scene
 {
 	public static final int TILE_SIZE;
+	public static final int ICON_SIZE;
 	
 	public static int WIDTH;
 	public static int HEIGHT;
 	
-	private static int initialCoinCount;
-	
 	private static boolean[][] map;
 	
-	private static HashMap<Integer, Tile> tiles;
+	private static Tile[][] tiles;
 	
 	private static HashSet<Tile> tilesToRefresh;
-	
-	private static ImageView[][] icons;
 	
 	private static ArrayList<Ghost> ghosts;
 	private static Pacman pacman;
@@ -74,12 +71,12 @@ public class Board extends Scene
 	static
 	{
 		TILE_SIZE = 25;
+		ICON_SIZE = 20;
 		
 		//icons = new ImageView[HEIGHT][WIDTH];
 		
 		mainLayoutGroup = new Group();
 		
-		tiles = new HashMap<>();
 		tilesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
 	}
 	
@@ -114,9 +111,14 @@ public class Board extends Scene
 	public static void setMap(boolean[][] map)
 	{
 		Board.map = map;
+		tiles = new Tile[map.length][map[0].length];
 		Board.WIDTH = map[0].length;
 		Board.HEIGHT = map.length;
-		icons = new ImageView[HEIGHT][WIDTH];
+	}
+	
+	private static Tile getTile(double x, double y)
+	{
+		return tiles[(int) y][(int) x];
 	}
 	
 	private static Tile[] getTiles(Position p)
@@ -128,22 +130,23 @@ public class Board extends Scene
 		
 		HashSet<Tile> positionTiles = new HashSet<>(3, 0.66f);
 		
-		positionTiles.add(tiles.get(getPositionHash(x, y)));
+		positionTiles.add(getTile(x, y));
 		
 		//System.out.println(positionTiles);
 		
-		if ((int) x + 1 != (int) x)
+		//reasoning: add fraction of tile that icon takes up
+		if ((int) (x + Board.ICON_SIZE / Board.TILE_SIZE) != (int) x)
 		{
-			positionTiles.add(tiles.get(getPositionHash(x + 1, y)));
+			positionTiles.add(getTile(x + 1, y)); // change to above?
 			
-			if ((int) y + 1 != (int) y)
+			if ((int) (y + Board.ICON_SIZE / Board.TILE_SIZE) != (int) y)
 			{
-				positionTiles.add(tiles.get(getPositionHash(x + 1, y + 1)));
+				positionTiles.add(getTile(x + 1, y + 1));
 			}
 		}
-		if ((int) y + 1 != (int) y)
+		if ((int) (y + Board.ICON_SIZE / Board.TILE_SIZE) != (int) y)
 		{
-			positionTiles.add(tiles.get(getPositionHash(x, y + 1)));
+			positionTiles.add(getTile(x, y + 1));
 		}
 		
 		positionTiles.remove(null);
@@ -202,17 +205,16 @@ public class Board extends Scene
 		return pacman;
 	}
 	
-	public static Entity[] getEntities(int posHash)
+	/*public static Entity[] getEntities(int posHash)
 	{
 		return tiles.get(posHash).getEntities();
-	}
+	}*/
 	
 	public void placeEntity(Entity e)
 	{
 		paint(e);
-		int hash = getPositionHash(e.getPosition());
-		tiles.putIfAbsent(hash, new Tile(e.getPosition()));
-		Tile t = tiles.get(hash);
+		Position p = e.getPosition();
+		Tile t = tiles[(int) p.getY()][(int) p.getX()] = new Tile(new Position((int) p.getY(), (int) p.getX()));
 		t.addEntity(e);
 	}
 	
@@ -239,7 +241,7 @@ public class Board extends Scene
 	
 	public static float[] getPositionCoordinates(float x, float y)
 	{
-		return new float[] { x * Board.TILE_SIZE, y * Board.TILE_SIZE };
+		return new float[] { x * Board.TILE_SIZE + (Board.TILE_SIZE - Board.ICON_SIZE) / 2.0f, y * Board.TILE_SIZE + (Board.TILE_SIZE - Board.ICON_SIZE) / 2.0f};
 	}
 	
 	public void putEntities()
