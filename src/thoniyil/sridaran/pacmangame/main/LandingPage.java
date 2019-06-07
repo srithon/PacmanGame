@@ -75,7 +75,6 @@ public class LandingPage extends Application
 	
 	public static void openMapCreator(Image mapTemplate)
 	{
-		//TODO implement <edit map>
 		if (mc == null)
 		{
 			mc = new MapCreator();

@@ -39,7 +39,7 @@ public class Board extends Scene
 	
 	private static boolean[][] map;
 	
-	private static HashMap<Integer, Entity> entities;
+	private static Entity[][] entities;
 	
 	private static HashSet<Entity> entitiesToRefresh;
 	
@@ -68,11 +68,8 @@ public class Board extends Scene
 	{
 		TILE_SIZE = 25;
 		
-		//icons = new ImageView[HEIGHT][WIDTH];
-		
 		pane = new GridPane();
 		
-		entities = new HashMap<>();
 		entitiesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
 	}
 	
@@ -115,10 +112,15 @@ public class Board extends Scene
 		return y * map[0].length + x;
 	}
 	
+	public static Entity getEntity(Position p)
+	{
+		return entities[(int) p.getY()][(int) p.getX()];
+	}
+	
 	public static void deleteEntity(Entity e)
 	{
 		Entity blank = new Blank(e.getPosition());
-		entities.put(getPositionHash(e.getPosition()), blank);
+		entities[(int) e.getPosition().getY()][(int) e.getPosition().getX()] = blank;
 		addToEntitiesToRefresh(blank);
 	}
 	
@@ -168,24 +170,21 @@ public class Board extends Scene
 		return pacman;
 	}
 	
-	public static Entity getEntity(int posHash)
-	{
-		return entities.get(posHash);
-	}
-	
 	public void placeEntity(Entity e)
 	{
 		Position p = e.getPosition();
 		icons[p.getY()][p.getX()] = new ImageView();
 		icons[p.getY()][p.getX()].setImage(e.getImage());
-		entities.put(getPositionHash(p), e);
+		entities[(int) p.getY()][(int) p.getX()] = e;
 	}
 	
 	public static Entity replaceEntity(Entity e)
 	{
 		Position p = e.getPosition();
 		paint(e);
-		return entities.put(getPositionHash(p), e); //get the entity underneath
+		Entity replacedEntity = entities[(int) p.getY()][(int) p.getX()];
+		entities[(int) p.getY()][(int) p.getX()] = e;
+		return replacedEntity; //get the entity underneath
 	}
 	
 	public static void paint(Entity e)
@@ -196,7 +195,9 @@ public class Board extends Scene
 	
 	public void putEntities()
 	{
-		entities.clear();
+		// !!!!!!!!!!!!!!!!
+		// entities.clear();
+		// !!!!!!!!!!!!!!!!
 		
 		if (ghosts != null)
 			ghosts.clear();
@@ -258,6 +259,7 @@ public class Board extends Scene
 	
 	public void init()
 	{
+		entities = new Entity[HEIGHT][WIDTH];
 		pane.getChildren().clear();
 		putEntities();
 		
