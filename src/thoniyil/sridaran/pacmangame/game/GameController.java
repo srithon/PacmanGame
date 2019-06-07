@@ -17,12 +17,13 @@ import thoniyil.sridaran.pacmangame.game.entity.Position;
 import thoniyil.sridaran.pacmangame.game.entity.Static;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 import thoniyil.sridaran.pacmangame.game.ui.InputController;
+import thoniyil.sridaran.pacmangame.main.LandingPage;
 import thoniyil.sridaran.pacmangame.main.MapParser;
 
 public class GameController
 {
 	public static final int GHOST_COUNT = 5;
-	private static final int UPDATES_PER_SECOND = 10;
+	public static final int UPDATES_PER_SECOND = 10;
 	
 	private static final int DEFAULT_POINTS_PER_COIN = 10;
 	private static int currentPointsPerCoin = DEFAULT_POINTS_PER_COIN;
@@ -56,6 +57,16 @@ public class GameController
 		currentEffects = new ArrayList<>();
 		score = new ScoreTracker(TOTAL_ROUNDS);
 		Board.setController(controller);
+		if (board == null)
+			board = new Board(UPDATES_PER_SECOND);
+		else
+			board.init();
+		return board;
+	}
+	
+	public static Board createBoard()
+	{
+		Board.stopUTD();
 		board = new Board(UPDATES_PER_SECOND);
 		return board;
 	}
@@ -72,6 +83,11 @@ public class GameController
 		}
 		
 		return board;
+	}
+	
+	public static int getScore()
+	{
+		return score.getScore(currentRound);
 	}
 	
 	public static void moveCharacter(Direction dir)
@@ -176,6 +192,17 @@ public class GameController
 		System.out.println("Consume");
 		score.increment(currentPointsPerCoin * 5);
 		Board.deleteMoving(g);
+	}
+	
+	public static void pause()
+	{
+		Board.stopUTD();
+		LandingPage.openPauseMenu();
+	}
+	
+	public static void resume()
+	{
+		Board.initUTD(UPDATES_PER_SECOND);
 	}
 	
 	public static void useCoin(Coin c)

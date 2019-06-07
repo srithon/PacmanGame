@@ -37,8 +37,6 @@ public class Board extends Scene
 	public static int WIDTH;
 	public static int HEIGHT;
 	
-	private static int initialCoinCount;
-	
 	private static boolean[][] map;
 	
 	private static HashMap<Integer, Entity> entities;
@@ -62,8 +60,8 @@ public class Board extends Scene
 	public Board(int updatesPerSecond)
 	{
 		super(pane);
-		updater = new UpdateThreadHandler(updatesPerSecond);
 		init();
+		initUTD(updatesPerSecond);
 	}
 	
 	static
@@ -82,6 +80,21 @@ public class Board extends Scene
 	{
 		this.map = map;
 	}*/
+	
+	public static void initUTD(int updatesPerSecond)
+	{
+		updater = new UpdateThreadHandler(updatesPerSecond);
+	}
+	
+	public static void stopUTD()
+	{
+		updater.stop();
+	}
+	
+	public static void resumeUTD()
+	{
+		updater.restart();
+	}
 	
 	public static void setController(InputController controller)
 	{
@@ -111,6 +124,11 @@ public class Board extends Scene
 		Board.WIDTH = map[0].length;
 		Board.HEIGHT = map.length;
 		icons = new ImageView[HEIGHT][WIDTH];
+	}
+	
+	public static boolean[][] getMap()
+	{
+		return map;
 	}
 	
 	public static boolean isEmpty(Position pos)
@@ -230,11 +248,6 @@ public class Board extends Scene
 		return p;
 	}
 	
-	public void stop()
-	{
-		updater.stop();
-	}
-	
 	public void init()
 	{
 		putEntities();
@@ -248,6 +261,8 @@ public class Board extends Scene
 		});
 		*/
 		
+		if (updater == null)
+			initUTD(GameController.UPDATES_PER_SECOND);
 		updater.begin();
 	}
 	

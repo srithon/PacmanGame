@@ -19,10 +19,10 @@ public class UpdateThreadHandler
 	
 	private Thread t;
 	
-	public UpdateThreadHandler(int updatesPerSecond)
+	public UpdateThreadHandler(double updatesPerSecond)
 	{
 		// 1000 millis/second
-		updateDelay = 1000 / updatesPerSecond;
+		updateDelay = (int) (1000 / updatesPerSecond);
 		
 		t = new Thread(this::run);
 	}
@@ -30,6 +30,17 @@ public class UpdateThreadHandler
 	public void begin()
 	{
 		t.start();
+	}
+	
+	public void restart()
+	{
+		t = new Thread(this::run);
+		begin();
+	}
+	
+	public void setUpdateHertz(double updatesPerSecond)
+	{
+		updateDelay = (int) (1000 / updatesPerSecond);
 	}
 	
 	public void run()

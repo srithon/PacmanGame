@@ -45,6 +45,7 @@ public class InputController implements EventHandler<KeyEvent>
 			case DOWN: GameController.setNextMoveChar(Direction.DOWN); break;
 			case LEFT: GameController.setNextMoveChar(Direction.LEFT); break;
 			case RIGHT: GameController.setNextMoveChar(Direction.RIGHT); break;
+			case ESCAPE: GameController.pause();
 		}
 	}
 }

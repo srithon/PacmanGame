@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import thoniyil.sridaran.pacmangame.game.GameController;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
+import thoniyil.sridaran.pacmangame.game.ui.PauseMenu;
 import thoniyil.sridaran.pacmangame.mapcreator.MapCreator;
 
 public class LandingPage extends Application
@@ -16,6 +17,8 @@ public class LandingPage extends Application
 	private static Stage stage;
 	
 	private static MapCreator mc;
+	
+	private static Scene landingPageScene;
 	
 	public static void main(String[] args)
 	{
@@ -27,8 +30,8 @@ public class LandingPage extends Application
 	{
 		LandingPage.stage = stage;
 		Parent root = FXMLLoader.load(getClass().getResource("LandingPageFXML.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+        landingPageScene = new Scene(root);
+        stage.setScene(landingPageScene);
         stage.show();
         stage.setOnCloseRequest((WindowEvent e) -> {
         	if (stage.getScene() instanceof Board)
@@ -37,11 +40,33 @@ public class LandingPage extends Application
         });
 	}
 	
+	public static void openPauseMenu()
+	{
+		stage.setScene(PauseMenu.getInstance());
+	}
+	
+	public static void openLandingPage()
+	{
+		stage.setScene(landingPageScene);
+	}
+	
+	public static void openGame()
+	{
+		stage.setScene(GameController.getBoard());
+	}
+	
 	public static void openGame(Image selectedImage)
 	{
 		GameController.createBoard(selectedImage);
 		Board pacmanScene = GameController.getBoard();
 		stage.setScene(pacmanScene);
+	}
+	
+	public static void openGame(boolean resumeOrRestart) //true, false
+	{
+		if (!resumeOrRestart)
+			GameController.getBoard().init();
+		stage.setScene(GameController.getBoard());
 	}
 	
 	public static void openMapCreator()
