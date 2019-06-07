@@ -34,8 +34,7 @@ public class LandingPage extends Application
         stage.setScene(landingPageScene);
         stage.show();
         stage.setOnCloseRequest((WindowEvent e) -> {
-        	if (stage.getScene() instanceof Board)
-        		((Board) stage.getScene()).stop();
+        	Board.stopUTD();
         	stage.close();
         });
 	}

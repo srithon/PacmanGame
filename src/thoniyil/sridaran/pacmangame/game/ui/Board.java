@@ -83,12 +83,16 @@ public class Board extends Scene
 	
 	public static void initUTD(int updatesPerSecond)
 	{
+		if (updater != null)
+			updater.stop();
 		updater = new UpdateThreadHandler(updatesPerSecond);
+		updater.begin();
 	}
 	
 	public static void stopUTD()
 	{
-		updater.stop();
+		if (updater != null)
+			updater.stop();
 	}
 	
 	public static void resumeUTD()
@@ -192,6 +196,10 @@ public class Board extends Scene
 	
 	public void putEntities()
 	{
+		entities.clear();
+		
+		if (ghosts != null)
+			ghosts.clear();
 		ghosts = new ArrayList<>();
 		
 		for (int i = 0; i < GameController.GHOST_COUNT; i++)
@@ -250,6 +258,7 @@ public class Board extends Scene
 	
 	public void init()
 	{
+		pane.getChildren().clear();
 		putEntities();
 		
 		this.addEventHandler(KeyEvent.KEY_PRESSED, controller);
@@ -261,9 +270,11 @@ public class Board extends Scene
 		});
 		*/
 		
+		/*
 		if (updater == null)
 			initUTD(GameController.UPDATES_PER_SECOND);
 		updater.begin();
+		*/
 	}
 	
 	/*public static void paint(Entity e)

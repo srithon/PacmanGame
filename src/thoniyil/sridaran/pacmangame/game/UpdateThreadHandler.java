@@ -13,7 +13,7 @@ public class UpdateThreadHandler
 {
 	private int updateDelay;
 	
-	private boolean stopped;
+	private volatile boolean stopped;
 	
 	private static Direction moveChar;
 	
@@ -34,6 +34,7 @@ public class UpdateThreadHandler
 	
 	public void restart()
 	{
+		stop();
 		t = new Thread(this::run);
 		begin();
 	}
@@ -48,10 +49,17 @@ public class UpdateThreadHandler
 		Pacman pacman = Board.getPacman();
 		ArrayList<Ghost> ghosts = Board.getGhosts();
 		
-		GameController.setNextMoveChar(Direction.randomDirection());
+		Direction d = GameController.getPacmanMoveDirection();
+		
+		if (d == null)
+			GameController.setNextMoveChar(Direction.randomDirection());
+		else
+			GameController.setNextMoveChar(d);
 		
 		while (!stopped)
 		{
+			//System.out.println("Working UTD is " + this);
+			
 			long startTime = System.currentTimeMillis();
 			
 			pacman.move();
@@ -71,15 +79,12 @@ public class UpdateThreadHandler
 			{
 				e.printStackTrace();
 			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 	
 	public void stop()
 	{
+		//System.out.println("Stopping UTD: " + this);
 		stopped = true;
 	}
 }

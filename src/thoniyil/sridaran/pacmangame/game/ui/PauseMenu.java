@@ -5,10 +5,13 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import thoniyil.sridaran.pacmangame.game.GameController;
 
 public class PauseMenu extends Scene
 {
 	private static PauseMenu instance;
+	private static Label scoreLabel;
 	
 	private PauseMenu(Parent root)
 	{
@@ -29,10 +32,16 @@ public class PauseMenu extends Scene
 		instance = new PauseMenu(root);
 	}
 	
+	public static void setLabel(Label l)
+	{
+		scoreLabel = l;
+	}
+	
 	public static PauseMenu getInstance()
 	{
 		if (instance == null)
 			createInstance();
+		scoreLabel.setText("Current score: " + GameController.getScore());
 		return instance;
 	}
 }

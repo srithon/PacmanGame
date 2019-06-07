@@ -13,7 +13,8 @@ public class PauseMenuFXMLController
 	//auto called after finished loading
 	public void initialize()
 	{
-		pointValue.setText("Current score: " + GameController.getScore());
+		//pointValue.setText("Current score: " + GameController.getScore());
+		PauseMenu.setLabel(pointValue);
 	}
 	
 	@FXML

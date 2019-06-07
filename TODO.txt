@@ -1,11 +1,7 @@
-Fix errors
-Fix Ghost collision lastPos
-Finish LandingPage openMapCreator and openGame
-	Press ESC from any screen to return to landing page
-MapCreator
-	/*
-	Toggle tiles and place powerups
-	*/
+Display score on Board
+Display current lives on Board
+Display special screen on gameOver()
+Fix error where returning to game breaks it
 Make Pacman an actual game with an objective
 	Holes on the side of the map
 	Enter into the hole and come out through other side
