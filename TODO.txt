@@ -1,3 +1,4 @@
+Add sounds
 Display score on Board
 Display current lives on Board
 Display special screen on gameOver()
