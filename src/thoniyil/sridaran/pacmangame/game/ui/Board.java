@@ -102,16 +102,6 @@ public class Board extends Scene
 		Board.controller = controller;
 	}
 	
-	public static int getPositionHash(Position j)
-	{
-		return getPositionHash(j.getX(), j.getY());
-	}
-	
-	public static int getPositionHash(int x, int y)
-	{
-		return y * map[0].length + x;
-	}
-	
 	public static Entity getEntity(Position p)
 	{
 		return entities[(int) p.getY()][(int) p.getX()];
