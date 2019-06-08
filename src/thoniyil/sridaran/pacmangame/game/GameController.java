@@ -205,7 +205,20 @@ public class GameController
 	
 	public static void gameOver()
 	{
-		System.out.println("Game Over!");
+		Board.stopUTD();
+		System.out.println("Life Lost!");
+		if (!Board.removeLife())
+			System.out.println("Game Over!");
+		Board.removeAllMovables();
+		try
+		{
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		Board.initUTD(UPDATES_PER_SECOND);
 	}
 	
 	public static void consumeGhost(Ghost g)

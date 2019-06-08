@@ -22,4 +22,9 @@ public abstract class Entity
 	{
 		return pos;
 	}
+	
+	public void setPosition(Position newPosition)
+	{
+		pos = newPosition.copy();
+	}
 }

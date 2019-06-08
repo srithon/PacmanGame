@@ -16,6 +16,11 @@ public abstract class MovableEntity extends Entity
 	
 	public abstract void move();
 	
+	public void moveTo(Position p)
+	{
+		super.setPosition(p);
+	}
+	
 	public Position getLastPosition()
 	{
 		return lastPosition;

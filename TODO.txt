@@ -1,5 +1,6 @@
 Add sounds
-Display current lives on Board
+Fix exception when empty
+	Also doesnt print Game Over until try to pop empty
 Display special screen on gameOver()
 Make Pacman an actual game with an objective
 	Holes on the side of the map

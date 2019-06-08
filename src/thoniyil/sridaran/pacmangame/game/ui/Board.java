@@ -3,6 +3,7 @@ package thoniyil.sridaran.pacmangame.game.ui;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -74,19 +75,9 @@ public class Board extends Scene
 		scoreDisplay.textProperty().bind(GameController.getObservableScore());
 		scoreContainer.getChildren().add(scoreDisplay);
 		scoreContainer.setAlignment(Pos.CENTER_LEFT);
+		lives = new ArrayList<>();
 		init();
 		initUTD(updatesPerSecond);
-		lives = new ArrayList<>();
-		Image heartImage = new Image("file:icons/heart.png");
-		for (int i = 0; i < GameController.MAX_LIVES; i++)
-		{
-			ImageView iv2 = new ImageView();
-			iv2.setImage(heartImage);
-			iv2.setFitHeight(50);
-			iv2.setPreserveRatio(true);
-			lives.add(iv2);
-			scoreContainer.getChildren().add(iv2);
-		}
 	}
 
 	static
@@ -104,6 +95,27 @@ public class Board extends Scene
 	{
 		this.map = map;
 	}*/
+	
+	public static void removeAllMovables()
+	{
+		deleteMoving(pacman);
+		System.out.println(pacman.getPosition());
+		pacman.moveTo(randomAvailablePosition());
+		System.out.println(pacman.getPosition());
+	}
+	
+	/*
+	 * Removes a life from the Board
+	 * Returns true iff there are lives left
+	 * after removal
+	 * Returns false if last life was removed
+	 * 		Game Over
+	 */
+	public static boolean removeLife()
+	{
+		Platform.runLater(() -> scoreContainer.getChildren().remove(lives.remove(lives.size() - 1)));
+		return !lives.isEmpty();
+	}
 
 	public static void initUTD(int updatesPerSecond)
 	{
@@ -264,7 +276,7 @@ public class Board extends Scene
 		powerUps = new ArrayList<>();
 	}
 
-	public Position randomAvailablePosition()
+	public static Position randomAvailablePosition()
 	{
 		Position p = null;
 
@@ -281,6 +293,21 @@ public class Board extends Scene
 		pane.getColumnConstraints().clear();
 		pane.getRowConstraints().clear();
 		putEntities();
+		
+		scoreContainer.getChildren().clear();
+		scoreContainer.getChildren().add(scoreDisplay);
+		
+		Image heartImage = new Image("file:icons/heart.png");
+		lives.clear();
+		for (int i = 0; i < GameController.MAX_LIVES; i++)
+		{
+			ImageView iv2 = new ImageView();
+			iv2.setImage(heartImage);
+			iv2.setFitHeight(50);
+			iv2.setPreserveRatio(true);
+			lives.add(iv2);
+			scoreContainer.getChildren().add(iv2);
+		}
 
 		this.addEventHandler(KeyEvent.KEY_PRESSED, controller);
 
