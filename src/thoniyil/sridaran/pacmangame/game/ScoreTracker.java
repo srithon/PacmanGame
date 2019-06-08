@@ -1,22 +1,47 @@
 package thoniyil.sridaran.pacmangame.game;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class ScoreTracker
 {
 	private SimpleIntegerProperty[] score;
+	private SimpleStringProperty currentScore;
 	
 	public ScoreTracker(int totalRounds)
 	{
 		score = new SimpleIntegerProperty[totalRounds];
 		for (int i = 0; i < totalRounds; i++)
 			score[i] = new SimpleIntegerProperty(0);
+		currentScore = new SimpleStringProperty();
+		score[0].addListener((observableValue, oldValue, newValue) ->
+			currentScore.set("Score: " + newValue + " points"));
+		/*
+		 * NOTE
+		 * When round gets incremented, remove listener from score[0]
+		 * and add to score[1]
+		 * etc
+		 */
+	}
+	
+	public SimpleStringProperty getObservableScore()
+	{
+		return currentScore;
+	}
+	
+	public void reset()
+	{
+		for (SimpleIntegerProperty i : score)
+		{
+			i.set(0);
+		}
 	}
 	
 	public void increment(int points)
 	{
 		SimpleIntegerProperty p = score[GameController.getCurrentRound()];
-		p.setValue(p.get() + points);
+		Platform.runLater(() -> p.setValue(p.get() + points));
 		System.out.println(score[GameController.getCurrentRound()].get());
 	}
 	
@@ -56,10 +81,5 @@ public class ScoreTracker
 		}
 		
 		return t;
-	}
-	
-	public SimpleIntegerProperty getCurrentObservableScore()
-	{
-		return score[GameController.getCurrentRound()];
 	}
 }

@@ -64,7 +64,11 @@ public class LandingPage extends Application
 	public static void openGame(boolean resumeOrRestart) //true, false
 	{
 		if (!resumeOrRestart)
+		{
 			GameController.getBoard().init();
+			GameController.resetScore();
+			Board.initUTD(GameController.UPDATES_PER_SECOND);
+		}
 		stage.setScene(GameController.getBoard());
 	}
 	

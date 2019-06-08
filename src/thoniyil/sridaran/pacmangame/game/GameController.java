@@ -2,6 +2,7 @@ package thoniyil.sridaran.pacmangame.game;
 
 import java.util.ArrayList;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
@@ -53,21 +54,40 @@ public class GameController
 	public static Board createBoard(Image boardImage)
 	{
 		Board.setMap(MapParser.parseImage(boardImage));
-		controller = new InputController();
-		currentEffects = new ArrayList<>();
-		score = new ScoreTracker(TOTAL_ROUNDS);
-		Board.setController(controller);
+		
+		
 		if (board == null)
+		{
+			controller = new InputController();
+			Board.setController(controller);
+			score = new ScoreTracker(TOTAL_ROUNDS);
 			board = new Board(UPDATES_PER_SECOND);
+			currentEffects = new ArrayList<>();
+		}
 		else
+		{
 			board.init();
+			score.reset();
+			Board.initUTD(UPDATES_PER_SECOND);
+		}
 		return board;
+	}
+	
+	public static SimpleStringProperty getObservableScore()
+	{
+		return score.getObservableScore();
+	}
+	
+	public static void resetScore()
+	{
+		score.reset();
 	}
 	
 	public static Board createBoard()
 	{
 		Board.stopUTD();
-		board = new Board(UPDATES_PER_SECOND);
+		if (board == null)
+			board = new Board(UPDATES_PER_SECOND);
 		return board;
 	}
 	

@@ -9,11 +9,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import thoniyil.sridaran.pacmangame.game.GameController;
@@ -51,15 +54,25 @@ public class Board extends Scene
 	
 	private static GridPane pane;
 	
+	private static VBox wholeScreen;
+	
+	private static HBox scoreContainer;
+	
 	private static InputController controller;
 	
 	private static UpdateThreadHandler updater;
 	
 	private static Entity pacmanReplaced;
 	
+	private static Label scoreDisplay;
+	
 	public Board(int updatesPerSecond)
 	{
-		super(pane);
+		super(wholeScreen);
+		wholeScreen.getChildren().addAll(pane, scoreContainer);
+		scoreDisplay = new Label("Score: ");
+		scoreDisplay.textProperty().bind(GameController.getObservableScore());
+		scoreContainer.getChildren().add(scoreDisplay);
 		init();
 		initUTD(updatesPerSecond);
 	}
@@ -69,6 +82,8 @@ public class Board extends Scene
 		TILE_SIZE = 25;
 		
 		pane = new GridPane();
+		scoreContainer = new HBox();
+		wholeScreen = new VBox();
 		
 		entitiesToRefresh = new HashSet<>(GameController.GHOST_COUNT + 1, 1.0f);
 	}
@@ -165,7 +180,7 @@ public class Board extends Scene
 		Position p = e.getPosition();
 		icons[p.getY()][p.getX()] = new ImageView();
 		icons[p.getY()][p.getX()].setImage(e.getImage());
-		entities[(int) p.getY()][(int) p.getX()] = e;
+		entities[p.getY()][p.getX()] = e;
 	}
 	
 	public static Entity replaceEntity(Entity e)
@@ -173,7 +188,7 @@ public class Board extends Scene
 		Position p = e.getPosition();
 		paint(e);
 		Entity replacedEntity = entities[(int) p.getY()][(int) p.getX()];
-		entities[(int) p.getY()][(int) p.getX()] = e;
+		entities[p.getY()][p.getX()] = e;
 		return replacedEntity; //get the entity underneath
 	}
 	
@@ -251,6 +266,8 @@ public class Board extends Scene
 	{
 		entities = new Entity[HEIGHT][WIDTH];
 		pane.getChildren().clear();
+		pane.getColumnConstraints().clear();
+		pane.getRowConstraints().clear();
 		putEntities();
 		
 		this.addEventHandler(KeyEvent.KEY_PRESSED, controller);
