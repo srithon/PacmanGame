@@ -25,6 +25,7 @@ public class GameController
 {
 	public static final int GHOST_COUNT = 5;
 	public static final int UPDATES_PER_SECOND = 10;
+	public static final int MAX_LIVES = 3;
 	
 	private static final int DEFAULT_POINTS_PER_COIN = 10;
 	private static int currentPointsPerCoin = DEFAULT_POINTS_PER_COIN;
