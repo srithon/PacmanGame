@@ -1,6 +1,7 @@
 package thoniyil.sridaran.pacmangame.main;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,13 +40,16 @@ public class LandingPage extends Application
         });
 	}
 	
-	public static void openPauseMenu()
+	public static void openPauseMenu(boolean gameOver)
 	{
-		stage.setScene(PauseMenu.getInstance());
+		if (gameOver)
+			PauseMenu.gameOver();
+		Platform.runLater(() -> stage.setScene(PauseMenu.getInstance()));
 	}
 	
 	public static void openLandingPage()
 	{
+		PauseMenu.gameNotOver();
 		stage.setScene(landingPageScene);
 	}
 	

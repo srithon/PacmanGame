@@ -12,7 +12,7 @@ public class GetTotalLineCount
 		File mainDir = new File("C:\\Development\\Java\\PacmanGame\\src\\thoniyil\\sridaran\\pacmangame");
 		System.out.println(getLines(mainDir) + " total lines");
 	}
-	
+
 	private static int getLines(File directory)
 	{
 		File[] files = directory.listFiles();
@@ -26,7 +26,7 @@ public class GetTotalLineCount
 		}
 		return lines;
 	}
-	
+
 	private static int countLines(File file)
 	{
 		try (BufferedReader r = new BufferedReader(new FileReader(file)))

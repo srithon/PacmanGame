@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.active.Effect;
 import thoniyil.sridaran.pacmangame.game.active.Modifier;
@@ -46,6 +47,14 @@ public class GameController
 	private static ArrayList<Effect> currentEffects;
 	
 	private static Board board;
+	
+	private static AudioClip pacmanChomp;
+	
+	static
+	{
+		pacmanChomp = new AudioClip("file:sounds/pacman_chomp.wav");
+		pacmanChomp.setVolume(0.20);
+	}
 	
 	/*public static Board getBoard()
 	{
@@ -208,7 +217,7 @@ public class GameController
 		Board.stopUTD();
 		System.out.println("Life Lost!");
 		if (!Board.removeLife())
-			System.out.println("Game Over!");
+			GameController.endGame();
 		Board.removeAllMovables();
 		try
 		{
@@ -221,6 +230,12 @@ public class GameController
 		Board.initUTD(UPDATES_PER_SECOND);
 	}
 	
+	public static void endGame()
+	{
+		System.out.println("Game Over!");
+		LandingPage.openPauseMenu(true);
+	}
+	
 	public static void consumeGhost(Ghost g)
 	{
 		System.out.println("Consume");
@@ -231,7 +246,7 @@ public class GameController
 	public static void pause()
 	{
 		Board.stopUTD();
-		LandingPage.openPauseMenu();
+		LandingPage.openPauseMenu(false);
 	}
 	
 	public static void resume()
@@ -243,6 +258,7 @@ public class GameController
 	{
 		score.increment(currentPointsPerCoin);
 		Board.deleteEntity(c);
+		pacmanChomp.play();
 	}
 	
 	public static int getCurrentRound()

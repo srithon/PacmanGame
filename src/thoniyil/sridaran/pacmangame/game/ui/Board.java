@@ -113,7 +113,10 @@ public class Board extends Scene
 	 */
 	public static boolean removeLife()
 	{
-		Platform.runLater(() -> scoreContainer.getChildren().remove(lives.remove(lives.size() - 1)));
+		System.out.println("Size of lives before: " + lives.size());
+		final ImageView life = lives.remove(lives.size() - 1);
+		Platform.runLater(() -> scoreContainer.getChildren().remove(life));
+		System.out.println("Size of lives after: " + lives.size());
 		return !lives.isEmpty();
 	}
 
@@ -299,6 +302,7 @@ public class Board extends Scene
 		
 		Image heartImage = new Image("file:icons/heart.png");
 		lives.clear();
+		
 		for (int i = 0; i < GameController.MAX_LIVES; i++)
 		{
 			ImageView iv2 = new ImageView();
@@ -308,6 +312,8 @@ public class Board extends Scene
 			lives.add(iv2);
 			scoreContainer.getChildren().add(iv2);
 		}
+		
+		System.out.println(lives.size());
 
 		this.addEventHandler(KeyEvent.KEY_PRESSED, controller);
 
