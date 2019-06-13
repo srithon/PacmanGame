@@ -196,7 +196,6 @@ public class GameController
 		Entity lastPos = Board.getEntity(pacman.getLastPosition());
 		if (lastPos instanceof Ghost && ((Ghost) lastPos).getDirection() == Direction.getOppositeDirection(pacmanDirection))
 		{
-			System.out.println("Lastpos");
 			GameController.gameOver();
 		}
 		Entity currentPos = Board.getPacmanReplacedEntity();
@@ -207,7 +206,6 @@ public class GameController
 		}
 		else if (currentPos instanceof Ghost)
 		{
-			System.out.println("Currentpos");
 			GameController.gameOver();
 		}
 	}

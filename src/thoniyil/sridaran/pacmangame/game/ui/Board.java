@@ -100,8 +100,44 @@ public class Board extends Scene
 	{
 		deleteMoving(pacman);
 		System.out.println(pacman.getPosition());
-		pacman.moveTo(randomAvailablePosition());
+		pacman.moveTo(bestRandomAvailablePosition(5));
 		System.out.println(pacman.getPosition());
+	}
+	
+	/*
+	 * Out of n generated positions,
+	 * returns the one with the largest
+	 * min distance from a Ghost
+	 */
+	public static Position bestRandomAvailablePosition(int n)
+	{
+		Position bestPosition = null;
+		double highestMin = Double.MIN_VALUE;
+		
+		for (int i = 0; i < n; i++)
+		{
+			Position p = randomAvailablePosition();
+			double current = 0;
+			double localMin = Double.MAX_VALUE;
+			Position localBest = null;
+			
+			for (Ghost g : ghosts)
+			{
+				if ((current = p.distance(g.getPosition())) < localMin)
+				{
+					localMin = current;
+					localBest = p;
+				}
+			}
+			
+			if (localMin > highestMin)
+			{
+				highestMin = localMin;
+				bestPosition = localBest;
+			}
+		}
+		
+		return bestPosition;
 	}
 	
 	/*
