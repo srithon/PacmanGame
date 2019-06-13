@@ -40,11 +40,18 @@ public class LandingPage extends Application
         });
 	}
 	
-	public static void openPauseMenu(boolean gameOver)
+	public static void openPauseMenu(Boolean gameOver)
 	{
-		if (gameOver)
+		if (Boolean.TRUE.equals(gameOver))
 			PauseMenu.gameOver();
-		Platform.runLater(() -> stage.setScene(PauseMenu.getInstance()));
+		else if (gameOver == null)
+		{ //game won
+			PauseMenu.gameWon();
+			Platform.runLater(() -> stage.setScene(PauseMenu.getInstance()));
+			return;
+		}
+		
+		Platform.runLater(() -> stage.setScene(PauseMenu.getUpdatedInstance()));
 	}
 	
 	public static void openLandingPage()

@@ -54,9 +54,14 @@ public class PauseMenu extends Scene
 		restart = b;
 	}
 	
-	public static PauseMenu getInstance()
+	public static PauseMenu getUpdatedInstance()
 	{
 		scoreLabel.setText("Current score: " + GameController.getScore());
+		return instance;
+	}
+	
+	public static PauseMenu getInstance()
+	{
 		return instance;
 	}
 	
@@ -74,6 +79,12 @@ public class PauseMenu extends Scene
 	{
 		setResumeState(true);
 		setRestartState(true);
+	}
+	
+	public static void gameWon()
+	{
+		gameOver();
+		scoreLabel.setText("Game Won with " + GameController.getScore() + " points! Bravo!");
 	}
 	
 	public static void gameNotOver()

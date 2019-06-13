@@ -42,7 +42,6 @@ public class ScoreTracker
 	{
 		SimpleIntegerProperty p = score[GameController.getCurrentRound()];
 		Platform.runLater(() -> p.setValue(p.get() + points));
-		System.out.println(score[GameController.getCurrentRound()].get());
 	}
 	
 	public void decrement(int points)
