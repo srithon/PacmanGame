@@ -109,6 +109,16 @@ public class Position implements Comparable<Position>
 		return "(" + x + ", " + y + ")";
 	}
 	
+	/*
+	 * Uses the distance formula to calculate
+	 * the linear distance between this and another
+	 * Position instance
+	 */
+	public double distance(Position o)
+	{
+		return Math.sqrt(Math.pow(o.x - x, 2) + Math.pow(o.y - y, 2));
+	}
+	
 	public int compareTo(Position o)
 	{
 		int a = y * Board.WIDTH + x;

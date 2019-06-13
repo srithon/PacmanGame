@@ -66,6 +66,8 @@ public class Board extends Scene
 	private static Label scoreDisplay;
 
 	private static ArrayList<ImageView> lives;
+	
+	private static int coinsLeft;
 
 	public Board(int updatesPerSecond)
 	{
@@ -100,8 +102,44 @@ public class Board extends Scene
 	{
 		deleteMoving(pacman);
 		System.out.println(pacman.getPosition());
-		pacman.moveTo(randomAvailablePosition());
+		pacman.moveTo(bestRandomAvailablePosition(5));
 		System.out.println(pacman.getPosition());
+	}
+	
+	/*
+	 * Out of n generated positions,
+	 * returns the one with the largest
+	 * min distance from a Ghost
+	 */
+	public static Position bestRandomAvailablePosition(int n)
+	{
+		Position bestPosition = null;
+		double highestMin = Double.MIN_VALUE;
+		
+		for (int i = 0; i < n; i++)
+		{
+			Position p = randomAvailablePosition();
+			double current = 0;
+			double localMin = Double.MAX_VALUE;
+			Position localBest = null;
+			
+			for (Ghost g : ghosts)
+			{
+				if ((current = p.distance(g.getPosition())) < localMin)
+				{
+					localMin = current;
+					localBest = p;
+				}
+			}
+			
+			if (localMin > highestMin)
+			{
+				highestMin = localMin;
+				bestPosition = localBest;
+			}
+		}
+		
+		return bestPosition;
 	}
 	
 	/*
@@ -113,11 +151,16 @@ public class Board extends Scene
 	 */
 	public static boolean removeLife()
 	{
-		System.out.println("Size of lives before: " + lives.size());
-		final ImageView life = lives.remove(lives.size() - 1);
-		Platform.runLater(() -> scoreContainer.getChildren().remove(life));
-		System.out.println("Size of lives after: " + lives.size());
-		return !lives.isEmpty();
+		try
+		{
+			final ImageView life = lives.remove(lives.size() - 1);
+			Platform.runLater(() -> scoreContainer.getChildren().remove(life));
+			return !lives.isEmpty();
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			return false; //THIS IS SOMETIMES RAISED!
+		}
 	}
 
 	public static void initUTD(int updatesPerSecond)
@@ -126,6 +169,11 @@ public class Board extends Scene
 			updater.stop();
 		updater = new UpdateThreadHandler(updatesPerSecond);
 		updater.begin();
+	}
+	
+	public static void decrementCoins()
+	{
+		coinsLeft--;
 	}
 
 	public static void stopUTD()
@@ -257,6 +305,7 @@ public class Board extends Scene
 				if (map[i][j])
 				{
 					Coin c = new Coin(j, i);
+					coinsLeft++;
 					placeEntity(c);
 					//icons[i][j].setImage(Coin.getStaticImage());
 					//initialCoinCount++;
@@ -288,9 +337,16 @@ public class Board extends Scene
 
 		return p;
 	}
+	
+	public static boolean noCoinsLeft()
+	{
+		return coinsLeft == 0;
+	}
 
 	public void init()
 	{
+		coinsLeft = 0;
+		
 		entities = new Entity[HEIGHT][WIDTH];
 		pane.getChildren().clear();
 		pane.getColumnConstraints().clear();
@@ -420,27 +476,4 @@ public class Board extends Scene
 	{
 		entitiesToRefresh.add(j);
 	}
-
-	/*public static int getCoinArrayListIndex(int x, int y)
-	{
-		Position r = new Position(x, y);
-		int ind = y * icons[0].length + x;
-		Position c = null;
-
-		while ((c = coins.get(ind).getPosition()).compareTo(r) > WIDTH) //c is after r
-		{
-			y--;
-
-			ind = y * icons[0].length + x;
-		}
-
-		while ((c = coins.get(ind).getPosition()).compareTo(r) > 1)
-		{
-			x--;
-
-			ind = y * icons[0].length + x;
-		}
-
-		return ind;
-	}*/
 }

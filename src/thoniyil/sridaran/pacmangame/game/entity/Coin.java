@@ -36,5 +36,6 @@ public class Coin extends Entity implements Consumable, Static
 	public void consume()
 	{
 		GameController.useCoin(this);
+		Board.decrementCoins();
 	}
 }

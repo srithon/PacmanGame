@@ -24,7 +24,7 @@ import thoniyil.sridaran.pacmangame.main.MapParser;
 
 public class GameController
 {
-	public static final int GHOST_COUNT = 5;
+	public static final int GHOST_COUNT = 2;
 	public static final int UPDATES_PER_SECOND = 10;
 	public static final int MAX_LIVES = 3;
 	
@@ -196,7 +196,6 @@ public class GameController
 		Entity lastPos = Board.getEntity(pacman.getLastPosition());
 		if (lastPos instanceof Ghost && ((Ghost) lastPos).getDirection() == Direction.getOppositeDirection(pacmanDirection))
 		{
-			System.out.println("Lastpos");
 			GameController.gameOver();
 		}
 		Entity currentPos = Board.getPacmanReplacedEntity();
@@ -204,10 +203,15 @@ public class GameController
 		{
 			//System.out.println(currentPos.getClass().getSimpleName() + " is consumable");
 			((Consumable) currentPos).consume();
+			
+			if (Board.noCoinsLeft())
+			{
+				Board.stopUTD();
+				LandingPage.openPauseMenu(null);
+			}
 		}
 		else if (currentPos instanceof Ghost)
 		{
-			System.out.println("Currentpos");
 			GameController.gameOver();
 		}
 	}
