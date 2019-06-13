@@ -14,7 +14,7 @@
             <Button fx:id="resume" layoutX="200.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleResume" prefHeight="26.0" prefWidth="199.0" text="Resume" />
             <Button fx:id="exit" layoutX="200.0" layoutY="184.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="26.0" prefWidth="199.0" text="Exit" />
             <Button fx:id="restart" layoutX="200.0" layoutY="248.0" mnemonicParsing="false" onAction="#handleRestart" prefHeight="26.0" prefWidth="199.0" text="Restart" />
-            <Label fx:id="pointValue" layoutX="200.0" layoutY="34.0" prefHeight="26.0" prefWidth="199.0">
+            <Label fx:id="pointValue" layoutX="200.0" layoutY="34.0" prefHeight="26.0" prefWidth="299.0">
                <font>
                   <Font size="16.0" />
                </font>

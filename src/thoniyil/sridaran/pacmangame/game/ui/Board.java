@@ -316,7 +316,7 @@ public class Board extends Scene
 					icons[i][j].setImage(Wall.getStaticImage());
 				}
 
-				icons[i][j].setOnMouseClicked(new ImageViewClickHandler(i, j));
+				//icons[i][j].setOnMouseClicked(new ImageViewClickHandler(i, j));
 
 				GridPane.setHalignment(icons[i][j], HPos.CENTER);
 				GridPane.setValignment(icons[i][j], VPos.CENTER);
