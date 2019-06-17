@@ -35,4 +35,19 @@ public enum Direction
 		else
 			return LEFT;
 	}
+	
+	public int getRotation()
+	{
+		switch (this)
+		{
+		case UP:
+			return 270;
+		case DOWN:
+			return 90;
+		case LEFT:
+			return 180;
+		default:
+			return 0;
+		}
+	}
 }

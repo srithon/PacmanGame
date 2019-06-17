@@ -1,1 +1,1 @@
-Fix exit screen coming up randomly after game over (lives lost)
+Game is finished! Good work

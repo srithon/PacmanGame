@@ -2,6 +2,7 @@ package thoniyil.sridaran.pacmangame.game.entity;
 
 import javafx.scene.image.Image;
 import thoniyil.sridaran.pacmangame.game.GameController;
+import thoniyil.sridaran.pacmangame.game.active.Direction;
 import thoniyil.sridaran.pacmangame.game.ui.Board;
 
 public class Pacman extends MovableEntity

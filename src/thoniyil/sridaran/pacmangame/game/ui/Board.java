@@ -316,7 +316,7 @@ public class Board extends Scene
 					icons[i][j].setImage(Wall.getStaticImage());
 				}
 
-				//icons[i][j].setOnMouseClicked(new ImageViewClickHandler(i, j));
+				icons[i][j].setOnMouseClicked(new ImageViewClickHandler(i, j));
 
 				GridPane.setHalignment(icons[i][j], HPos.CENTER);
 				GridPane.setValignment(icons[i][j], VPos.CENTER);
@@ -431,6 +431,7 @@ public class Board extends Scene
 
 	public static void handlePacmanMovement()
 	{
+		icons[pacman.getPosition().getY()][pacman.getPosition().getX()].setRotate(GameController.getPacmanMoveDirection().getRotation()); 
 		Entity currentPos = replaceEntity(pacman);
 		if (!(currentPos instanceof Consumable))
 			entitiesToRefresh.add(currentPos);
@@ -439,6 +440,7 @@ public class Board extends Scene
 
 	public static Entity handleMovement(MovableEntity entity)
 	{
+		icons[entity.getPosition().getY()][entity.getPosition().getX()].setRotate(0); 
 		Entity currentPos = replaceEntity(entity);
 		if (currentPos instanceof Static)
 			entitiesToRefresh.add(currentPos);
